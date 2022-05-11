@@ -1,0 +1,15 @@
+nacos:
+  config:
+    auto-refresh: true
+    config-retry-time: 3000
+    namespace: common
+    group: DEFAULT_GROUP
+    enable-remote-sync-config: true
+    type: yaml
+    data-ids: common-server,common-datasource,common-global-properties,common-mybatis-plus,common-redis,common-mail,common-rocketmq,common-xxl-job,common-jwt,common-ids,common-fdfs
+    ext-config:
+      - namespace: group-purchase
+        dataId: property_source
+        group: dev
+        type: properties
+        auto-refresh: true

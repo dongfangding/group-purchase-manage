@@ -1,0 +1,32 @@
+# 在spring-boot应用中（注意不是spring-cloud），开启这个可以让spring-boot应用具备在启动前就将外部配置加载到spring环境中的能力， 即可通过外部配置各种数据源了
+nacos:
+  config:
+    server-addr: ${nocos_server}
+    username: ${nacos_username}
+    password: ${nacos_password}
+    bootstrap:
+      enable: true
+
+server:
+  port: 8081
+  tomcat:
+    max-connections: 10000
+    threads:
+      max: 300
+      min-spare: 20
+    processor-cache: 300
+  servlet:
+    context-path: /group-purchase
+
+spring:
+  lifecycle:
+    timeout-per-shutdown-phase: 60
+  profiles:
+    active: dev
+  application:
+    name: group-purchase
+
+logging:
+  level:
+    root: info
+    com.ddf.boot.common.log.AccessLogAspect: debug
