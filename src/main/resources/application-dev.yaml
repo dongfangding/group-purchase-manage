@@ -9,7 +9,7 @@ nacos:
     data-ids: common-server,common-datasource,common-global-properties,common-mybatis-plus,common-redis,common-mail,common-rocketmq,common-xxl-job,common-jwt,common-ids,common-fdfs
     ext-config:
       - namespace: group-purchase-manager
-        dataId: property_source
+        dataId: property-source
         group: dev
         type: properties
         auto-refresh: true
