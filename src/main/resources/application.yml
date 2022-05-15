@@ -6,7 +6,6 @@ nacos:
     password: ${nacos_password}
     bootstrap:
       enable: true
-
 server:
   port: 8081
   tomcat:
@@ -16,7 +15,7 @@ server:
       min-spare: 20
     processor-cache: 300
   servlet:
-    context-path: /group-purchase
+    context-path: /group-purchase-manager
 
 spring:
   lifecycle:
@@ -24,7 +23,7 @@ spring:
   profiles:
     active: dev
   application:
-    name: group-purchase
+    name: group-purchase-manager
 
 logging:
   level:

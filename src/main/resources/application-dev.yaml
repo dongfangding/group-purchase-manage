@@ -8,7 +8,7 @@ nacos:
     type: yaml
     data-ids: common-server,common-datasource,common-global-properties,common-mybatis-plus,common-redis,common-mail,common-rocketmq,common-xxl-job,common-jwt,common-ids,common-fdfs
     ext-config:
-      - namespace: group-purchase
+      - namespace: group-purchase-manager
         dataId: property_source
         group: dev
         type: properties

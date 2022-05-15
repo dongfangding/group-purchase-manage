@@ -20,6 +20,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @EnableJwt()
 @EnableLogAspect(slowTime = 3000)
 @EnableRepeatable(globalValidator = RedisRepeatableValidator.BEAN_NAME)
+//@EnableNacosConfig
 public class GroupPurchaseApplication {
     public static void main(String[] args) {
         SpringApplication.run(GroupPurchaseApplication.class);
