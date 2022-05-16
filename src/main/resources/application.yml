@@ -8,7 +8,7 @@ nacos:
       enable: true
     context-path: nacos
 server:
-  port: 8081
+  port: 8083
   tomcat:
     max-connections: 10000
     threads:

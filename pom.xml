@@ -48,6 +48,12 @@
 
         <dependency>
             <groupId>com.ddf.common</groupId>
+            <artifactId>ddf-common-third-party</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.ddf.common</groupId>
             <artifactId>ddf-common-mybatis-plus</artifactId>
             <version>${project.parent.version}</version>
         </dependency>

@@ -6,7 +6,7 @@ nacos:
     group: DEFAULT_GROUP
     enable-remote-sync-config: true
     type: yaml
-    data-ids: common-server,common-datasource,common-global-properties,common-mybatis-plus,common-redis,common-mail,common-rocketmq,common-xxl-job,common-jwt,common-ids,common-fdfs
+    data-ids: common-server,common-datasource,common-global-properties,common-mybatis-plus,common-redis,common-mail,common-rocketmq,common-xxl-job,common-jwt,common-ids,common-fdfs,common-ext-sms,common-ext-oss
     ext-config:
       - namespace: group-purchase-manager
         dataId: property-source
