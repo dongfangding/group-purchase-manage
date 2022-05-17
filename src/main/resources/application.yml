@@ -25,6 +25,10 @@ spring:
     active: dev
   application:
     name: group-purchase-manager
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 50MB
 
 logging:
   level:

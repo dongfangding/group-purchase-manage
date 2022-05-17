@@ -5,13 +5,17 @@ import com.ddf.common.captcha.model.CaptchaResult;
 import com.ddf.group.purchase.helper.CommonHelper;
 import com.ddf.group.purchase.model.request.SendSmsCodeRequest;
 import com.ddf.group.purchase.model.response.CaptchaResponse;
+import comm.ddf.common.vps.dto.UploadResponse;
+import comm.ddf.common.vps.helper.VpsClient;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * <p>通用工具类</p >
@@ -27,6 +31,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class CommonController {
 
     private final CommonHelper commonHelper;
+    private final VpsClient vpsClient;
 
     /**
      * 生成验证码
@@ -55,5 +60,18 @@ public class CommonController {
     @PostMapping("/sendSmsCode")
     public void sendSmsCode(@RequestBody @Validated SendSmsCodeRequest sendSmsCodeRequest) {
         commonHelper.sendSmsCode(sendSmsCodeRequest);
+    }
+
+    /**
+     * 上传文件并生成缩略图
+     * 可以使用postman测试，方法选择post, body参数选择form-data, 新增一个key, 属性名为file, 在这个属性名
+     * 后面有一个类型， 默认是text, 选择为file, 这个时候value就变成了选择文件了，选择好文件之后就可以上传了
+     *
+     * @param multipartFile
+     * @return
+     */
+    @PostMapping("uploadFile")
+    public UploadResponse uploadFile(@RequestParam("file") MultipartFile multipartFile) {
+        return vpsClient.uploadFile(multipartFile);
     }
 }
