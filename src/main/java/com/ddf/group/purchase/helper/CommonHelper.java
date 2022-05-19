@@ -1,9 +1,9 @@
 package com.ddf.group.purchase.helper;
 
-import com.aliyuncs.CommonResponse;
 import com.ddf.boot.common.core.util.PreconditionUtil;
-import com.ddf.boot.common.ext.sms.domain.AliYunSmsRequest;
-import com.ddf.boot.common.ext.sms.helper.AliYunSmsHelper;
+import com.ddf.boot.common.ext.sms.SmsApi;
+import com.ddf.boot.common.ext.sms.model.SmsSendRequest;
+import com.ddf.boot.common.ext.sms.model.SmsSendResponse;
 import com.ddf.common.captcha.helper.CaptchaHelper;
 import com.ddf.common.captcha.model.CaptchaRequest;
 import com.ddf.common.captcha.model.CaptchaResult;
@@ -23,7 +23,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor(onConstructor_={@Autowired})
 public class CommonHelper {
 
-    private final AliYunSmsHelper aliYunSmsHelper;
+    private final SmsApi aliYunSmsApiImpl;
     private final CaptchaHelper captchaHelper;
 
     /**
@@ -41,13 +41,11 @@ public class CommonHelper {
      *
      * @param sendSmsCodeRequest
      */
-    public void sendSmsCode(SendSmsCodeRequest sendSmsCodeRequest) {
+    public SmsSendResponse sendSmsCode(SendSmsCodeRequest sendSmsCodeRequest) {
         PreconditionUtil.requiredParamCheck(sendSmsCodeRequest);
-        final AliYunSmsRequest request = new AliYunSmsRequest();
+        final SmsSendRequest request = new SmsSendRequest();
         request.setPhoneNumbers(sendSmsCodeRequest.getMobile());
-        request.setUseRandomCode(true);
-        final CommonResponse response = aliYunSmsHelper.sendSms(request);
-        System.out.println("response = " + response);
+        return aliYunSmsApiImpl.send(request);
     }
 
 }

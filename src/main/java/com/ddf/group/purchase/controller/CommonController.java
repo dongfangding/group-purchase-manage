@@ -7,6 +7,7 @@ import com.ddf.group.purchase.model.request.SendSmsCodeRequest;
 import com.ddf.group.purchase.model.response.CaptchaResponse;
 import comm.ddf.common.vps.dto.UploadResponse;
 import comm.ddf.common.vps.helper.VpsClient;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -33,13 +34,14 @@ public class CommonController {
     private final CommonHelper commonHelper;
     private final VpsClient vpsClient;
 
+
     /**
      * 生成验证码
      *
      * @param request
      * @return
      */
-    @PostMapping("/generateCaptcha")
+    @PostMapping("sysUser/generateCaptcha")
     public CaptchaResponse generateCaptcha(@RequestBody @Validated CaptchaRequest request) {
         final CaptchaResult generate = commonHelper.generateCaptcha(request);
         final CaptchaResponse response = new CaptchaResponse();
@@ -73,5 +75,18 @@ public class CommonController {
     @PostMapping("uploadFile")
     public UploadResponse uploadFile(@RequestParam("file") MultipartFile multipartFile) {
         return vpsClient.uploadFile(multipartFile);
+    }
+
+    /**
+     * 批量上传文件并生成缩略图
+     * 可以使用postman测试，方法选择post, body参数选择form-data, 新增一个key, 属性名为file, 在这个属性名
+     * 后面有一个类型， 默认是text, 选择为file, 这个时候value就变成了选择文件了，选择好文件之后就可以上传了
+     *
+     * @param multipartFile
+     * @return
+     */
+    @PostMapping("batchUploadFile")
+    public List<UploadResponse> uploadFile(@RequestParam("file") MultipartFile[] multipartFile) {
+        return vpsClient.batchUploadFile(multipartFile);
     }
 }
