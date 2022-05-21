@@ -1,5 +1,6 @@
 package com.ddf.group.purchase.model.response;
 
+import java.io.Serializable;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
@@ -11,7 +12,9 @@ import lombok.experimental.Accessors;
  */
 @Data
 @Accessors(chain = true)
-public class CaptchaResponse {
+public class CaptchaResponse implements Serializable {
+
+    private static final long serialVersionUID = 1516322558409231083L;
 
     /**
      * 图片的宽度

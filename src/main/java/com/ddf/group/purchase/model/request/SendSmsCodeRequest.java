@@ -24,15 +24,4 @@ public class SendSmsCodeRequest implements Serializable {
     @Mobile
     private String mobile;
 
-    /**
-     * 验证码接口返回的tokenId
-     */
-    @NotBlank(message = "验证码随机数不能为空")
-    private String tokenId;
-
-    /**
-     * 验证码
-     */
-    @NotBlank(message = "验证码不能为空")
-    private String verifyCode;
 }

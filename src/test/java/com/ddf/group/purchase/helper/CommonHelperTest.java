@@ -25,8 +25,6 @@ public class CommonHelperTest {
     public void testSmsCode() {
         final SendSmsCodeRequest request = new SendSmsCodeRequest();
         request.setMobile("18356784598");
-        request.setTokenId("");
-        request.setVerifyCode("");
         commonHelper.sendSmsCode(request);
     }
 }

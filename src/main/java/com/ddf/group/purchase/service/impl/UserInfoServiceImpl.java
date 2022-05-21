@@ -1,5 +1,6 @@
 package com.ddf.group.purchase.service.impl;
 
+import com.ddf.boot.common.core.encode.BCryptPasswordEncoder;
 import com.ddf.boot.common.core.util.PreconditionUtil;
 import com.ddf.group.purchase.mapper.ext.UserInfoExtMapper;
 import com.ddf.group.purchase.model.request.UserRegistryRequest;
@@ -24,6 +25,7 @@ public class UserInfoServiceImpl implements UserInfoService {
 
     private final UserInfoExtMapper userInfoExtMapper;
     private final UserInfoRepository userInfoRepository;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     /**
      * 注册
@@ -33,5 +35,7 @@ public class UserInfoServiceImpl implements UserInfoService {
     @Override
     public void registry(UserRegistryRequest request) {
         PreconditionUtil.requiredParamCheck(!userInfoRepository.exitsByMobile(request.getMobile()));
+
+
     }
 }

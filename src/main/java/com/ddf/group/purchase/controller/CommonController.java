@@ -4,6 +4,7 @@ import com.ddf.common.captcha.model.CaptchaRequest;
 import com.ddf.common.captcha.model.CaptchaResult;
 import com.ddf.group.purchase.helper.CommonHelper;
 import com.ddf.group.purchase.model.request.SendSmsCodeRequest;
+import com.ddf.group.purchase.model.response.ApplicationSmsSendResponse;
 import com.ddf.group.purchase.model.response.CaptchaResponse;
 import comm.ddf.common.vps.dto.UploadResponse;
 import comm.ddf.common.vps.helper.VpsClient;
@@ -60,8 +61,8 @@ public class CommonController {
      * @return
      */
     @PostMapping("/sendSmsCode")
-    public void sendSmsCode(@RequestBody @Validated SendSmsCodeRequest sendSmsCodeRequest) {
-        commonHelper.sendSmsCode(sendSmsCodeRequest);
+    public ApplicationSmsSendResponse sendSmsCode(@RequestBody @Validated SendSmsCodeRequest sendSmsCodeRequest) {
+        return commonHelper.sendAndLoadSmsCode(sendSmsCodeRequest);
     }
 
     /**
