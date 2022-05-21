@@ -3,7 +3,7 @@ package com.ddf.group.purchase.service;
 import com.ddf.group.purchase.model.request.UserRegistryRequest;
 
 /**
- * <p>description</p >
+ * <p>用户信息</p >
  *
  * @author Snowball
  * @version 1.0
