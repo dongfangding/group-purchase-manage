@@ -1,0 +1,49 @@
+# 发送注册验证码
+POST http://localhost:8083/group-purchase-manager/auth/sendRegisterSmsCode
+Content-Type: application/json
+
+{
+  "mobile": "18356784598"
+}
+
+###
+# 注册
+POST http://localhost:8083/group-purchase-manager/auth/registry
+Accept: application/json
+Content-Type: application/json
+
+{
+  "communityId": 1,
+  "buildingNo": 295,
+  "roomNo": 909,
+  "mobile": "18356784598",
+  "tokenId": "2kdxvc2s5fjn0hy4",
+  "mobileCode": "374231",
+  "password": "18356784598"
+}
+
+###
+# 密码登录
+POST http://localhost:8083/group-purchase-manager/auth/login
+Accept: application/json
+Content-Type: application/json
+
+{
+  "loginType": "PASSWORD",
+  "loginIdentity": "18356784598",
+  "credential": "18356784598"
+}
+
+###
+# 获取当前用户认证信息
+GET http://localhost:8083/group-purchase-manager/auth/currentUser
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer $2a$10$P7gYahUdNI4n0JppGRs0g.JRfG0KjuibIYwuBAjmgCVZ/M4puDVfO<=>efe83ec743690a1c463c6b551bbe0d09770ca3d44d43ba48f249c85b2fff5040fd37807c6dd9d97b3b4388033e4ff5ce4755413c26d3e3ba145c8a26b95358fe413ef8f2afc13aeee167a4b2e1bf3e37de5624c710ffe837171b267a56a2465c8a1f95e25dc7e985d1e5f38417591c3f33b2c2cbb5a7f335694dd19faee1b4826b861631c7641e3281b503eda8a070127ae8c3a8840fcfe525b2755e46a78fa7352c68f4acff03b6c35e834814d48eb9
+
+{
+  "loginType": "PASSWORD",
+  "loginIdentity": "18356784598",
+  "credential": "18356784598"
+}
+

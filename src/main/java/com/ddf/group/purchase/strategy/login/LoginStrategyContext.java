@@ -5,8 +5,8 @@ import com.ddf.boot.common.authentication.model.AuthenticateToken;
 import com.ddf.boot.common.authentication.model.UserClaim;
 import com.ddf.boot.common.authentication.util.TokenUtil;
 import com.ddf.boot.common.core.util.PreconditionUtil;
-import com.ddf.boot.common.core.util.WebUtil;
 import com.ddf.group.purchase.constants.LoginTypeEnum;
+import com.ddf.group.purchase.converter.UserConvert;
 import com.ddf.group.purchase.exception.ExceptionCode;
 import com.ddf.group.purchase.model.entity.UserInfo;
 import com.ddf.group.purchase.model.request.user.LoginRequest;
@@ -65,15 +65,7 @@ public class LoginStrategyContext implements ApplicationContextAware {
         final UserInfo userInfo = loginStrategy.login(loginRequest);
 
         // 生成token
-        final UserClaim userClaim = UserClaim.builder()
-                .userId(userInfo.getId().toString())
-                .username(userInfo.getMobile())
-                .credit(WebUtil.getUserAgent())
-                .lastModifyPasswordTime(null)
-                .lastLoginTime(null)
-                .remarks(null)
-                .detail(null)
-                .build();
+        final UserClaim userClaim = UserConvert.INSTANCE.convert(userInfo);
         final AuthenticateToken authenticateToken = TokenUtil.createToken(userClaim);
         return UserLoginResponse.builder()
                 .token(authenticateToken.getToken())

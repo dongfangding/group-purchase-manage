@@ -1,5 +1,7 @@
 package com.ddf.group.purchase.controller;
 
+import com.ddf.boot.common.authentication.model.UserClaim;
+import com.ddf.boot.common.authentication.util.UserContextUtil;
 import com.ddf.group.purchase.helper.CommonHelper;
 import com.ddf.group.purchase.model.request.common.SendSmsCodeRequest;
 import com.ddf.group.purchase.model.request.user.LoginRequest;
@@ -11,6 +13,7 @@ import com.ddf.group.purchase.strategy.login.LoginStrategyContext;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -64,4 +67,13 @@ public class AuthController {
         return loginStrategyContext.login(request);
     }
 
+    /**
+     * 获取当前用户认证信息
+     *
+     * @return
+     */
+    @GetMapping("currentUser")
+    public UserClaim currentUser() {
+        return UserContextUtil.getUserClaim();
+    }
 }

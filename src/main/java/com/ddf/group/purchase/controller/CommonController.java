@@ -56,6 +56,17 @@ public class CommonController {
     }
 
     /**
+     * 发送注册短信验证码, 会校验手机号是否已被注册，已被注册，无法发送
+     *
+     * @param sendSmsCodeRequest
+     * @return
+     */
+    @PostMapping("/sendRegisterSmsCode")
+    public ApplicationSmsSendResponse sendRegisterSmsCode(@RequestBody @Validated SendSmsCodeRequest sendSmsCodeRequest) {
+        return commonHelper.sendAndLoadRegisterSmsCodeWithLimit(sendSmsCodeRequest);
+    }
+
+    /**
      * 发送短信验证码, 不会校验手机号是否使用
      *
      * @param sendSmsCodeRequest

@@ -28,11 +28,11 @@ public interface UserConvert {
         return UserClaim.builder()
                 .userId(userInfo.getId().toString())
                 .username(userInfo.getMobile())
-                .credit(WebUtil.getHost())
+                .credit(WebUtil.getUserAgent())
                 .lastModifyPasswordTime(null)
                 .lastLoginTime(null)
                 .remarks(null)
-                .detail(WebUtil.getUserAgent())
+                .detail(null)
                 .build();
     }
 }

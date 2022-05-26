@@ -55,7 +55,7 @@ public class UserInfoServiceImpl implements UserInfoService {
         userInfo.setBuildingNo(request.getBuildingNo());
         userInfo.setRoomNo(request.getRoomNo());
         userInfo.setMobile(request.getMobile());
-        userInfo.setPassword(bCryptPasswordEncoder.encode(request.getMobile()));
+        userInfo.setPassword(bCryptPasswordEncoder.encode(request.getPassword()));
         userInfo.setCtime(DateUtils.currentTimeSeconds());
         userInfoExtMapper.insert(userInfo);
     }
