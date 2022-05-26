@@ -1,4 +1,4 @@
-package com.ddf.group.purchase.model.request;
+package com.ddf.group.purchase.model.request.user;
 
 import com.ddf.boot.common.core.validator.constraint.Mobile;
 import java.io.Serializable;
@@ -42,6 +42,12 @@ public class UserRegistryRequest implements Serializable {
     @NotBlank(message = "手机号不能为空")
     @Mobile
     private String mobile;
+
+    /**
+     * 表单id， 回传这个服务端来验证验证码
+     */
+    @NotBlank(message = "手机验证码tokenId不能为空")
+    private String tokenId;
 
     /**
      * 手机验证码

@@ -1,11 +1,13 @@
 package com.ddf.group.purchase.controller;
 
+import com.ddf.boot.common.limit.ratelimit.annotation.RateLimit;
+import com.ddf.boot.common.limit.ratelimit.keygenerator.IpRateLimitKeyGenerator;
 import com.ddf.common.captcha.model.CaptchaRequest;
 import com.ddf.common.captcha.model.CaptchaResult;
 import com.ddf.group.purchase.helper.CommonHelper;
-import com.ddf.group.purchase.model.request.SendSmsCodeRequest;
-import com.ddf.group.purchase.model.response.ApplicationSmsSendResponse;
-import com.ddf.group.purchase.model.response.CaptchaResponse;
+import com.ddf.group.purchase.model.request.common.SendSmsCodeRequest;
+import com.ddf.group.purchase.model.response.common.ApplicationSmsSendResponse;
+import com.ddf.group.purchase.model.response.common.CaptchaResponse;
 import comm.ddf.common.vps.dto.UploadResponse;
 import comm.ddf.common.vps.helper.VpsClient;
 import java.util.List;
@@ -42,7 +44,8 @@ public class CommonController {
      * @param request
      * @return
      */
-    @PostMapping("sysUser/generateCaptcha")
+    @PostMapping("/generateCaptcha")
+    @RateLimit(keyGenerator = IpRateLimitKeyGenerator.BEAN_NAME, max = 1, rate = 1)
     public CaptchaResponse generateCaptcha(@RequestBody @Validated CaptchaRequest request) {
         final CaptchaResult generate = commonHelper.generateCaptcha(request);
         final CaptchaResponse response = new CaptchaResponse();

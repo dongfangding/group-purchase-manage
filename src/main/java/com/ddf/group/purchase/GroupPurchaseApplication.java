@@ -1,6 +1,8 @@
 package com.ddf.group.purchase;
 
+import com.ddf.boot.common.authentication.annotation.EnableAuthenticate;
 import com.ddf.boot.common.core.logaccess.EnableLogAspect;
+import com.ddf.boot.common.limit.ratelimit.annotation.EnableRateLimit;
 import com.ddf.boot.common.limit.repeatable.annotation.EnableRepeatable;
 import com.ddf.boot.common.limit.repeatable.validator.RedisRepeatableValidator;
 import org.mybatis.spring.annotation.MapperScan;
@@ -16,8 +18,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  */
 @SpringBootApplication
 @MapperScan(basePackages = {"com.ddf.group.purchase.mapper"})
-//@EnableJwt()
+@EnableAuthenticate
 @EnableLogAspect(slowTime = 3000)
+@EnableRateLimit()
 @EnableRepeatable(globalValidator = RedisRepeatableValidator.BEAN_NAME)
 //@EnableNacosConfig
 public class GroupPurchaseApplication {

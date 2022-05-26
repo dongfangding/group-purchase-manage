@@ -12,17 +12,17 @@ import lombok.Data;
 *
 * @author Snowball
 * @version 1.0
-* @date 2022/05/15 20:49
+* @date 2022/05/23 23:11
 */
-/**
-    * 团购主表信息
-    */
-@TableName(value = "group_purchase_info")
-@Data
-public class GroupPurchaseInfo implements Serializable {
-    private static final long serialVersionUID = 698403416499624182L;
 
-    @TableId(value = "id", type = IdType.AUTO)
+
+/**
+ * 团购主表信息
+ */
+@Data
+@TableName(value = "group_purchase_info")
+public class GroupPurchaseInfo implements Serializable {
+    @TableId(value = "id", type = IdType.INPUT)
     private Long id;
 
     /**
@@ -39,10 +39,10 @@ public class GroupPurchaseInfo implements Serializable {
 
     /**
      * 状态
-1. 已创建
-2. 已到货
-3. 已完成
-4. 已取消
+     * 1. 已创建
+     * 2. 已到货
+     * 3. 已完成
+     * 4. 已取消
      */
     @TableField(value = "`status`")
     private Integer status;
@@ -57,11 +57,27 @@ public class GroupPurchaseInfo implements Serializable {
      * 创建时间秒时间戳
      */
     @TableField(value = "ctime")
-    private Integer ctime;
+    private Long ctime;
 
     /**
      * 更新时间秒时间戳
      */
     @TableField(value = "mtime")
-    private Integer mtime;
+    private Long mtime;
+
+    private static final long serialVersionUID = 1L;
+
+    public static final String COL_ID = "id";
+
+    public static final String COL_NAME = "name";
+
+    public static final String COL_GROUP_MASTER_UID = "group_master_uid";
+
+    public static final String COL_STATUS = "status";
+
+    public static final String COL_REMARK = "remark";
+
+    public static final String COL_CTIME = "ctime";
+
+    public static final String COL_MTIME = "mtime";
 }

@@ -1,4 +1,4 @@
-package com.ddf.group.purchase.model.request;
+package com.ddf.group.purchase.model.request.common;
 
 import com.ddf.boot.common.core.validator.constraint.Mobile;
 import java.io.Serializable;

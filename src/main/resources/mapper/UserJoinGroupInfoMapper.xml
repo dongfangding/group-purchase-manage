@@ -7,7 +7,7 @@
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="group_purchase_id" jdbcType="BIGINT" property="groupPurchaseId" />
     <result column="join_uid" jdbcType="BIGINT" property="joinUid" />
-    <result column="ctime" jdbcType="INTEGER" property="ctime" />
+    <result column="ctime" jdbcType="BIGINT" property="ctime" />
     <result column="subscribe_progress" jdbcType="BIT" property="subscribeProgress" />
   </resultMap>
   <sql id="Base_Column_List">

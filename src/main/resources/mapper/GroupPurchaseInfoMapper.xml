@@ -9,8 +9,8 @@
     <result column="group_master_uid" jdbcType="BIGINT" property="groupMasterUid" />
     <result column="status" jdbcType="INTEGER" property="status" />
     <result column="remark" jdbcType="VARCHAR" property="remark" />
-    <result column="ctime" jdbcType="INTEGER" property="ctime" />
-    <result column="mtime" jdbcType="INTEGER" property="mtime" />
+    <result column="ctime" jdbcType="BIGINT" property="ctime" />
+    <result column="mtime" jdbcType="BIGINT" property="mtime" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--@mbg.generated-->

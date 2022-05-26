@@ -12,18 +12,17 @@ import lombok.Data;
 *
 * @author Snowball
 * @version 1.0
-* @date 2022/05/15 20:49
+* @date 2022/05/23 23:11
 */
+
+
 /**
-    * 注册用户信息
-    */
-@TableName(value = "user_info")
+ * 注册用户信息
+ */
 @Data
+@TableName(value = "user_info")
 public class UserInfo implements Serializable {
-
-    private static final long serialVersionUID = -954717757566835209L;
-
-    @TableId(value = "id", type = IdType.AUTO)
+    @TableId(value = "id", type = IdType.INPUT)
     private Long id;
 
     /**
@@ -84,5 +83,29 @@ public class UserInfo implements Serializable {
      * 注册秒时间戳
      */
     @TableField(value = "ctime")
-    private Integer ctime;
+    private Long ctime;
+
+    private static final long serialVersionUID = 1L;
+
+    public static final String COL_ID = "id";
+
+    public static final String COL_COMMUNITY_ID = "community_id";
+
+    public static final String COL_BUILDING_NO = "building_no";
+
+    public static final String COL_ROOM_NO = "room_no";
+
+    public static final String COL_WX_ID = "wx_id";
+
+    public static final String COL_WX_BUSINESS_CARD_QRCODE_URL = "wx_business_card_qrcode_url";
+
+    public static final String COL_WX_COLLECTION_MONEY_QRCODE_URL = "wx_collection_money_qrcode_url";
+
+    public static final String COL_EMAIL = "email";
+
+    public static final String COL_MOBILE = "mobile";
+
+    public static final String COL_PASSWORD = "password";
+
+    public static final String COL_CTIME = "ctime";
 }

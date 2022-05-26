@@ -14,7 +14,10 @@ public enum ExceptionCode implements BaseCallbackCode {
      * 异常定义
      *
      */
-    MOBILE_IS_USED("mobile_is_used", "手机号已被使用")
+    MOBILE_IS_USED("mobile_is_used", "手机号已被使用"),
+    VERIFY_CODE_EXPIRED("verify_code_expired", "验证码已过期"),
+    VERIFY_CODE_NOT_MATCH("verify_code_not_match", "验证码不匹配")
+
     ;
 
     private final String code;

@@ -14,7 +14,7 @@
     <result column="email" jdbcType="VARCHAR" property="email" />
     <result column="mobile" jdbcType="VARCHAR" property="mobile" />
     <result column="password" jdbcType="VARCHAR" property="password" />
-    <result column="ctime" jdbcType="INTEGER" property="ctime" />
+    <result column="ctime" jdbcType="BIGINT" property="ctime" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--@mbg.generated-->

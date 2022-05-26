@@ -1,6 +1,6 @@
 package com.ddf.group.purchase.helper;
 
-import com.ddf.group.purchase.model.request.SendSmsCodeRequest;
+import com.ddf.group.purchase.model.request.common.SendSmsCodeRequest;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,4 +1,4 @@
-package com.ddf.group.purchase.model.response;
+package com.ddf.group.purchase.model.response.common;
 
 import java.io.Serializable;
 import lombok.Data;

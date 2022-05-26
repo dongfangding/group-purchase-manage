@@ -1,6 +1,6 @@
 package com.ddf.group.purchase.service;
 
-import com.ddf.group.purchase.model.request.UserRegistryRequest;
+import com.ddf.group.purchase.model.request.user.UserRegistryRequest;
 
 /**
  * <p>用户信息</p >
