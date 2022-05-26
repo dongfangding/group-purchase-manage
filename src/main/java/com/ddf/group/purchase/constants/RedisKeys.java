@@ -19,6 +19,12 @@ public interface RedisKeys {
      */
     String SMS_CODE_KEY = "sms_code:%s:%s";
 
+    /**
+     * 短信验证码限流key
+     * %s 限流的目标关键字， 如用户uid, 或者ip，大部分为uid
+     */
+    String SMS_RATE_LIMIT_KEY = "sms_code:rate_limit:%s";
+
 
     /**
      * 获取短信验证码key
@@ -31,5 +37,14 @@ public interface RedisKeys {
         return String.format(SMS_CODE_KEY, mobile, random);
     }
 
+    /**
+     * 短信验证码限流key
+     *
+     * @param uid
+     * @return
+     */
+    static String getSmsRateLimitKey(String uid) {
+        return String.format(SMS_RATE_LIMIT_KEY, uid);
+    }
 
 }

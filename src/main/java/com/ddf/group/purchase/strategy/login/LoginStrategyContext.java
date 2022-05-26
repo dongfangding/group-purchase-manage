@@ -1,11 +1,19 @@
 package com.ddf.group.purchase.strategy.login;
 
 import cn.hutool.core.collection.CollUtil;
+import com.ddf.boot.common.authentication.model.AuthenticateToken;
+import com.ddf.boot.common.authentication.model.UserClaim;
+import com.ddf.boot.common.authentication.util.TokenUtil;
+import com.ddf.boot.common.core.util.PreconditionUtil;
+import com.ddf.boot.common.core.util.WebUtil;
 import com.ddf.group.purchase.constants.LoginTypeEnum;
+import com.ddf.group.purchase.exception.ExceptionCode;
+import com.ddf.group.purchase.model.entity.UserInfo;
 import com.ddf.group.purchase.model.request.user.LoginRequest;
 import com.ddf.group.purchase.model.response.UserLoginResponse;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import javax.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -50,7 +58,26 @@ public class LoginStrategyContext implements ApplicationContextAware {
      * @return
      */
     public UserLoginResponse login(LoginRequest loginRequest) {
-        return null;
+        final LoginTypeEnum type = loginRequest.getLoginType();
+        final LoginStrategy loginStrategy = loginStrategyMap.get(type);
+        PreconditionUtil.checkArgument(Objects.nonNull(loginStrategy), ExceptionCode.LOGIN_STRATEGY_MAPPING_ERROR);
+        // 校验通过后返回的用户信息
+        final UserInfo userInfo = loginStrategy.login(loginRequest);
+
+        // 生成token
+        final UserClaim userClaim = UserClaim.builder()
+                .userId(userInfo.getId().toString())
+                .username(userInfo.getMobile())
+                .credit(WebUtil.getUserAgent())
+                .lastModifyPasswordTime(null)
+                .lastLoginTime(null)
+                .remarks(null)
+                .detail(null)
+                .build();
+        final AuthenticateToken authenticateToken = TokenUtil.createToken(userClaim);
+        return UserLoginResponse.builder()
+                .token(authenticateToken.getToken())
+                .build();
     }
 
     @Override

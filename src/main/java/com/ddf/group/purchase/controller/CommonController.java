@@ -1,7 +1,5 @@
 package com.ddf.group.purchase.controller;
 
-import com.ddf.boot.common.limit.ratelimit.annotation.RateLimit;
-import com.ddf.boot.common.limit.ratelimit.keygenerator.IpRateLimitKeyGenerator;
 import com.ddf.common.captcha.model.CaptchaRequest;
 import com.ddf.common.captcha.model.CaptchaResult;
 import com.ddf.group.purchase.helper.CommonHelper;
@@ -45,7 +43,6 @@ public class CommonController {
      * @return
      */
     @PostMapping("/generateCaptcha")
-    @RateLimit(keyGenerator = IpRateLimitKeyGenerator.BEAN_NAME, max = 1, rate = 1)
     public CaptchaResponse generateCaptcha(@RequestBody @Validated CaptchaRequest request) {
         final CaptchaResult generate = commonHelper.generateCaptcha(request);
         final CaptchaResponse response = new CaptchaResponse();
@@ -55,17 +52,18 @@ public class CommonController {
         response.setBase64(generate.getImageBase64());
         response.setPrefix(generate.getPrefix());
         return response;
+
     }
 
     /**
-     * 发送短信验证码
+     * 发送短信验证码, 不会校验手机号是否使用
      *
      * @param sendSmsCodeRequest
      * @return
      */
     @PostMapping("/sendSmsCode")
     public ApplicationSmsSendResponse sendSmsCode(@RequestBody @Validated SendSmsCodeRequest sendSmsCodeRequest) {
-        return commonHelper.sendAndLoadSmsCode(sendSmsCodeRequest);
+        return commonHelper.sendAndLoadSmsCodeWithLimit(sendSmsCodeRequest);
     }
 
     /**

@@ -3,6 +3,7 @@ package com.ddf.group.purchase.service.impl;
 import com.ddf.boot.common.core.encode.BCryptPasswordEncoder;
 import com.ddf.boot.common.core.util.DateUtils;
 import com.ddf.boot.common.core.util.PreconditionUtil;
+import com.ddf.group.purchase.exception.ExceptionCode;
 import com.ddf.group.purchase.helper.CommonHelper;
 import com.ddf.group.purchase.mapper.ext.UserInfoExtMapper;
 import com.ddf.group.purchase.model.entity.UserInfo;
@@ -39,7 +40,8 @@ public class UserInfoServiceImpl implements UserInfoService {
      */
     @Override
     public void registry(UserRegistryRequest request) {
-        PreconditionUtil.requiredParamCheck(!userInfoRepository.exitsByMobile(request.getMobile()));
+        PreconditionUtil.checkArgument(!userInfoRepository.exitsByMobile(request.getMobile()),
+                ExceptionCode.MOBILE_IS_USED);
         // 短信验证码校验
         final SmsCodeVerifyRequest verifyRequest = SmsCodeVerifyRequest.builder()
                 .mobile(request.getMobile())

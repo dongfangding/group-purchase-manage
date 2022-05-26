@@ -1,8 +1,8 @@
 package com.ddf.group.purchase.strategy.login;
 
 import com.ddf.group.purchase.constants.LoginTypeEnum;
+import com.ddf.group.purchase.model.entity.UserInfo;
 import com.ddf.group.purchase.model.request.user.LoginRequest;
-import com.ddf.group.purchase.model.response.UserLoginResponse;
 
 /**
  * <p>登录策略接口</p >
@@ -25,6 +25,6 @@ public interface LoginStrategy {
      * @param loginRequest
      * @return
      */
-    UserLoginResponse login(LoginRequest loginRequest);
+    UserInfo login(LoginRequest loginRequest);
 
 }
