@@ -1,13 +1,16 @@
 package com.ddf.group.purchase.service.impl;
 
+import cn.hutool.core.util.StrUtil;
 import com.ddf.boot.common.core.encode.BCryptPasswordEncoder;
 import com.ddf.boot.common.core.util.DateUtils;
 import com.ddf.boot.common.core.util.PreconditionUtil;
 import com.ddf.group.purchase.exception.ExceptionCode;
 import com.ddf.group.purchase.helper.CommonHelper;
+import com.ddf.group.purchase.helper.UserHelper;
 import com.ddf.group.purchase.mapper.ext.UserInfoExtMapper;
 import com.ddf.group.purchase.model.entity.UserInfo;
 import com.ddf.group.purchase.model.request.common.SmsCodeVerifyRequest;
+import com.ddf.group.purchase.model.request.user.CompleteUserInfoRequest;
 import com.ddf.group.purchase.model.request.user.UserRegistryRequest;
 import com.ddf.group.purchase.repository.UserInfoRepository;
 import com.ddf.group.purchase.service.UserInfoService;
@@ -32,6 +35,7 @@ public class UserInfoServiceImpl implements UserInfoService {
     private final UserInfoRepository userInfoRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final CommonHelper commonHelper;
+    private final UserHelper userHelper;
 
     /**
      * 注册
@@ -46,7 +50,7 @@ public class UserInfoServiceImpl implements UserInfoService {
         final SmsCodeVerifyRequest verifyRequest = SmsCodeVerifyRequest.builder()
                 .mobile(request.getMobile())
                 .mobileCode(request.getMobileCode())
-                .uuid(request.getTokenId())
+                .uuid(request.getUuid())
                 .build();
         commonHelper.verifySmsCode(verifyRequest);
 
@@ -58,5 +62,17 @@ public class UserInfoServiceImpl implements UserInfoService {
         userInfo.setPassword(bCryptPasswordEncoder.encode(request.getPassword()));
         userInfo.setCtime(DateUtils.currentTimeSeconds());
         userInfoExtMapper.insert(userInfo);
+    }
+
+    @Override
+    public void completeInfo(CompleteUserInfoRequest request) {
+        final UserInfo userInfo = userHelper.currentUserInfo();
+        if (StrUtil.isNotBlank(request.getEmail())) {
+            userInfo.setEmail(request.getEmail());
+        }
+        if (StrUtil.isNotBlank(request.getAvatarUrl())) {
+
+        }
+        userInfoExtMapper.updateById(userInfo);
     }
 }

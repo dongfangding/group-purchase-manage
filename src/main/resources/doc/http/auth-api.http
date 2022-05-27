@@ -15,8 +15,8 @@ Content-Type: application/json
 {
   "mobile": "18356784598",
   "captchaVerifyRequest": {
-    "uuid": "025ff3fc601044fb871f6e7587754a80",
-    "verifyCode": "[{\"secretKey\":\"null\",\"x\":40,\"y\":56},{\"secretKey\":\"null\",\"x\":85,\"y\":65},{\"secretKey\":\"null\",\"x\":229,\"y\":119}]",
+    "uuid": "ca9f54317cff4cfd82826591aa489510",
+    "verifyCode": "[{\"secretKey\":\"null\",\"x\":46,\"y\":73},{\"secretKey\":\"null\",\"x\":159,\"y\":33},{\"secretKey\":\"null\",\"x\":202,\"y\":55}]",
     "captchaType": "CLICK_WORDS"
   }
 }
@@ -32,8 +32,8 @@ Content-Type: application/json
   "buildingNo": 295,
   "roomNo": 909,
   "mobile": "18356784598",
-  "uuid": "2kdxvc2s5fjn0hy4",
-  "mobileCode": "374231",
+  "uuid": "tsr339yxaj3hipeq",
+  "mobileCode": "150002",
   "password": "Aa&123456"
 }
 
@@ -54,13 +54,8 @@ Content-Type: application/json
 GET http://localhost:8083/group-purchase-manager/auth/currentUser
 Accept: application/json
 Content-Type: application/json
-Authorization: Bearer $2a$10$P7gYahUdNI4n0JppGRs0g.JRfG0KjuibIYwuBAjmgCVZ/M4puDVfO<=>efe83ec743690a1c463c6b551bbe0d09770ca3d44d43ba48f249c85b2fff5040fd37807c6dd9d97b3b4388033e4ff5ce4755413c26d3e3ba145c8a26b95358fe413ef8f2afc13aeee167a4b2e1bf3e37de5624c710ffe837171b267a56a2465c8a1f95e25dc7e985d1e5f38417591c3f33b2c2cbb5a7f335694dd19faee1b4826b861631c7641e3281b503eda8a070127ae8c3a8840fcfe525b2755e46a78fa7352c68f4acff03b6c35e834814d48eb9
+Authorization: Bearer $2a$10$Ao6vGUgY6DpzQq5GdhgvYei34R1jhFZGgvcj1Qmdaf0PcS9CQMJjq<=>a9948a6c682cdef5fd59c5a9c67c8d33770ca3d44d43ba48f249c85b2fff5040fd37807c6dd9d97b3b4388033e4ff5ce4755413c26d3e3ba145c8a26b95358fe413ef8f2afc13aeee167a4b2e1bf3e37de5624c710ffe837171b267a56a2465c8a1f95e25dc7e985d1e5f38417591c3f33b2c2cbb5a7f335694dd19faee1b4826b861631c7641e3281b503eda8a070127ae8c3a8840fcfe525b2755e46a78fa7352c68f4acff03b6c35e834814d48eb9
 
-{
-  "loginType": "PASSWORD",
-  "loginIdentity": "18356784598",
-  "credential": "18356784598"
-}
 
 ###
 # 使用短信验证码登录
@@ -71,6 +66,7 @@ Content-Type: application/json
 {
   "loginType": "SMS_CODE",
   "loginIdentity": "18356784598",
-  "credential": "18356784598"
+  "credential": "000000",
+  "uuid": "tsr339yxaj3hipeq"
 }
 
