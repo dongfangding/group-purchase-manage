@@ -16,5 +16,5 @@ public enum LoginTypeEnum {
     /**
      * 手机验证码登录
      */
-    MOBILE_CODE
+    SMS_CODE
 }

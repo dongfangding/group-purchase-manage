@@ -13,11 +13,13 @@ import com.ddf.boot.common.ext.sms.model.SmsSendRequest;
 import com.ddf.boot.common.ext.sms.model.SmsSendResponse;
 import com.ddf.boot.common.redis.helper.RedisTemplateHelper;
 import com.ddf.common.captcha.helper.CaptchaHelper;
-import com.ddf.common.captcha.model.CaptchaRequest;
-import com.ddf.common.captcha.model.CaptchaResult;
+import com.ddf.common.captcha.model.request.CaptchaCheckRequest;
+import com.ddf.common.captcha.model.request.CaptchaRequest;
+import com.ddf.common.captcha.model.response.ApplicationCaptchaResult;
 import com.ddf.group.purchase.constants.RedisKeyEnum;
 import com.ddf.group.purchase.constants.RedisKeys;
 import com.ddf.group.purchase.exception.ExceptionCode;
+import com.ddf.group.purchase.model.request.common.CaptchaVerifyRequest;
 import com.ddf.group.purchase.model.request.common.SendSmsCodeRequest;
 import com.ddf.group.purchase.model.request.common.SmsCodeVerifyRequest;
 import com.ddf.group.purchase.model.response.common.ApplicationSmsSendResponse;
@@ -53,8 +55,21 @@ public class CommonHelper {
      * @param request
      * @return
      */
-    public CaptchaResult generateCaptcha(CaptchaRequest request) {
-        return captchaHelper.generate(request);
+    public ApplicationCaptchaResult generateCaptcha(CaptchaRequest request) {
+        return ApplicationCaptchaResult.fromCaptchaResult(captchaHelper.generate(request));
+    }
+
+    /**
+     * 验证码校验
+     *
+     * @param request
+     */
+    public void verifyCaptcha(CaptchaVerifyRequest request) {
+        captchaHelper.check(CaptchaCheckRequest.builder()
+                .uuid(request.getUuid())
+                .captchaType(request.getCaptchaType())
+                .verifyCode(request.getVerifyCode())
+                .build());
     }
 
     /**
@@ -88,6 +103,8 @@ public class CommonHelper {
      * @return
      */
     public ApplicationSmsSendResponse sendAndLoadSmsCodeWithLimit(SendSmsCodeRequest sendSmsCodeRequest) {
+        // 验证码校验
+        verifyCaptcha(sendSmsCodeRequest.getCaptchaVerifyRequest());
         final String uid = StrUtil.blankToDefault(UserContextUtil.getUserId(), WebUtil.getHost());
         return redisTemplateHelper.sliderWindowAccessExpiredAtCheckException(RedisKeys.getSmsRateLimitKey(uid), 10, DateUtils.getEndOfDay(new Date()), () -> {
             return sendAndLoadSmsCode(sendSmsCodeRequest);
@@ -107,7 +124,7 @@ public class CommonHelper {
         stringRedisTemplate.opsForValue().set(RedisKeys.getSmsCodeKey(mobile, random), tempResponse.getRandomCode(),
                 RedisKeyEnum.SMS_CODE_KEY.getTimeout());
         return ApplicationSmsSendResponse.builder()
-                .tokenId(random)
+                .uuid(random)
                 .build();
     }
 
@@ -124,7 +141,7 @@ public class CommonHelper {
         if (Objects.isNull(authenticationProperties) || CollectionUtil.isEmpty(authenticationProperties.getBiz().getWhiteLoginNameList())
                 || !authenticationProperties.getBiz().getWhiteLoginNameList().contains(request.getMobile())) {
             // 校验验证码
-            final String verifyCode = stringRedisTemplate.opsForValue().get(RedisKeys.getSmsCodeKey(mobile, request.getTokenId()));
+            final String verifyCode = stringRedisTemplate.opsForValue().get(RedisKeys.getSmsCodeKey(mobile, request.getUuid()));
             PreconditionUtil.checkArgument(StrUtil.isNotBlank(verifyCode), ExceptionCode.VERIFY_CODE_EXPIRED);
             PreconditionUtil.checkArgument(StrUtil.equals(verifyCode, request.getMobileCode()), ExceptionCode.VERIFY_CODE_NOT_MATCH);
         }

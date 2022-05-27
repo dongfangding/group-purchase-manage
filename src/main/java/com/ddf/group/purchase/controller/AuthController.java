@@ -44,6 +44,7 @@ public class AuthController {
      */
     @PostMapping("sendRegisterSmsCode")
     public ApplicationSmsSendResponse sendRegisterSmsCode(@RequestBody @Validated SendSmsCodeRequest sendSmsCodeRequest) {
+
         return commonHelper.sendAndLoadRegisterSmsCodeWithLimit(sendSmsCodeRequest);
     }
 

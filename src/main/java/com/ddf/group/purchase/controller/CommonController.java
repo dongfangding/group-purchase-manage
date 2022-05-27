@@ -1,11 +1,10 @@
 package com.ddf.group.purchase.controller;
 
-import com.ddf.common.captcha.model.CaptchaRequest;
-import com.ddf.common.captcha.model.CaptchaResult;
+import com.ddf.common.captcha.model.request.CaptchaRequest;
+import com.ddf.common.captcha.model.response.ApplicationCaptchaResult;
 import com.ddf.group.purchase.helper.CommonHelper;
 import com.ddf.group.purchase.model.request.common.SendSmsCodeRequest;
 import com.ddf.group.purchase.model.response.common.ApplicationSmsSendResponse;
-import com.ddf.group.purchase.model.response.common.CaptchaResponse;
 import comm.ddf.common.vps.dto.UploadResponse;
 import comm.ddf.common.vps.helper.VpsClient;
 import java.util.List;
@@ -43,16 +42,8 @@ public class CommonController {
      * @return
      */
     @PostMapping("/generateCaptcha")
-    public CaptchaResponse generateCaptcha(@RequestBody @Validated CaptchaRequest request) {
-        final CaptchaResult generate = commonHelper.generateCaptcha(request);
-        final CaptchaResponse response = new CaptchaResponse();
-        response.setWidth(generate.getWidth());
-        response.setHeight(generate.getHeight());
-        response.setTokenId(generate.getToken());
-        response.setBase64(generate.getImageBase64());
-        response.setPrefix(generate.getPrefix());
-        return response;
-
+    public ApplicationCaptchaResult generateCaptcha(@RequestBody @Validated CaptchaRequest request) {
+        return commonHelper.generateCaptcha(request);
     }
 
     /**

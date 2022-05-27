@@ -46,7 +46,7 @@ public class UserInfoServiceImpl implements UserInfoService {
         final SmsCodeVerifyRequest verifyRequest = SmsCodeVerifyRequest.builder()
                 .mobile(request.getMobile())
                 .mobileCode(request.getMobileCode())
-                .tokenId(request.getTokenId())
+                .uuid(request.getTokenId())
                 .build();
         commonHelper.verifySmsCode(verifyRequest);
 

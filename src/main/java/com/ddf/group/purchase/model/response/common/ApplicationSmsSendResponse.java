@@ -24,5 +24,5 @@ public class ApplicationSmsSendResponse implements Serializable {
     /**
      * 表单id， 回传这个服务端来验证验证码
      */
-    private String tokenId;
+    private String uuid;
 }

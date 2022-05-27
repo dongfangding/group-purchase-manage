@@ -31,8 +31,8 @@ public class SmsCodeVerifyRequest implements Serializable {
     /**
      * 表单id， 回传这个服务端来验证验证码
      */
-    @NotBlank(message = "手机验证码tokenId不能为空")
-    private String tokenId;
+    @NotBlank(message = "手机验证码uuid不能为空")
+    private String uuid;
 
     /**
      * 手机验证码

@@ -2,7 +2,9 @@ package com.ddf.group.purchase.model.request.common;
 
 import com.ddf.boot.common.core.validator.constraint.Mobile;
 import java.io.Serializable;
+import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import lombok.Data;
 
 /**
@@ -23,5 +25,9 @@ public class SendSmsCodeRequest implements Serializable {
     @NotBlank(message = "手机号不能为空")
     @Mobile
     private String mobile;
+
+    @NotNull(message = "验证码对象不能为空")
+    @Valid
+    private CaptchaVerifyRequest captchaVerifyRequest;
 
 }
