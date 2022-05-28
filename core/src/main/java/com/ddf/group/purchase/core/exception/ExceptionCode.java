@@ -1,0 +1,64 @@
+package com.ddf.group.purchase.core.exception;
+
+import com.ddf.boot.common.core.exception200.BaseCallbackCode;
+
+/**
+ * <p>异常状态码</p >
+ *
+ * @author Snowball
+ * @version 1.0
+ * @date 2022/05/21 11:00
+ */
+public enum ExceptionCode implements BaseCallbackCode {
+    /**
+     * 异常定义
+     *
+     */
+    MOBILE_IS_USED("mobile_is_used", "手机号已被使用"),
+    VERIFY_CODE_EXPIRED("verify_code_expired", "验证码已过期"),
+    VERIFY_CODE_NOT_MATCH("verify_code_not_match", "验证码不匹配"),
+    SMS_CODE_LIMIT("SMS_CODE_LIMIT", "今日短信发送额度已用完，无法继续使用~"),
+    MOBILE_NOT_REGISTERED("mobile_not_registered", "手机号尚未注册~"),
+    LOGIN_PASSWORD_ERROR("login_password_error", "密码不匹配，请确认~"),
+    LOGIN_STRATEGY_MAPPING_ERROR("login_strategy_mapping_error", "登录策略异常~", "服务器开小差了~"),
+
+    ;
+
+    /**
+     * 异常状态码
+     */
+    private final String code;
+
+    /**
+     * 异常消息
+     */
+    private final String description;
+
+    /**
+     * 返回给前端的异常消息
+     */
+    private final String bizMessage;
+
+    ExceptionCode(String code, String description) {
+        this.code = code;
+        this.description = description;
+        this.bizMessage = description;
+    }
+
+    ExceptionCode(String code, String description, String bizMessage) {
+        this.code = code;
+        this.description = description;
+        this.bizMessage = bizMessage;
+    }
+
+
+    @Override
+    public String getCode() {
+        return this.code;
+    }
+
+    @Override
+    public String getDescription() {
+        return this.description;
+    }
+}

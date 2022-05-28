@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>group-purchase-manage</artifactId>
+        <groupId>com.ddf.application</groupId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>core</artifactId>
+
+    <properties>
+        <maven.compiler.source>8</maven.compiler.source>
+        <maven.compiler.target>8</maven.compiler.target>
+        <disruptor.version>3.4.4</disruptor.version>
+        <log4j2.version>2.17.1</log4j2.version>
+        <ddf-common.version>1.0.1-SNAPSHOT</ddf-common.version>
+        <ddf-commom-ids-service.version>1.0.1-SNAPSHOT</ddf-commom-ids-service.version>
+        <ddf-common-core.version>1.0.1-SNAPSHOT</ddf-common-core.version>
+        <ddf-commom-ids-service.version>1.0.1-SNAPSHOT</ddf-commom-ids-service.version>
+        <ddf-common-authentication.version>1.0.1-SNAPSHOT</ddf-common-authentication.version>
+        <ddf-common-third-party.version>1.0.1-SNAPSHOT</ddf-common-third-party.version>
+        <ddf-common-mybatis-plus.version>1.0.1-SNAPSHOT</ddf-common-mybatis-plus.version>
+        <ddf-common-captcha.version>1.0.1-SNAPSHOT</ddf-common-captcha.version>
+        <ddf-common-model.version>1.0.1-SNAPSHOT</ddf-common-model.version>
+        <ddf-common-limit.version>1.0.1-SNAPSHOT</ddf-common-limit.version>
+        <ddf-common-redis.version>1.0.1-SNAPSHOT</ddf-common-redis.version>
+        <ddf-common-xxl-executor.version>1.0.1-SNAPSHOT</ddf-common-xxl-executor.version>
+        <ddf-common-nacos.version>1.0.1-SNAPSHOT</ddf-common-nacos.version>
+        <ddf-common-vps.version>1.0.1-SNAPSHOT</ddf-common-vps.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.ddf.common</groupId>
+            <artifactId>ddf-commom-ids-service</artifactId>
+            <version>${ddf-commom-ids-service.version}</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>log4j</artifactId>
+                    <groupId>log4j</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>com.ddf.common</groupId>
+            <artifactId>ddf-common-core</artifactId>
+            <version>${ddf-common-core.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.ddf.common</groupId>
+            <artifactId>ddf-common-authentication</artifactId>
+            <version>${ddf-common-authentication.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.ddf.common</groupId>
+            <artifactId>ddf-common-third-party</artifactId>
+            <version>${ddf-common-third-party.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.ddf.common</groupId>
+            <artifactId>ddf-common-mybatis-plus</artifactId>
+            <version>${ddf-common-mybatis-plus.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.ddf.common</groupId>
+            <artifactId>ddf-common-captcha</artifactId>
+            <version>${ddf-common-captcha.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.ddf.common</groupId>
+            <artifactId>ddf-common-model</artifactId>
+            <version>${ddf-common-model.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.ddf.common</groupId>
+            <artifactId>ddf-common-limit</artifactId>
+            <version>${ddf-common-limit.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.ddf.common</groupId>
+            <artifactId>ddf-common-redis</artifactId>
+            <version>${ddf-common-redis.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.ddf.common</groupId>
+            <artifactId>ddf-common-xxl-executor</artifactId>
+            <version>${ddf-common-xxl-executor.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.ddf.common</groupId>
+            <artifactId>ddf-common-nacos</artifactId>
+            <version>${ddf-common-nacos.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.ddf.common</groupId>
+            <artifactId>ddf-common-vps</artifactId>
+            <version>${ddf-common-vps.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid-spring-boot-starter</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct-jdk8</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct-processor</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
+            <!-- 排除默认日志依赖，如logback， 手动引入log4j依赖， 如果使用logback这里注释放开即可 -->
+            <exclusions>
+                <exclusion>
+                    <artifactId>spring-boot-starter-logging</artifactId>
+                    <groupId>org.springframework.boot</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+            <!-- 排除默认日志依赖，如logback， 手动引入log4j依赖， 如果使用logback这里注释放开即可 -->
+            <exclusions>
+                <exclusion>
+                    <artifactId>spring-boot-starter-logging</artifactId>
+                    <groupId>org.springframework.boot</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <!-- 日志组件 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-log4j2</artifactId>
+            <exclusions>
+                <exclusion>
+                    <artifactId>log4j-slf4j-impl</artifactId>
+                    <groupId>org.apache.logging.log4j</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>log4j-api</artifactId>
+                    <groupId>org.apache.logging.log4j</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>log4j-core</artifactId>
+                    <groupId>org.apache.logging.log4j</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>log4j-jul</artifactId>
+                    <groupId>org.apache.logging.log4j</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <artifactId>log4j-slf4j-impl</artifactId>
+            <groupId>org.apache.logging.log4j</groupId>
+            <version>${log4j2.version}</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>log4j-api</artifactId>
+                    <groupId>org.apache.logging.log4j</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>log4j-core</artifactId>
+                    <groupId>org.apache.logging.log4j</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>slf4j-api</artifactId>
+                    <groupId>org.slf4j</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <artifactId>log4j-api</artifactId>
+            <groupId>org.apache.logging.log4j</groupId>
+            <version>${log4j2.version}</version>
+        </dependency>
+        <dependency>
+            <artifactId>log4j-core</artifactId>
+            <groupId>org.apache.logging.log4j</groupId>
+            <version>${log4j2.version}</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>log4j-api</artifactId>
+                    <groupId>org.apache.logging.log4j</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <!-- 日志组件依赖，异步打印日志 -->
+        <dependency>
+            <groupId>com.lmax</groupId>
+            <artifactId>disruptor</artifactId>
+            <version>${disruptor.version}</version>
+        </dependency>
+    </dependencies>
+
+</project>

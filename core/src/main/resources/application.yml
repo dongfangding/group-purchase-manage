@@ -1,0 +1,37 @@
+nacos:
+  config:
+    server-addr: ${nacos_server}
+    username: ${nacos_username}
+    password: ${nacos_password}
+    # 在spring-boot应用中（注意不是spring-cloud），开启这个可以让spring-boot应用具备在启动前就将外部配置加载到spring环境中的能力， 即可通过外部配置各种数据源了
+    bootstrap:
+      enable: true
+      logEnable: false
+    context-path: nacos
+server:
+  port: 8083
+  tomcat:
+    max-connections: 10000
+    threads:
+      max: 300
+      min-spare: 20
+    processor-cache: 300
+  servlet:
+    context-path: /group-purchase-manager
+
+spring:
+  lifecycle:
+    timeout-per-shutdown-phase: 60
+  profiles:
+    active: dev
+  application:
+    name: group-purchase-manager
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 50MB
+
+logging:
+  level:
+    root: info
+    com.ddf.boot.common.log.AccessLogAspect: debug
