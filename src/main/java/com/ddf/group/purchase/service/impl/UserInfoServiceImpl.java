@@ -4,16 +4,19 @@ import cn.hutool.core.util.StrUtil;
 import com.ddf.boot.common.core.encode.BCryptPasswordEncoder;
 import com.ddf.boot.common.core.util.DateUtils;
 import com.ddf.boot.common.core.util.PreconditionUtil;
+import com.ddf.group.purchase.client.MailClient;
+import com.ddf.group.purchase.client.UserClient;
 import com.ddf.group.purchase.exception.ExceptionCode;
 import com.ddf.group.purchase.helper.CommonHelper;
-import com.ddf.group.purchase.helper.UserHelper;
 import com.ddf.group.purchase.mapper.ext.UserInfoExtMapper;
 import com.ddf.group.purchase.model.entity.UserInfo;
 import com.ddf.group.purchase.model.request.common.SmsCodeVerifyRequest;
 import com.ddf.group.purchase.model.request.user.CompleteUserInfoRequest;
 import com.ddf.group.purchase.model.request.user.UserRegistryRequest;
 import com.ddf.group.purchase.repository.UserInfoRepository;
+import com.ddf.group.purchase.repository.model.CompleteUserInfoCommand;
 import com.ddf.group.purchase.service.UserInfoService;
+import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +38,8 @@ public class UserInfoServiceImpl implements UserInfoService {
     private final UserInfoRepository userInfoRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final CommonHelper commonHelper;
-    private final UserHelper userHelper;
+    private final UserClient userClient;
+    private final MailClient mailClient;
 
     /**
      * 注册
@@ -66,13 +70,27 @@ public class UserInfoServiceImpl implements UserInfoService {
 
     @Override
     public void completeInfo(CompleteUserInfoRequest request) {
-        final UserInfo userInfo = userHelper.currentUserInfo();
-        if (StrUtil.isNotBlank(request.getEmail())) {
+        if (StrUtil.isAllEmpty(request.getEmail(), request.getNickname(), request.getAvatarUrl(), request.getAvatarThumbUrl())) {
+            return;
+        }
+        final UserInfo userInfo = userClient.currentUserInfo();
+        final CompleteUserInfoCommand command = CompleteUserInfoCommand.builder()
+                .id(userInfo.getId())
+                .nickname(request.getNickname())
+                .email(request.getEmail())
+                .avatarUrl(request.getAvatarUrl())
+                .avatarThumbUrl(request.getAvatarThumbUrl())
+                .build();
+        // 邮件未认证或者更改邮件重新发送激活邮件
+        if (StrUtil.isNotBlank(request.getEmail()) &&
+                (!Objects.equals(request.getEmail(), userInfo.getEmail()) || !userInfo.getEmailVerified())) {
             userInfo.setEmail(request.getEmail());
+            mailClient.sendEmailActive(request.getEmail());
+            // 如果是更改了邮件，则重新设置状态为未认证
+            if (!Objects.equals(request.getEmail(), userInfo.getEmail())) {
+                command.setEmailVerified(Boolean.FALSE);
+            }
         }
-        if (StrUtil.isNotBlank(request.getAvatarUrl())) {
-
-        }
-        userInfoExtMapper.updateById(userInfo);
+        userInfoRepository.completeUserInfo(command);
     }
 }

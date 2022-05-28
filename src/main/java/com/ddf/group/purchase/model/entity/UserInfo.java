@@ -12,7 +12,7 @@ import lombok.Data;
 *
 * @author Snowball
 * @version 1.0
-* @date 2022/05/23 23:11
+* @date 2022/05/27 23:57
 */
 
 
@@ -44,6 +44,18 @@ public class UserInfo implements Serializable {
     private Integer roomNo;
 
     /**
+     * 昵称
+     */
+    @TableField(value = "nickname")
+    private String nickname;
+
+    /**
+     * 手机号
+     */
+    @TableField(value = "mobile")
+    private String mobile;
+
+    /**
      * 微信名
      */
     @TableField(value = "wx_id")
@@ -68,10 +80,22 @@ public class UserInfo implements Serializable {
     private String email;
 
     /**
-     * 手机号
+     * 邮箱是否已验证
      */
-    @TableField(value = "mobile")
-    private String mobile;
+    @TableField(value = "email_verified")
+    private Boolean emailVerified;
+
+    /**
+     * 头像地址url
+     */
+    @TableField(value = "avatar_url")
+    private String avatarUrl;
+
+    /**
+     * 头像地址缩略图
+     */
+    @TableField(value = "avatar_thumb_url")
+    private String avatarThumbUrl;
 
     /**
      * 登录密码
@@ -95,6 +119,10 @@ public class UserInfo implements Serializable {
 
     public static final String COL_ROOM_NO = "room_no";
 
+    public static final String COL_NICKNAME = "nickname";
+
+    public static final String COL_MOBILE = "mobile";
+
     public static final String COL_WX_ID = "wx_id";
 
     public static final String COL_WX_BUSINESS_CARD_QRCODE_URL = "wx_business_card_qrcode_url";
@@ -103,7 +131,11 @@ public class UserInfo implements Serializable {
 
     public static final String COL_EMAIL = "email";
 
-    public static final String COL_MOBILE = "mobile";
+    public static final String COL_EMAIL_VERIFIED = "email_verified";
+
+    public static final String COL_AVATAR_URL = "avatar_url";
+
+    public static final String COL_AVATAR_THUMB_URL = "avatar_thumb_url";
 
     public static final String COL_PASSWORD = "password";
 

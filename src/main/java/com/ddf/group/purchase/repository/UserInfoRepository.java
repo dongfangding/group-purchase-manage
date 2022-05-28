@@ -1,9 +1,12 @@
 package com.ddf.group.purchase.repository;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.ddf.group.purchase.mapper.ext.UserInfoExtMapper;
 import com.ddf.group.purchase.model.entity.UserInfo;
+import com.ddf.group.purchase.repository.model.CompleteUserInfoCommand;
+import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,5 +77,33 @@ public class UserInfoRepository {
         final LambdaQueryWrapper<UserInfo> wrapper = Wrappers.lambdaQuery();
         wrapper.eq(UserInfo::getEmail, email);
         return userInfoExtMapper.selectCount(wrapper) > 0;
+    }
+
+    /**
+     * 完善用户信息相关的更新
+     *
+     * @param id
+     * @param request
+     * @return
+     */
+    public int completeUserInfo(CompleteUserInfoCommand command) {
+        final LambdaUpdateWrapper<UserInfo> wrapper = Wrappers.lambdaUpdate();
+        if (Objects.nonNull(command.getEmail())) {
+            wrapper.set(UserInfo::getEmail, command.getEmail());
+        }
+        if (Objects.nonNull(command.getNickname())) {
+            wrapper.set(UserInfo::getNickname, command.getNickname());
+        }
+        if (Objects.nonNull(command.getAvatarUrl())) {
+            wrapper.set(UserInfo::getAvatarUrl, command.getAvatarUrl());
+        }
+        if (Objects.nonNull(command.getAvatarThumbUrl())) {
+            wrapper.set(UserInfo::getAvatarThumbUrl, command.getAvatarThumbUrl());
+        }
+        if (Objects.nonNull(command.getEmailVerified())) {
+            wrapper.set(UserInfo::getEmailVerified, command.getEmailVerified());
+        }
+        wrapper.eq(UserInfo::getId, command.getId());
+        return userInfoExtMapper.update(null, wrapper);
     }
 }

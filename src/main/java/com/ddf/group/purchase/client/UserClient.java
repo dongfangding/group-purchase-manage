@@ -1,5 +1,6 @@
-package com.ddf.group.purchase.helper;
+package com.ddf.group.purchase.client;
 
+import com.ddf.boot.common.authentication.model.UserClaim;
 import com.ddf.boot.common.authentication.util.UserContextUtil;
 import com.ddf.group.purchase.mapper.ext.UserInfoExtMapper;
 import com.ddf.group.purchase.model.entity.UserInfo;
@@ -18,9 +19,27 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor(onConstructor_={@Autowired})
 @Slf4j
-public class UserHelper {
+public class UserClient {
 
     private final UserInfoExtMapper userInfoExtMapper;
+
+    /**
+     * 获取当前用户id
+     *
+     * @return
+     */
+    public Long currentUserId() {
+        return Long.parseLong(UserContextUtil.getUserId());
+    }
+
+    /**
+     * 获取当前用户信息
+     *
+     * @return
+     */
+    public UserClaim currentUserClaim() {
+        return UserContextUtil.getUserClaim();
+    }
 
     /**
      * 当前用户信息对象

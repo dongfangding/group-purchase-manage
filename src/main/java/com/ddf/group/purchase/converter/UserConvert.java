@@ -30,7 +30,6 @@ public interface UserConvert {
                 .username(userInfo.getMobile())
                 .credit(WebUtil.getUserAgent())
                 .lastModifyPasswordTime(null)
-                .lastLoginTime(null)
                 .remarks(null)
                 .detail(null)
                 .build();

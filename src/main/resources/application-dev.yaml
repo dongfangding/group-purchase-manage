@@ -2,19 +2,24 @@ nacos:
   config:
     auto-refresh: true
     config-retry-time: 3000
-    namespace: common
-    group: DEFAULT_GROUP
+    namespace: group-purchase-manager
+    group: dev
     enable-remote-sync-config: true
-    type: yaml
-    data-ids: common-server,common-datasource,common-global-properties,common-mybatis-plus,common-redis,common-mail,common-rocketmq,common-xxl-job,common-ids,common-fdfs,common-ext-sms
+    type: properties
+    data-ids: property-source
     ext-config:
-      - namespace: group-purchase-manager
-        dataId: property-source
-        group: dev
-        type: properties
+      - namespace: common
+        dataIds: common-server,common-datasource,common-global-properties,common-mybatis-plus,common-redis,common-mail,common-rocketmq,common-xxl-job,common-ids,common-fdfs,common-ext-sms
+        group: DEFAULT_GROUP
+        type: yaml
         auto-refresh: true
       - namespace: group-purchase-manager
         dataId: app-authentication
+        group: dev
+        type: yaml
+        auto-refresh: true
+      - namespace: group-purchase-manager
+        dataId: application-properties.yaml
         group: dev
         type: yaml
         auto-refresh: true

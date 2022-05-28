@@ -16,19 +16,19 @@ import com.ddf.common.captcha.helper.CaptchaHelper;
 import com.ddf.common.captcha.model.request.CaptchaCheckRequest;
 import com.ddf.common.captcha.model.request.CaptchaRequest;
 import com.ddf.common.captcha.model.response.ApplicationCaptchaResult;
-import com.ddf.group.purchase.constants.RedisKeyEnum;
+import com.ddf.group.purchase.config.properties.ApplicationProperties;
 import com.ddf.group.purchase.constants.RedisKeys;
 import com.ddf.group.purchase.exception.ExceptionCode;
 import com.ddf.group.purchase.model.request.common.CaptchaVerifyRequest;
 import com.ddf.group.purchase.model.request.common.SendSmsCodeRequest;
 import com.ddf.group.purchase.model.request.common.SmsCodeVerifyRequest;
 import com.ddf.group.purchase.model.response.common.ApplicationSmsSendResponse;
+import com.ddf.group.purchase.repository.CommonRepository;
 import com.ddf.group.purchase.repository.UserInfoRepository;
 import java.util.Date;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
 
 /**
@@ -44,10 +44,11 @@ public class CommonHelper {
 
     private final SmsApi aliYunSmsApiImpl;
     private final CaptchaHelper captchaHelper;
-    private final StringRedisTemplate stringRedisTemplate;
     private final AuthenticationProperties authenticationProperties;
     private final RedisTemplateHelper redisTemplateHelper;
     private final UserInfoRepository userInfoRepository;
+    private final CommonRepository commonRepository;
+    private final ApplicationProperties applicationProperties;
 
     /**
      * 生成验证码
@@ -106,7 +107,8 @@ public class CommonHelper {
         // 验证码校验
         verifyCaptcha(sendSmsCodeRequest.getCaptchaVerifyRequest());
         final String uid = StrUtil.blankToDefault(UserContextUtil.getUserId(), WebUtil.getHost());
-        return redisTemplateHelper.sliderWindowAccessExpiredAtCheckException(RedisKeys.getSmsRateLimitKey(uid), 10, DateUtils.getEndOfDay(new Date()), () -> {
+        return redisTemplateHelper.sliderWindowAccessExpiredAtCheckException(RedisKeys.getSmsRateLimitKey(uid),
+                applicationProperties.getSmsDailyLimit(), DateUtils.getEndOfDay(new Date()), () -> {
             return sendAndLoadSmsCode(sendSmsCodeRequest);
         }, ExceptionCode.SMS_CODE_LIMIT);
     }
@@ -120,11 +122,10 @@ public class CommonHelper {
     public ApplicationSmsSendResponse sendAndLoadSmsCode(SendSmsCodeRequest sendSmsCodeRequest) {
         final String mobile = sendSmsCodeRequest.getMobile();
         final SmsSendResponse tempResponse = sendSmsCode(sendSmsCodeRequest);
-        final String random = RandomUtil.randomString(16);
-        stringRedisTemplate.opsForValue().set(RedisKeys.getSmsCodeKey(mobile, random), tempResponse.getRandomCode(),
-                RedisKeyEnum.SMS_CODE_KEY.getTimeout());
+        final String uuid = RandomUtil.randomString(16);
+        commonRepository.setSmsCode(mobile, uuid, tempResponse.getRandomCode());
         return ApplicationSmsSendResponse.builder()
-                .uuid(random)
+                .uuid(uuid)
                 .build();
     }
 
@@ -141,7 +142,7 @@ public class CommonHelper {
         if (Objects.isNull(authenticationProperties) || CollectionUtil.isEmpty(authenticationProperties.getBiz().getWhiteLoginNameList())
                 || !authenticationProperties.getBiz().getWhiteLoginNameList().contains(request.getMobile())) {
             // 校验验证码
-            final String verifyCode = stringRedisTemplate.opsForValue().get(RedisKeys.getSmsCodeKey(mobile, request.getUuid()));
+            String verifyCode = commonRepository.getSmsCode(mobile, request.getUuid());
             PreconditionUtil.checkArgument(StrUtil.isNotBlank(verifyCode), ExceptionCode.VERIFY_CODE_EXPIRED);
             PreconditionUtil.checkArgument(StrUtil.equals(verifyCode, request.getMobileCode()), ExceptionCode.VERIFY_CODE_NOT_MATCH);
         }

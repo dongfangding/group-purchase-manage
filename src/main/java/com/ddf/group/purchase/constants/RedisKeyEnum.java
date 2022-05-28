@@ -17,7 +17,12 @@ public enum RedisKeyEnum {
      * %s mobile
      * %s 随机字符串
      */
-    SMS_CODE_KEY(RedisKeys.SMS_CODE_KEY, Duration.ofSeconds(300));
+    SMS_CODE_KEY(RedisKeys.SMS_CODE_KEY, Duration.ofSeconds(300)),
+
+    /**
+     * 邮箱验证码key
+     */
+    EMAIL_ACTIVE_TOKEN_KEY(RedisKeys.EMAIL_ACTIVE_TOKEN_KEY, Duration.ofSeconds(300)),
 
     ;
 
