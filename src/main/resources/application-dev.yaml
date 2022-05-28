@@ -14,12 +14,12 @@ nacos:
         type: yaml
         auto-refresh: true
       - namespace: group-purchase-manager
-        dataId: app-authentication
+        dataId: authentication
         group: dev
         type: yaml
         auto-refresh: true
       - namespace: group-purchase-manager
-        dataId: application-properties.yaml
+        dataId: application-properties
         group: dev
         type: yaml
         auto-refresh: true

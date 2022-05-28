@@ -1,4 +1,4 @@
-package com.ddf.group.purchase.config;
+package com.ddf.group.purchase.config.extra;
 
 import com.ddf.boot.common.authentication.interfaces.UserClaimService;
 import com.ddf.boot.common.authentication.model.UserClaim;
