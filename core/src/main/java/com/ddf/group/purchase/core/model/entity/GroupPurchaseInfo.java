@@ -8,17 +8,12 @@ import java.io.Serializable;
 import lombok.Data;
 
 /**
-* <p>description</p >
+* <p>团购主表信息</p >
 *
 * @author Snowball
 * @version 1.0
 * @date 2022/05/23 23:11
 */
-
-
-/**
- * 团购主表信息
- */
 @Data
 @TableName(value = "group_purchase_info")
 public class GroupPurchaseInfo implements Serializable {

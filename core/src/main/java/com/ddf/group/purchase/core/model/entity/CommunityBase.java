@@ -8,17 +8,12 @@ import java.io.Serializable;
 import lombok.Data;
 
 /**
-* <p>description</p >
+* <p>小区管理</p >
 *
 * @author Snowball
 * @version 1.0
 * @date 2022/05/15 20:49
 */
-
-
-/**
-    * 小区管理
-    */
 @TableName(value = "community_base")
 @Data
 public class CommunityBase implements Serializable {

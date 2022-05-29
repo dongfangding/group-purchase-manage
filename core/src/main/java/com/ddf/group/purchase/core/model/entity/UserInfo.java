@@ -8,17 +8,12 @@ import java.io.Serializable;
 import lombok.Data;
 
 /**
-* <p>description</p >
+* <p>注册用户信息</p >
 *
 * @author Snowball
 * @version 1.0
 * @date 2022/05/27 23:57
 */
-
-
-/**
- * 注册用户信息
- */
 @Data
 @TableName(value = "user_info")
 public class UserInfo implements Serializable {
