@@ -1,8 +1,9 @@
 package com.ddf.group.purchase.core.controller;
 
 import com.ddf.group.purchase.api.request.user.CompleteUserInfoRequest;
+import com.ddf.group.purchase.api.response.user.PersonalInfoResponse;
+import com.ddf.group.purchase.core.application.UserApplicationService;
 import com.ddf.group.purchase.core.helper.CommonHelper;
-import com.ddf.group.purchase.core.service.UserInfoService;
 import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor(onConstructor_={@Autowired})
 public class UserInfoController {
 
-    private final UserInfoService userInfoService;
+    private final UserApplicationService userApplicationService;
     private final CommonHelper commonHelper;
 
     /**
@@ -36,7 +37,7 @@ public class UserInfoController {
      */
     @PostMapping("completeInfo")
     public void completeInfo(@RequestBody @Validated CompleteUserInfoRequest request) {
-        userInfoService.completeInfo(request);
+        userApplicationService.completeInfo(request);
     }
 
     /**
@@ -48,5 +49,14 @@ public class UserInfoController {
     @GetMapping("verifyEmailActiveToken")
     public void verifyEmailActiveToken(HttpServletResponse response, @RequestParam String token) {
         commonHelper.verifyEmailActiveToken(response, token);
+    }
+
+    /**
+     * 个人中心
+     *
+     */
+    @GetMapping("personalInfo")
+    public PersonalInfoResponse personalInfo() {
+        return userApplicationService.personalInfo();
     }
 }

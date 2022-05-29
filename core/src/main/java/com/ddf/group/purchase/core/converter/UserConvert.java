@@ -2,8 +2,12 @@ package com.ddf.group.purchase.core.converter;
 
 import com.ddf.boot.common.authentication.model.UserClaim;
 import com.ddf.boot.common.core.util.WebUtil;
+import com.ddf.group.purchase.api.response.user.PersonalInfoResponse;
+import com.ddf.group.purchase.core.model.entity.CommunityBase;
 import com.ddf.group.purchase.core.model.entity.UserInfo;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.Mappings;
 import org.mapstruct.factory.Mappers;
 
 /**
@@ -34,4 +38,15 @@ public interface UserConvert {
                 .detail(null)
                 .build();
     }
+
+    /**
+     * 用户信息转个人中心用户信息
+     *
+     * @param userInfo
+     * @return
+     */
+    @Mappings({
+            @Mapping(target = "id", source = "userInfo.id")
+    })
+    PersonalInfoResponse convertToPersonalInfoResponse(UserInfo userInfo, CommunityBase communityBase);
 }

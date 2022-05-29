@@ -7,9 +7,9 @@ import com.ddf.group.purchase.api.request.user.LoginRequest;
 import com.ddf.group.purchase.api.request.user.UserRegistryRequest;
 import com.ddf.group.purchase.api.response.common.ApplicationSmsSendResponse;
 import com.ddf.group.purchase.api.response.common.UserLoginResponse;
+import com.ddf.group.purchase.core.application.UserApplicationService;
 import com.ddf.group.purchase.core.helper.CommonHelper;
 import com.ddf.group.purchase.core.login.LoginStrategyContext;
-import com.ddf.group.purchase.core.service.UserInfoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -33,7 +33,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
 
     private final CommonHelper commonHelper;
-    private final UserInfoService userInfoService;
+    private final UserApplicationService userApplicationService;
     private final LoginStrategyContext loginStrategyContext;
 
     /**
@@ -54,7 +54,7 @@ public class AuthController {
      */
     @PostMapping("registry")
     public void registry(@RequestBody @Validated UserRegistryRequest request) {
-        userInfoService.registry(request);
+        userApplicationService.registry(request);
     }
 
     /**

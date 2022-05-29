@@ -1,8 +1,5 @@
 package com.ddf.group.purchase.core.service;
 
-import com.ddf.group.purchase.api.request.user.CompleteUserInfoRequest;
-import com.ddf.group.purchase.api.request.user.UserRegistryRequest;
-
 /**
  * <p>用户信息</p >
  *
@@ -12,17 +9,4 @@ import com.ddf.group.purchase.api.request.user.UserRegistryRequest;
  */
 public interface UserInfoService {
 
-    /**
-     * 注册
-     *
-     * @param request
-     */
-    void registry(UserRegistryRequest request);
-
-    /**
-     * 完善用户信息
-     *
-     * @param request
-     */
-    void completeInfo(CompleteUserInfoRequest request);
 }
