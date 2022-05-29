@@ -27,6 +27,16 @@ public class UserInfoRepository {
     private final UserInfoExtMapper userInfoExtMapper;
 
     /**
+     * 根据userId获取用户信息
+     *
+     * @param userId
+     * @return
+     */
+    public UserInfo getById(Long userId) {
+        return userInfoExtMapper.selectById(userId);
+    }
+
+    /**
      * 根据手机号查询用户
      *
      * @param mobile
@@ -103,6 +113,22 @@ public class UserInfoRepository {
             wrapper.set(UserInfo::getEmailVerified, command.getEmailVerified());
         }
         wrapper.eq(UserInfo::getId, command.getId());
+        return userInfoExtMapper.update(null, wrapper);
+    }
+
+    /**
+     * 验证邮箱状态
+     *
+     * @param userId
+     * @param email
+     * @return
+     */
+    public int verifiedEmail(Long userId, String email) {
+        final LambdaUpdateWrapper<UserInfo> wrapper = Wrappers.lambdaUpdate();
+        wrapper.eq(UserInfo::getId, userId);
+        wrapper.eq(UserInfo::getEmail, email);
+        wrapper.eq(UserInfo::getEmailVerified, Boolean.FALSE);
+        wrapper.set(UserInfo::getEmailVerified, Boolean.TRUE);
         return userInfoExtMapper.update(null, wrapper);
     }
 }

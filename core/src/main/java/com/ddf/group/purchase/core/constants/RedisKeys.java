@@ -26,8 +26,8 @@ public interface RedisKeys {
     String SMS_RATE_LIMIT_KEY = "sms_code:rate_limit:%s";
 
     /**
-     * 邮箱激活token
-     * %s 邮箱
+     * 邮箱激活token key, value是邮箱，方便通过token找回邮箱
+     * %s token
      */
     String EMAIL_ACTIVE_TOKEN_KEY = "email_active_token:%s";
 
@@ -56,11 +56,11 @@ public interface RedisKeys {
     /**
      * 获取邮箱激活token key
      *
-     * @param email
+     * @param token
      * @return
      */
-    static String getEmailActiveTokenKey(String email) {
-        return String.format(EMAIL_ACTIVE_TOKEN_KEY, email);
+    static String getEmailActiveTokenKey(String token) {
+        return String.format(EMAIL_ACTIVE_TOKEN_KEY, token);
     }
 
 }

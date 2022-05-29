@@ -19,14 +19,17 @@ import com.ddf.common.captcha.model.response.ApplicationCaptchaResult;
 import com.ddf.group.purchase.core.config.properties.ApplicationProperties;
 import com.ddf.group.purchase.core.constants.RedisKeys;
 import com.ddf.group.purchase.core.exception.ExceptionCode;
+import com.ddf.group.purchase.core.model.entity.UserInfo;
 import com.ddf.group.purchase.core.model.request.common.CaptchaVerifyRequest;
 import com.ddf.group.purchase.core.model.request.common.SendSmsCodeRequest;
 import com.ddf.group.purchase.core.model.request.common.SmsCodeVerifyRequest;
 import com.ddf.group.purchase.core.model.response.common.ApplicationSmsSendResponse;
 import com.ddf.group.purchase.core.repository.CommonRepository;
 import com.ddf.group.purchase.core.repository.UserInfoRepository;
+import com.ddf.group.purchase.core.repository.model.EmailToken;
 import java.util.Date;
 import java.util.Objects;
+import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -146,6 +149,29 @@ public class CommonHelper {
             String verifyCode = commonRepository.getSmsCode(mobile, request.getUuid());
             PreconditionUtil.checkArgument(StrUtil.isNotBlank(verifyCode), ExceptionCode.VERIFY_CODE_EXPIRED);
             PreconditionUtil.checkArgument(StrUtil.equals(verifyCode, request.getMobileCode()), ExceptionCode.VERIFY_CODE_NOT_MATCH);
+        }
+    }
+
+    /**
+     * 验证邮箱链接激活
+     *
+     * @param response
+     * @param token
+     */
+    public void verifyEmailActiveToken(HttpServletResponse response, String token) {
+        final EmailToken emailToken = commonRepository.getEmailActiveToken(token);
+        PreconditionUtil.checkArgument(Objects.nonNull(emailToken), ExceptionCode.EMAIL_ACTIVE_TOKEN_EXPIRED);
+
+        final Long userId = emailToken.getUserId();
+        final String email = emailToken.getEmail();
+        final UserInfo userInfo = userInfoRepository.getById(userId);
+        PreconditionUtil.checkArgument(Objects.nonNull(userInfo), ExceptionCode.USER_NOT_EXIST);
+        int i = userInfoRepository.verifiedEmail(userId, email);
+        response.setContentType("text/html;charset=utf-8");
+        if (i > 0) {
+            WebUtil.responseSuccess(response, "验证成功");
+        } else {
+            WebUtil.responseError(response, 400, "验证失败，链接可能已过期或邮箱已验证通过~");
         }
     }
 }

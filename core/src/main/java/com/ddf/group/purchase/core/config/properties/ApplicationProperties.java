@@ -20,7 +20,7 @@ public class ApplicationProperties {
 
     /**
      * 邮件激活接口地址
-     * @NacosValue(value = "${mailActiveUrl}", autoRefreshed = true)
+     * @NacosValue(value = "${mailActiveUrl:}", autoRefreshed = true)
      */
     private String mailActiveUrl;
 

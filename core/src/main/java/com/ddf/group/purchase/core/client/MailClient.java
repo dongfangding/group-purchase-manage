@@ -25,19 +25,21 @@ public class MailClient {
     private final MailUtil mailUtil;
     private final ApplicationProperties applicationProperties;
     private final CommonRepository commonRepository;
+    private final UserClient userClient;
 
 
     /**
      * 发送邮箱绑定激活邮件
      *
+     * @param userId
      * @param email
      */
     @Async("mailThreadPool")
-    public void sendEmailActive(String email) {
-        String activeToken = generateEmailToken(email);
+    public void sendEmailActive(Long userId, String email) {
+        String activeToken = generateEmailToken(userId, email);
         String url = applicationProperties.getMailActiveUrl() + "?token=" + activeToken;
         String subject = "团购吧邮箱激活";
-        String content = "<p>您的邮箱绑定请求已收到，请点击一下链接进行验证</p>";
+        String content = "<p>您的邮箱绑定请求已收到，请点击以下链接进行验证</p>";
         content += "<a href='" + url + "'>" + url + "</a>";
         content += "<p>如果以上链接无法打开，请复制链接到浏览器中打开，该链接五分钟内有效，请及时验证。</p>";
         content += "(该邮件由系统自动发出，请勿回复)";
@@ -47,12 +49,13 @@ public class MailClient {
     /**
      * 生成邮箱激活token
      *
+     * @param userId
      * @param email
      * @return
      */
-    private String generateEmailToken(String email) {
-        String token = RandomUtil.randomString(20);
-        commonRepository.setEmailActiveToken(email, token);
+    private String generateEmailToken(Long userId, String email) {
+        String token = RandomUtil.randomString(64);
+        commonRepository.setEmailActiveToken(email, token, userId);
         return token;
     }
 

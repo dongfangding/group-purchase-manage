@@ -85,7 +85,7 @@ public class UserInfoServiceImpl implements UserInfoService {
         if (StrUtil.isNotBlank(request.getEmail()) &&
                 (!Objects.equals(request.getEmail(), userInfo.getEmail()) || !userInfo.getEmailVerified())) {
             userInfo.setEmail(request.getEmail());
-            mailClient.sendEmailActive(request.getEmail());
+            mailClient.sendEmailActive(userInfo.getId(), request.getEmail());
             // 如果是更改了邮件，则重新设置状态为未认证
             if (!Objects.equals(request.getEmail(), userInfo.getEmail())) {
                 command.setEmailVerified(Boolean.FALSE);

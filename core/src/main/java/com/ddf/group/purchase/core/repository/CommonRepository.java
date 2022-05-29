@@ -1,7 +1,10 @@
 package com.ddf.group.purchase.core.repository;
 
+import cn.hutool.core.util.StrUtil;
+import com.ddf.boot.common.core.util.JsonUtil;
 import com.ddf.group.purchase.core.constants.RedisKeyEnum;
 import com.ddf.group.purchase.core.constants.RedisKeys;
+import com.ddf.group.purchase.core.repository.model.EmailToken;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -52,18 +55,23 @@ public class CommonRepository {
      * @param token
      * @return
      */
-    public void setEmailActiveToken(String email, String token) {
-        stringRedisTemplate.opsForValue().set(RedisKeys.getEmailActiveTokenKey(email), token, RedisKeyEnum.EMAIL_ACTIVE_TOKEN_KEY.getTimeout());
+    public void setEmailActiveToken(String email, String token, Long userId) {
+        final EmailToken emailToken = EmailToken.of(userId, email);
+        stringRedisTemplate.opsForValue().set(RedisKeys.getEmailActiveTokenKey(token), JsonUtil.asString(emailToken), RedisKeyEnum.EMAIL_ACTIVE_TOKEN_KEY.getTimeout());
     }
 
     /**
-     * 获取邮箱激活token
+     * 根据邮箱激活token获取对应用户id和邮箱
      *
-     * @param email
+     * @param token
      * @return
      */
-    public String getEmailActiveToken(String email) {
-        return stringRedisTemplate.opsForValue().get(RedisKeys.getEmailActiveTokenKey(email));
+    public EmailToken getEmailActiveToken(String token) {
+        final String value = stringRedisTemplate.opsForValue().get(RedisKeys.getEmailActiveTokenKey(token));
+        if (StrUtil.isBlank(value)) {
+            return null;
+        }
+        return JsonUtil.toBean(value, EmailToken.class);
     }
 
 
