@@ -1,7 +1,7 @@
 package com.ddf.group.purchase.core.service;
 
-import com.ddf.group.purchase.core.model.request.user.CompleteUserInfoRequest;
-import com.ddf.group.purchase.core.model.request.user.UserRegistryRequest;
+import com.ddf.group.purchase.api.request.user.CompleteUserInfoRequest;
+import com.ddf.group.purchase.api.request.user.UserRegistryRequest;
 
 /**
  * <p>用户信息</p >

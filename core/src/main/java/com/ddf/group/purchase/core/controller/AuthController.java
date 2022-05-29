@@ -2,13 +2,13 @@ package com.ddf.group.purchase.core.controller;
 
 import com.ddf.boot.common.authentication.model.UserClaim;
 import com.ddf.boot.common.authentication.util.UserContextUtil;
+import com.ddf.group.purchase.api.request.common.SendSmsCodeRequest;
+import com.ddf.group.purchase.api.request.user.LoginRequest;
+import com.ddf.group.purchase.api.request.user.UserRegistryRequest;
+import com.ddf.group.purchase.api.response.common.ApplicationSmsSendResponse;
+import com.ddf.group.purchase.api.response.common.UserLoginResponse;
 import com.ddf.group.purchase.core.helper.CommonHelper;
 import com.ddf.group.purchase.core.login.LoginStrategyContext;
-import com.ddf.group.purchase.core.model.request.common.SendSmsCodeRequest;
-import com.ddf.group.purchase.core.model.request.user.LoginRequest;
-import com.ddf.group.purchase.core.model.request.user.UserRegistryRequest;
-import com.ddf.group.purchase.core.model.response.UserLoginResponse;
-import com.ddf.group.purchase.core.model.response.common.ApplicationSmsSendResponse;
 import com.ddf.group.purchase.core.service.UserInfoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,4 +1,4 @@
-package com.ddf.group.purchase.core.repository.model;
+package com.ddf.group.purchase.core.model.dto.user;
 
 import java.io.Serializable;
 import lombok.AllArgsConstructor;

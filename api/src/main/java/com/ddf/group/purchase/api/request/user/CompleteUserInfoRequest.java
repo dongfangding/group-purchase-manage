@@ -1,26 +1,20 @@
-package com.ddf.group.purchase.core.repository.model;
+package com.ddf.group.purchase.api.request.user;
 
 import java.io.Serializable;
-import lombok.Builder;
+import javax.validation.constraints.Email;
 import lombok.Data;
 
 /**
- * <p>完善用户信息更新对象</p >
+ * <p>完善用户信息</p >
  *
  * @author Snowball
  * @version 1.0
  * @date 2022/05/27 22:58
  */
 @Data
-@Builder
-public class CompleteUserInfoCommand implements Serializable {
+public class CompleteUserInfoRequest implements Serializable {
 
     private static final long serialVersionUID = 1516322558409231083L;
-
-    /**
-     * id，这个是更新条件
-     */
-    private Long id;
 
     /**
      * 昵称
@@ -40,10 +34,6 @@ public class CompleteUserInfoCommand implements Serializable {
     /**
      * 邮箱
      */
+    @Email
     private String email;
-
-    /**
-     * 邮箱是否已认证
-     */
-    private Boolean emailVerified;
 }

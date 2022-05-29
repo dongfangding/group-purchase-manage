@@ -2,10 +2,10 @@ package com.ddf.group.purchase.core.login;
 
 import com.ddf.boot.common.core.encode.BCryptPasswordEncoder;
 import com.ddf.boot.common.core.util.PreconditionUtil;
-import com.ddf.group.purchase.core.constants.LoginTypeEnum;
+import com.ddf.group.purchase.api.enume.LoginTypeEnum;
+import com.ddf.group.purchase.api.request.user.LoginRequest;
 import com.ddf.group.purchase.core.exception.ExceptionCode;
 import com.ddf.group.purchase.core.model.entity.UserInfo;
-import com.ddf.group.purchase.core.model.request.user.LoginRequest;
 import com.ddf.group.purchase.core.repository.UserInfoRepository;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;

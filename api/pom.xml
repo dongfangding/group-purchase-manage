@@ -9,11 +9,34 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>api</artifactId>
+    <artifactId>group-purchase-manage-api</artifactId>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
     </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>jakarta.validation</groupId>
+            <artifactId>jakarta.validation-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.ddf.common</groupId>
+            <artifactId>ddf-common-core</artifactId>
+            <version>1.0.1-SNAPSHOT</version>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>com.ddf.common</groupId>
+            <artifactId>ddf-common-captcha</artifactId>
+            <version>1.0.1-SNAPSHOT</version>
+            <optional>true</optional>
+        </dependency>
+    </dependencies>
 
 </project>

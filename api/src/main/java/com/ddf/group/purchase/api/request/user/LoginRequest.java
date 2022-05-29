@@ -1,6 +1,6 @@
-package com.ddf.group.purchase.core.model.request.user;
+package com.ddf.group.purchase.api.request.user;
 
-import com.ddf.group.purchase.core.constants.LoginTypeEnum;
+import com.ddf.group.purchase.api.enume.LoginTypeEnum;
 import java.io.Serializable;
 import javax.validation.constraints.NotBlank;
 import lombok.Data;

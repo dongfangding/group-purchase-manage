@@ -1,4 +1,4 @@
-package com.ddf.group.purchase.core.model.response.common;
+package com.ddf.group.purchase.api.response.common;
 
 import java.io.Serializable;
 import lombok.AllArgsConstructor;

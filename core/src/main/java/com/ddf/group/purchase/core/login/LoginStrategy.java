@@ -1,8 +1,8 @@
 package com.ddf.group.purchase.core.login;
 
-import com.ddf.group.purchase.core.constants.LoginTypeEnum;
+import com.ddf.group.purchase.api.enume.LoginTypeEnum;
+import com.ddf.group.purchase.api.request.user.LoginRequest;
 import com.ddf.group.purchase.core.model.entity.UserInfo;
-import com.ddf.group.purchase.core.model.request.user.LoginRequest;
 
 /**
  * <p>登录策略接口</p >

@@ -1,7 +1,7 @@
 package com.ddf.group.purchase.core.controller;
 
+import com.ddf.group.purchase.api.request.user.CompleteUserInfoRequest;
 import com.ddf.group.purchase.core.helper.CommonHelper;
-import com.ddf.group.purchase.core.model.request.user.CompleteUserInfoRequest;
 import com.ddf.group.purchase.core.service.UserInfoService;
 import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;

@@ -4,7 +4,7 @@ import cn.hutool.core.util.StrUtil;
 import com.ddf.boot.common.core.util.JsonUtil;
 import com.ddf.group.purchase.core.constants.RedisKeyEnum;
 import com.ddf.group.purchase.core.constants.RedisKeys;
-import com.ddf.group.purchase.core.repository.model.EmailToken;
+import com.ddf.group.purchase.core.model.dto.user.EmailToken;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;

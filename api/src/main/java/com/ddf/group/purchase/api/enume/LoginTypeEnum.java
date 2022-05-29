@@ -1,4 +1,4 @@
-package com.ddf.group.purchase.core.constants;
+package com.ddf.group.purchase.api.enume;
 
 /**
  * <p>登录类型</p >
