@@ -31,7 +31,7 @@ public class CaptchaVerifyRequest implements Serializable {
     private String verifyCode;
 
     /**
-     * 验证码类型
+     * 验证码类型{@link CaptchaType}
      */
     @NotNull(message = "验证码类型不能为空")
     private CaptchaType captchaType = CaptchaType.MATH;

@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * <p>用户资料相关</p >
  *
+ * @menu 用户资料相关
  * @author Snowball
  * @version 1.0
  * @date 2022/05/15 20:54

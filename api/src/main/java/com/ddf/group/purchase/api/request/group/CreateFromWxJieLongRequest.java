@@ -1,9 +1,13 @@
 package com.ddf.group.purchase.api.request.group;
 
+import cn.hutool.core.util.NumberUtil;
+import cn.hutool.core.util.StrUtil;
+import com.ddf.boot.common.core.util.JsonUtil;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.validation.constraints.NotBlank;
+import lombok.Builder;
 import lombok.Data;
 
 /**
@@ -34,11 +38,124 @@ public class CreateFromWxJieLongRequest implements Serializable {
      * #接龙
      * 接龙，这次不填写接龙格式，也不填写补充信息
      *
-     * 1.尘 接龙内容
+     * 1.尘 消毒液两瓶
+     * 2.295-909 消毒药三瓶
      *
      */
     @NotBlank(message = "接龙文本不能为空")
     private String text;
+
+    /**
+     * 解析接龙文本
+     *
+     * @return
+     */
+    public Data getData() {
+        final String[] split = text.split("\n");
+        // 接龙内容名称,开头的固定内容格式#接龙跳过不处理
+        final Data data = Data.builder()
+                .name(split[1])
+                .build();
+        List<UserData> userDataList = new ArrayList<>();
+        String str;
+        for (int i = 2; i < split.length; i++) {
+            str = split[i];
+            if (i == 2) {
+                if (StrUtil.isNotBlank(str)) {
+                    data.setExample(str);
+                }
+                continue;
+                // 过滤本来就是空的，或者过滤掉示例
+            } else if (StrUtil.isBlank(str) || (i == 3 &&  StrUtil.isNotBlank(str) && data.getExample() != null)) {
+                continue;
+            } else if (i == split.length - 1 && StrUtil.isBlank(split[i - 1])) {
+                data.setRemarks(str);
+                continue;
+            }
+            // 这里都是具体的接龙内容了
+            // 1.尘 这个是接龙的内容
+            final String[] userDataStr = str.split(" ");
+            userDataList.add(UserData.builder()
+                    .name(userDataStr[0].split("\\.")[1])
+                    .content(userDataStr[1])
+                    .build());
+        }
+        data.setUserDataList(userDataList);
+        return data;
+    }
+
+
+    /**
+     * 解析出来的数据
+     */
+    @lombok.Data
+    @Builder
+    public static class Data {
+
+        /**
+         * 接龙名称
+         */
+        private String name;
+
+        /**
+         * 接龙示例
+         */
+        private String example;
+
+        /**
+         * 补充信息
+         */
+        private String remarks;
+
+        /**
+         * 用户接龙内容
+         */
+        private List<UserData> userDataList;
+
+    }
+
+
+    /**
+     * 用户的接龙内容
+     */
+    @lombok.Data
+    @Builder
+    public static class UserData {
+
+        /**
+         * 接龙时用户在群里的名称， 在本系统里目前必须是改好的名称即多少栋多少号，如295-909，否则无法对应数据
+         */
+        private String name;
+
+        /**
+         * 接龙的内容
+         */
+        private String content;
+
+        /**
+         * 获取楼栋号，必须在群聊中按规则改过名
+         *
+         * @return
+         */
+        public String getBuildingNo() {
+            if (name != null && name.contains("-") && NumberUtil.isNumber(Character.toString(name.charAt(0)))) {
+                return name.split("-")[0];
+            }
+            return null;
+        }
+
+        /**
+         * 获取房间号，必须在群聊中按规则改过名
+         *
+         * @return
+         */
+        public String getRoomNo() {
+            if (name != null && name.contains("-") && NumberUtil.isNumber(Character.toString(name.charAt(0)))) {
+                return name.split("-")[1];
+            }
+            return null;
+        }
+    }
 
 
     public static void main(String[] args) {
@@ -51,35 +168,17 @@ public class CreateFromWxJieLongRequest implements Serializable {
                 "3.295-911 十斤西瓜，五斤苹果\n" +
                 "\n" +
                 "大家快点接龙，三点结束";
+        final CreateFromWxJieLongRequest request = new CreateFromWxJieLongRequest();
+        request.setText(text);
+        System.out.println(JsonUtil.asString(request.getData()));
 
-        final String[] split = text.split("\n");
-        // 接龙内容名称,开头的固定内容格式#接龙跳过不处理
-        String name = split[1];
-        // 接龙格式示例
-        String example = null;
-        // 具体接龙内容
-        List<String> userText = new ArrayList<>();
-        // 补充信息
-        String remarks = null;
-        for (int i = 2; i < split.length; i++) {
-            if (i == 2 && split[i] != null) {
-                example = split[i];
-            } else
-            // 说明开始到了分割接龙内容和补充内容的地方了
-            if (split[i - 1] == null) {
-                remarks = split[i];
-            } else {
-                if (split[i] == null) {
-                    continue;
-                }
-                // 这里都是具体的接龙内容了
-                userText.add(split[i]);
-            }
-        }
-        System.out.println("name = " + name);
-        System.out.println("example = " + example);
-        System.out.println("userText = " + userText);
-        System.out.println("remarks = " + remarks);
+        text = "#接龙\n" +
+            "接龙，这次不填写接龙格式，也不填写补充信息\n" +
+            "\n" +
+            "1.尘 消毒液两瓶\n" +
+            "2.295-909 消毒药三瓶";
+        request.setText(text);
+        System.out.println(JsonUtil.asString(request.getData()));
     }
 
 }
