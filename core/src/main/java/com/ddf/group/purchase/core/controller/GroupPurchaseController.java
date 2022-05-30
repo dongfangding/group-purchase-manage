@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @date 2022/05/30 23:28
  */
 @RestController
-@RequestMapping("/common")
+@RequestMapping("/groupPurchase")
 @RequiredArgsConstructor(onConstructor_={@Autowired})
 public class GroupPurchaseController {
 

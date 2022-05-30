@@ -40,7 +40,7 @@ public class CommonController {
      * @param request
      * @return
      */
-    @PostMapping("sysUser/generateCaptcha")
+    @PostMapping("generateCaptcha")
     public ApplicationCaptchaResult generateCaptcha(@RequestBody @Validated CaptchaRequest request) {
         return commonHelper.generateCaptcha(request);
     }
