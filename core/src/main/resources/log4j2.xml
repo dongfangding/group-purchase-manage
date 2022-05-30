@@ -2,11 +2,11 @@
 <!-- Log4j 2.x 配置文件 -->
 <Configuration status="warn" strict="true">
     <Properties>
-        <Property name="LOG_BASE_DIR">/data/logs/group-purchase/</Property>
-        <Property name="CONSOLE_LOG_PATTERN">%clr{[%d{yyyy-MM-dd HH:mm:ss.SSS}]}{faint} %clr{%level}{magenta}
+        <Property name="LOG_BASE_DIR">/data/logs/group-purchase-manage/</Property>
+        <Property name="CONSOLE_LOG_PATTERN">%clr{[%d{yyyy-MM-dd HH:mm:ss.SSS}]}%X{uid}%X{traceId}{faint} %clr{%level}{magenta}
             %clr{[%t]}{faint} %clr{%c{1.}}{cyan} %clr{-}{faint} %m%n%xwEx
         </Property>
-        <Property name="FILE_LOG_PATTERN">[%d{yyyy-MM-dd HH:mm:ss.SSS}] %level [%t] %c{1.} - %msg%n</Property>
+        <Property name="FILE_LOG_PATTERN">[%d{yyyy-MM-dd HH:mm:ss.SSS}]%X{uid}%X{traceId} %level [%t] %c{1.} - %msg%n</Property>
     </Properties>
 
     <Appenders>
