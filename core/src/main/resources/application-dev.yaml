@@ -2,7 +2,7 @@ nacos:
   config:
     auto-refresh: true
     config-retry-time: 3000
-    namespace: group-purchase-manager
+    namespace: group-purchase-manage
     group: dev
     enable-remote-sync-config: true
     type: properties
@@ -13,12 +13,12 @@ nacos:
         group: DEFAULT_GROUP
         type: yaml
         auto-refresh: true
-      - namespace: group-purchase-manager
+      - namespace: group-purchase-manage
         dataId: authentication
         group: dev
         type: yaml
         auto-refresh: true
-      - namespace: group-purchase-manager
+      - namespace: group-purchase-manage
         dataId: application-properties
         group: dev
         type: yaml

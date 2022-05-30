@@ -1,5 +1,6 @@
 package com.ddf.group.purchase.api.request.group;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.NumberUtil;
 import cn.hutool.core.util.StrUtil;
 import com.ddf.boot.common.core.util.JsonUtil;
@@ -9,6 +10,7 @@ import java.util.List;
 import javax.validation.constraints.NotBlank;
 import lombok.Builder;
 import lombok.Data;
+import org.springframework.util.Assert;
 
 /**
  * <p>通过微信接龙文本创建关联团购信息</p >
@@ -19,6 +21,8 @@ import lombok.Data;
  */
 @Data
 public class CreateFromWxJieLongRequest implements Serializable {
+
+    private static final long serialVersionUID = -1860989076398913483L;
 
     /**
      * 接龙文本，全文粘贴过来，保留格式
@@ -51,6 +55,7 @@ public class CreateFromWxJieLongRequest implements Serializable {
      * @return
      */
     public Data getData() {
+        Assert.isTrue(text != null && text.startsWith("#接龙"), "接龙文本不合法，请完整复制接龙文本内容");
         final String[] split = text.split("\n");
         // 接龙内容名称,开头的固定内容格式#接龙跳过不处理
         final Data data = Data.builder()
@@ -81,6 +86,7 @@ public class CreateFromWxJieLongRequest implements Serializable {
                     .build());
         }
         data.setUserDataList(userDataList);
+        Assert.isTrue(CollUtil.isNotEmpty(userDataList), "接龙文本不完整，无参与人员~");
         return data;
     }
 

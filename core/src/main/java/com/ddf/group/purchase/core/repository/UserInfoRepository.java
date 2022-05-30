@@ -1,11 +1,13 @@
 package com.ddf.group.purchase.core.repository;
 
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.ddf.group.purchase.core.mapper.ext.UserInfoExtMapper;
 import com.ddf.group.purchase.core.model.cqrs.user.CompleteUserInfoCommand;
 import com.ddf.group.purchase.core.model.entity.UserInfo;
+import java.util.List;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -97,6 +99,15 @@ public class UserInfoRepository {
      */
     public int completeUserInfo(CompleteUserInfoCommand command) {
         final LambdaUpdateWrapper<UserInfo> wrapper = Wrappers.lambdaUpdate();
+        if (Objects.nonNull(command.getCommunityId())) {
+            wrapper.set(UserInfo::getCommunityId, command.getCommunityId());
+        }
+        if (StrUtil.isNotBlank(command.getBuildingNo())) {
+            wrapper.set(UserInfo::getBuildingNo, command.getBuildingNo());
+        }
+        if (StrUtil.isNotBlank(command.getRoomNo())) {
+            wrapper.set(UserInfo::getRoomNo, command.getRoomNo());
+        }
         if (Objects.nonNull(command.getEmail())) {
             wrapper.set(UserInfo::getEmail, command.getEmail());
         }
@@ -130,5 +141,21 @@ public class UserInfoRepository {
         wrapper.eq(UserInfo::getEmailVerified, Boolean.FALSE);
         wrapper.set(UserInfo::getEmailVerified, Boolean.TRUE);
         return userInfoExtMapper.update(null, wrapper);
+    }
+
+    /**
+     * 根据住址查询用户，一个住址可能有多个用户
+     *
+     * @param communityId
+     * @param buildingNo
+     * @param roomNo
+     * @return
+     */
+    public List<UserInfo> getByBuildingAndRoomNo(Integer communityId, String buildingNo, String roomNo) {
+        final LambdaQueryWrapper<UserInfo> wrapper = Wrappers.lambdaQuery();
+        wrapper.eq(UserInfo::getCommunityId, communityId)
+                .eq(UserInfo::getBuildingNo, buildingNo)
+                .eq(UserInfo::getRoomNo, roomNo);
+        return userInfoExtMapper.selectList(wrapper);
     }
 }

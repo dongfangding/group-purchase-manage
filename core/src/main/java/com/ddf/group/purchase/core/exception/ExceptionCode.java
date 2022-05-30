@@ -23,6 +23,7 @@ public enum ExceptionCode implements BaseCallbackCode {
     LOGIN_STRATEGY_MAPPING_ERROR("login_strategy_mapping_error", "登录策略异常~", "服务器开小差了~"),
     EMAIL_ACTIVE_TOKEN_EXPIRED("email_active_token_expired", "激活链接已过期，请重新验证"),
     USER_NOT_EXIST("user_not_exist", "用户不存在"),
+    GROUP_MASTER_NOT_MAPPING("group_master_not_mapping", "身份不匹配，请确认接龙中个人信息与系统登记的楼栋号和房间号相匹配~"),
 
     ;
 

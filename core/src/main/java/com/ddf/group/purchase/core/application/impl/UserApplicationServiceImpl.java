@@ -64,9 +64,6 @@ public class UserApplicationServiceImpl implements UserApplicationService {
         commonHelper.verifySmsCode(verifyRequest);
 
         final UserInfo userInfo = new UserInfo();
-        userInfo.setCommunityId(request.getCommunityId());
-        userInfo.setBuildingNo(request.getBuildingNo());
-        userInfo.setRoomNo(request.getRoomNo());
         userInfo.setMobile(request.getMobile());
         userInfo.setPassword(bCryptPasswordEncoder.encode(request.getPassword()));
         userInfo.setCtime(DateUtils.currentTimeSeconds());
@@ -81,6 +78,9 @@ public class UserApplicationServiceImpl implements UserApplicationService {
         final UserInfo userInfo = userClient.currentUserInfo();
         final CompleteUserInfoCommand command = CompleteUserInfoCommand.builder()
                 .id(userInfo.getId())
+                .communityId(request.getCommunityId())
+                .buildingNo(request.getBuildingNo())
+                .roomNo(request.getRoomNo())
                 .nickname(request.getNickname())
                 .email(request.getEmail())
                 .avatarUrl(request.getAvatarUrl())

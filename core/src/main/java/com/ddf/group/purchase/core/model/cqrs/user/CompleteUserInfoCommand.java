@@ -23,6 +23,21 @@ public class CompleteUserInfoCommand implements Serializable {
     private Long id;
 
     /**
+     * 小区id
+     */
+    private Integer communityId;
+
+    /**
+     * 楼栋号
+     */
+    private String buildingNo;
+
+    /**
+     * 房间号
+     */
+    private String roomNo;
+
+    /**
      * 昵称
      */
     private String nickname;

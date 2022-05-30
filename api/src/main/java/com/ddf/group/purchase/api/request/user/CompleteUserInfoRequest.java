@@ -17,6 +17,21 @@ public class CompleteUserInfoRequest implements Serializable {
     private static final long serialVersionUID = 1516322558409231083L;
 
     /**
+     * 小区id
+     */
+    private Integer communityId;
+
+    /**
+     * 楼栋号
+     */
+    private String buildingNo;
+
+    /**
+     * 房间号
+     */
+    private String roomNo;
+
+    /**
      * 昵称
      */
     private String nickname;

@@ -25,7 +25,7 @@ spring:
   profiles:
     active: dev
   application:
-    name: group-purchase-manager
+    name: group-purchase-manage
   servlet:
     multipart:
       max-file-size: 50MB

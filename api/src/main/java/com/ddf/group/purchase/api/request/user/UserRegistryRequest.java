@@ -3,7 +3,6 @@ package com.ddf.group.purchase.api.request.user;
 import com.ddf.boot.common.core.validator.constraint.Mobile;
 import java.io.Serializable;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import lombok.Data;
 
 /**
@@ -17,24 +16,6 @@ import lombok.Data;
 public class UserRegistryRequest implements Serializable {
 
     private static final long serialVersionUID = 1516322558409231083L;
-
-    /**
-     * 小区id
-     */
-    @NotNull(message = "小区id不能为空")
-    private Integer communityId;
-
-    /**
-     * 楼栋号
-     */
-    @NotNull(message = "楼栋号不能为空")
-    private Integer buildingNo;
-
-    /**
-     * 房间号
-     */
-    @NotNull(message = "房间号不能为空")
-    private Integer roomNo;
 
     /**
      * 手机号

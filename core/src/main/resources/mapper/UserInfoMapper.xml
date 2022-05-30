@@ -6,8 +6,8 @@
     <!--@Table user_info-->
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="community_id" jdbcType="INTEGER" property="communityId" />
-    <result column="building_no" jdbcType="INTEGER" property="buildingNo" />
-    <result column="room_no" jdbcType="INTEGER" property="roomNo" />
+    <result column="building_no" jdbcType="VARCHAR" property="buildingNo" />
+    <result column="room_no" jdbcType="VARCHAR" property="roomNo" />
     <result column="nickname" jdbcType="VARCHAR" property="nickname" />
     <result column="mobile" jdbcType="VARCHAR" property="mobile" />
     <result column="wx_id" jdbcType="VARCHAR" property="wxId" />
