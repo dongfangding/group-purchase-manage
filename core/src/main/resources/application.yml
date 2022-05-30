@@ -17,7 +17,7 @@ server:
       min-spare: 20
     processor-cache: 300
   servlet:
-    context-path: /group-purchase-manager
+    context-path: /group-purchase-manage
 
 spring:
   lifecycle:
