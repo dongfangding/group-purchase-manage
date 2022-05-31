@@ -1,0 +1,11 @@
+# 通过微信接龙文案创建团购信息
+POST http://localhost:8083/group-purchase-manage/groupPurchase/createFromWxJieLong
+Content-Type: application/json
+Authorization: Bearer $2a$10$uZj467KJqzI9EhgDbdQBQuTZk4LQRohgApmIiGn.Xz2Ll/sYtDy.6<=>a9948a6c682cdef5fd59c5a9c67c8d33770ca3d44d43ba48f249c85b2fff5040fd37807c6dd9d97b3b4388033e4ff5ce4755413c26d3e3ba145c8a26b95358fe413ef8f2afc13aeee167a4b2e1bf3e37c16485ac1af4a15369477cb4cffed5b98a1f95e25dc7e985d1e5f38417591c3f2f376d48d44d82000599b92f558097882c2f40a15b90f860395df217bf5e4e38d4e9497adea9e8d88cb776f3ebc2d99d44f3e950e309fa770c351d3c06a84210
+
+{
+  "text": "#接龙\n这个是接龙填的名称，简介啥的\n例 这个是对下面格式的说明，对系统没太大用处，无法解析，主要是接龙时别人用的\n\n1.295-909 五斤西瓜，十斤苹果\n2.295-910 六斤西瓜，三斤苹果\n3.尘 十斤西瓜，五斤苹果\n\n大家快点接龙，三点结束"
+}
+
+
+

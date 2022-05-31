@@ -1,5 +1,5 @@
 ### 发送验证码， 先有验证码，后续才能发送短信
-POST http://localhost:8083/group-purchase-manager/common/generateCaptcha
+POST http://localhost:8083/group-purchase-manage/common/generateCaptcha
 Content-Type: application/json
 
 # CLICK_WORDS MATH PIC_SLIDE
@@ -8,7 +8,7 @@ Content-Type: application/json
 }
 
 ### 发送注册验证码
-POST http://localhost:8083/group-purchase-manager/auth/sendRegisterSmsCode
+POST http://localhost:8083/group-purchase-manage/auth/sendRegisterSmsCode
 Content-Type: application/json
 
 {
@@ -21,7 +21,7 @@ Content-Type: application/json
 }
 
 ### 注册
-POST http://localhost:8083/group-purchase-manager/auth/registry
+POST http://localhost:8083/group-purchase-manage/auth/registry
 Accept: application/json
 Content-Type: application/json
 
@@ -37,7 +37,7 @@ Content-Type: application/json
 
 
 ### 密码登录
-POST http://localhost:8083/group-purchase-manager/auth/login
+POST http://localhost:8083/group-purchase-manage/auth/login
 Accept: application/json
 Content-Type: application/json
 
@@ -48,14 +48,14 @@ Content-Type: application/json
 }
 
 ### 获取当前用户认证信息
-GET http://localhost:8083/group-purchase-manager/auth/currentUser
+GET http://localhost:8083/group-purchase-manage/auth/currentUser
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer $2a$10$toZ9n0t0DNwcW4sxADzsnOYZQKwAJZ9LJ32TPZTwXS1gLGuImH2QO<=>a9948a6c682cdef5fd59c5a9c67c8d33770ca3d44d43ba48f249c85b2fff5040fd37807c6dd9d97b3b4388033e4ff5ce4755413c26d3e3ba145c8a26b95358fe413ef8f2afc13aeee167a4b2e1bf3e37c16485ac1af4a15369477cb4cffed5b98a1f95e25dc7e985d1e5f38417591c3f2f376d48d44d82000599b92f558097882c2f40a15b90f860395df217bf5e4e38d4e9497adea9e8d88cb776f3ebc2d99d44f3e950e309fa770c351d3c06a84210
 
 
 ### 使用短信验证码登录
-POST http://localhost:8083/group-purchase-manager/auth/login
+POST http://localhost:8083/group-purchase-manage/auth/login
 Accept: application/json
 Content-Type: application/json
 

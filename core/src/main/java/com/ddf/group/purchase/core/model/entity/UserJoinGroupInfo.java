@@ -17,7 +17,7 @@ import lombok.Data;
 @Data
 @TableName(value = "user_join_group_info")
 public class UserJoinGroupInfo implements Serializable {
-    @TableId(value = "id", type = IdType.INPUT)
+    @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
     /**
