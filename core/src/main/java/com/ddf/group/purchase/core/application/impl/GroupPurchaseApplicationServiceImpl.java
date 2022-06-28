@@ -5,6 +5,8 @@ import com.ddf.boot.common.core.exception200.BusinessException;
 import com.ddf.boot.common.core.util.DateUtils;
 import com.ddf.group.purchase.api.enume.GroupPurchaseStatusEnum;
 import com.ddf.group.purchase.api.request.group.CreateFromWxJieLongRequest;
+import com.ddf.group.purchase.api.request.group.GroupPurchaseInfoPageRequest;
+import com.ddf.group.purchase.api.response.group.GroupPurchaseInfoPageResponse;
 import com.ddf.group.purchase.core.application.GroupPurchaseApplicationService;
 import com.ddf.group.purchase.core.client.UserClient;
 import com.ddf.group.purchase.core.exception.ExceptionCode;
@@ -14,6 +16,7 @@ import com.ddf.group.purchase.core.model.entity.GroupPurchaseInfo;
 import com.ddf.group.purchase.core.model.entity.UserInfo;
 import com.ddf.group.purchase.core.model.entity.UserJoinGroupInfo;
 import com.ddf.group.purchase.core.repository.UserInfoRepository;
+import com.github.pagehelper.PageInfo;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -91,5 +94,10 @@ public class GroupPurchaseApplicationServiceImpl implements GroupPurchaseApplica
         if (CollUtil.isNotEmpty(joins)) {
             userJoinGroupInfoExtMapper.batchInsert(joins);
         }
+    }
+
+    @Override
+    public PageInfo<GroupPurchaseInfoPageResponse> pageList(GroupPurchaseInfoPageRequest request) {
+        return null;
     }
 }
