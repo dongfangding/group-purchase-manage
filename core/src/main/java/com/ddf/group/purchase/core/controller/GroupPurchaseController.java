@@ -1,10 +1,14 @@
 package com.ddf.group.purchase.core.controller;
 
+import com.ddf.boot.common.core.model.PageResult;
 import com.ddf.group.purchase.api.request.group.CreateFromWxJieLongRequest;
+import com.ddf.group.purchase.api.request.group.GroupPurchaseInfoPageRequest;
+import com.ddf.group.purchase.api.response.group.GroupPurchaseInfoPageResponse;
 import com.ddf.group.purchase.core.application.GroupPurchaseApplicationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,4 +38,10 @@ public class GroupPurchaseController {
     public void createFromWxJieLong(@RequestBody @Validated CreateFromWxJieLongRequest request) {
         groupPurchaseApplicationService.createFromWxJieLong(request);
     }
+
+    @GetMapping("myInitiatedGroup")
+    public PageResult<GroupPurchaseInfoPageResponse> myInitiatedGroup(@Validated GroupPurchaseInfoPageRequest request) {
+        return groupPurchaseApplicationService.myInitiatedGroup(request);
+    }
+
 }

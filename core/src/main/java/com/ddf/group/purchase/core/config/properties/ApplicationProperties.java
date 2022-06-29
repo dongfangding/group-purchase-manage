@@ -20,13 +20,13 @@ public class ApplicationProperties {
 
     /**
      * 邮件激活接口地址
-     * @NacosValue(value = "${mailActiveUrl:}", autoRefreshed = true)
+     * // @NacosValue(value = "${mailActiveUrl:}", autoRefreshed = true)
      */
     private String mailActiveUrl;
 
     /**
      * 短信验证码每日限额数量
-     * @NacosValue(value = "${smsDailyLimit:10}", autoRefreshed = true)
+     * // @NacosValue(value = "${smsDailyLimit:10}", autoRefreshed = true)
      */
     private Integer smsDailyLimit = 10;
 

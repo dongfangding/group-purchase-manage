@@ -1,8 +1,11 @@
 package com.ddf.group.purchase.core.application.impl;
 
 import cn.hutool.core.collection.CollUtil;
+import com.ddf.boot.common.authentication.util.UserContextUtil;
 import com.ddf.boot.common.core.exception200.BusinessException;
+import com.ddf.boot.common.core.model.PageResult;
 import com.ddf.boot.common.core.util.DateUtils;
+import com.ddf.boot.common.core.util.PageUtil;
 import com.ddf.group.purchase.api.enume.GroupPurchaseStatusEnum;
 import com.ddf.group.purchase.api.request.group.CreateFromWxJieLongRequest;
 import com.ddf.group.purchase.api.request.group.GroupPurchaseInfoPageRequest;
@@ -15,8 +18,8 @@ import com.ddf.group.purchase.core.mapper.ext.UserJoinGroupInfoExtMapper;
 import com.ddf.group.purchase.core.model.entity.GroupPurchaseInfo;
 import com.ddf.group.purchase.core.model.entity.UserInfo;
 import com.ddf.group.purchase.core.model.entity.UserJoinGroupInfo;
+import com.ddf.group.purchase.core.repository.GroupPurchaseInfoRepository;
 import com.ddf.group.purchase.core.repository.UserInfoRepository;
-import com.github.pagehelper.PageInfo;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -43,6 +46,7 @@ public class GroupPurchaseApplicationServiceImpl implements GroupPurchaseApplica
     private final GroupPurchaseInfoExtMapper groupPurchaseInfoExtMapper;
     private final UserInfoRepository userInfoRepository;
     private final UserJoinGroupInfoExtMapper userJoinGroupInfoExtMapper;
+    private final GroupPurchaseInfoRepository groupPurchaseInfoRepository;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -97,7 +101,21 @@ public class GroupPurchaseApplicationServiceImpl implements GroupPurchaseApplica
     }
 
     @Override
-    public PageInfo<GroupPurchaseInfoPageResponse> pageList(GroupPurchaseInfoPageRequest request) {
+    public PageResult<GroupPurchaseInfoPageResponse> myInitiatedGroup(GroupPurchaseInfoPageRequest request) {
+        request.setGroupMasterUid(Long.parseLong(UserContextUtil.getUserId()));
+        return PageUtil.startPage(request, () -> {
+            groupPurchaseInfoRepository.listGroupPurchaseInfo(request);
+        }, GroupPurchaseInfo.class, GroupPurchaseInfoPageResponse.class);
+//        return PageUtil.startPage(request, () -> {
+//            groupPurchaseInfoRepository.listGroupPurchaseInfo(request);
+//        }, list -> {
+//            // fixme 这里类型丢失了，变成了Object
+//            return GroupPurchaseInfoConvert.INSTANCE.convert(list);                                                                                                                                                                                                                                                                      ANCE.convert(list);
+//        });
+    }
+
+    @Override
+    public PageResult<GroupPurchaseInfoPageResponse> pageList(GroupPurchaseInfoPageRequest request) {
         return null;
     }
 }
