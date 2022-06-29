@@ -27,4 +27,9 @@ public class GroupPurchaseInfoPageRequest implements Serializable, PageRequest {
      */
     private String groupMasterName;
 
+    /**
+     * 团长uid
+     */
+    private Long groupMasterUid;
+
 }

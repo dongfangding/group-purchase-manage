@@ -69,7 +69,7 @@ public class GroupPurchaseInfoPageResponse implements Serializable {
      */
     private Long mtime;
 
-    private String getStatusName() {
+    public String getStatusName() {
         return GroupPurchaseStatusEnum.resolve(status).getDesc();
     }
 }
