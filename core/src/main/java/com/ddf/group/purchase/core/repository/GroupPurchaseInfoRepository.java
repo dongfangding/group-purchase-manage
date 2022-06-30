@@ -2,7 +2,7 @@ package com.ddf.group.purchase.core.repository;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.ddf.group.purchase.api.request.group.GroupPurchaseInfoPageRequest;
+import com.ddf.group.purchase.api.request.group.MyInitiatedGroupPageRequest;
 import com.ddf.group.purchase.core.mapper.GroupPurchaseInfoMapper;
 import com.ddf.group.purchase.core.model.entity.GroupPurchaseInfo;
 import java.util.List;
@@ -32,12 +32,12 @@ public class GroupPurchaseInfoRepository {
      * @param request
      * @return
      */
-    public List<GroupPurchaseInfo> listGroupPurchaseInfo(GroupPurchaseInfoPageRequest request) {
+    public List<GroupPurchaseInfo> listGroupPurchaseInfo(MyInitiatedGroupPageRequest request) {
         final LambdaQueryWrapper<GroupPurchaseInfo> wrapper = Wrappers.lambdaQuery();
         if (Objects.nonNull(request.getGroupMasterUid())) {
             wrapper.eq(GroupPurchaseInfo::getGroupMasterUid, request.getGroupMasterUid());
         }
-        wrapper.likeLeft(GroupPurchaseInfo::getName, request.getGroupMasterName());
+        wrapper.likeLeft(GroupPurchaseInfo::getName, request.getGroupName());
         return groupPurchaseInfoMapper.selectList(wrapper);
     }
 }

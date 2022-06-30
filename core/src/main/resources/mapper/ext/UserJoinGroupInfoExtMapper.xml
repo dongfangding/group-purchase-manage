@@ -7,4 +7,25 @@
             (#{record.groupPurchaseId}, #{record.joinUid}, #{record.ctime}, #{record.subscribeProgress})
         </foreach>
     </insert>
+
+    <select id="myJoinGroup" resultType="com.ddf.group.purchase.api.response.group.MyJoinGroupPageResponse">
+        select ujgi.group_purchase_id as id,
+               ujgi.ctime             as joinTime,
+               gpi.name,
+               gpi.group_master_uid   as groupMasterUid,
+               gpi.status,
+               gpi.remark,
+               gpi.ctime,
+               gpi.mtime
+        from user_join_group_info ujgi
+                 left join group_purchase_info gpi on ujgi.group_purchase_id = gpi.id
+        where ujgi.join_uid = #{request.joinUid}
+        <if test="request.status != null">
+            and gpi.status = #{request.status}
+        </if>
+        <if test="request.groupName != null and request.groupName != ''">
+            and gpi.name like concat(#{request.groupName}, '%')
+        </if>
+        order by ujgi.ctime desc
+    </select>
 </mapper>

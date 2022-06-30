@@ -1,6 +1,6 @@
 package com.ddf.group.purchase.core.converter;
 
-import com.ddf.group.purchase.api.response.group.GroupPurchaseInfoPageResponse;
+import com.ddf.group.purchase.api.response.group.MyInitiatedGroupPageResponse;
 import com.ddf.group.purchase.core.model.entity.GroupPurchaseInfo;
 import java.util.List;
 import org.mapstruct.Mapper;
@@ -32,6 +32,6 @@ public interface GroupPurchaseInfoConvert {
      * @param groupPurchaseInfo
      * @return
      */
-    List<GroupPurchaseInfoPageResponse> convert(List<GroupPurchaseInfo> groupPurchaseInfo);
+    List<MyInitiatedGroupPageResponse> convert(List<GroupPurchaseInfo> groupPurchaseInfo);
 
 }

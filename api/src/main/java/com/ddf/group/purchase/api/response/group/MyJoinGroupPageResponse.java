@@ -12,7 +12,8 @@ import lombok.Data;
 * @date 2022/05/23 23:11
 */
 @Data
-public class GroupPurchaseInfoPageResponse implements Serializable {
+public class MyJoinGroupPageResponse implements Serializable {
+
     private Long id;
 
     /**
@@ -68,6 +69,11 @@ public class GroupPurchaseInfoPageResponse implements Serializable {
      * 更新时间秒时间戳
      */
     private Long mtime;
+
+    /**
+     * 参团时间
+     */
+    private Long joinTime;
 
     public String getStatusName() {
         return GroupPurchaseStatusEnum.resolve(status).getDesc();

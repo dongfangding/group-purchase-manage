@@ -11,4 +11,5 @@ import com.ddf.group.purchase.core.model.entity.UserJoinGroupInfo;
  * @date 2022/05/23 23:11
  */
 public interface UserJoinGroupInfoMapper extends BaseMapper<UserJoinGroupInfo> {
+
 }

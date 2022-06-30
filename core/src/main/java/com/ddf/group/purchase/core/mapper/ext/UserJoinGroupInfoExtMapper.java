@@ -1,5 +1,7 @@
 package com.ddf.group.purchase.core.mapper.ext;
 
+import com.ddf.group.purchase.api.request.group.MyJoinGroupPageRequest;
+import com.ddf.group.purchase.api.response.group.MyJoinGroupPageResponse;
 import com.ddf.group.purchase.core.mapper.UserJoinGroupInfoMapper;
 import com.ddf.group.purchase.core.model.entity.UserJoinGroupInfo;
 import java.util.List;
@@ -18,4 +20,12 @@ public interface UserJoinGroupInfoExtMapper extends UserJoinGroupInfoMapper {
      * @param joins
      */
     void batchInsert(@Param("list") List<UserJoinGroupInfo> joins);
+
+    /**
+     * 我的参团列表查询
+     *
+     * @param request
+     * @return
+     */
+    List<MyJoinGroupPageResponse> myJoinGroup(@Param("request") MyJoinGroupPageRequest request);
 }

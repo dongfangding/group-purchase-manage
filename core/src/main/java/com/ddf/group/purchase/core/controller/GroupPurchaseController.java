@@ -2,8 +2,8 @@ package com.ddf.group.purchase.core.controller;
 
 import com.ddf.boot.common.core.model.PageResult;
 import com.ddf.group.purchase.api.request.group.CreateFromWxJieLongRequest;
-import com.ddf.group.purchase.api.request.group.GroupPurchaseInfoPageRequest;
-import com.ddf.group.purchase.api.response.group.GroupPurchaseInfoPageResponse;
+import com.ddf.group.purchase.api.request.group.MyInitiatedGroupPageRequest;
+import com.ddf.group.purchase.api.response.group.MyInitiatedGroupPageResponse;
 import com.ddf.group.purchase.core.application.GroupPurchaseApplicationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,9 +39,26 @@ public class GroupPurchaseController {
         groupPurchaseApplicationService.createFromWxJieLong(request);
     }
 
+    /**
+     * 我发起的团购
+     *
+     * @param request
+     * @return
+     */
     @GetMapping("myInitiatedGroup")
-    public PageResult<GroupPurchaseInfoPageResponse> myInitiatedGroup(@Validated GroupPurchaseInfoPageRequest request) {
+    public PageResult<MyInitiatedGroupPageResponse> myInitiatedGroup(@Validated MyInitiatedGroupPageRequest request) {
         return groupPurchaseApplicationService.myInitiatedGroup(request);
+    }
+
+    /**
+     * 我参与的团购
+     *
+     * @param request
+     * @return
+     */
+    @GetMapping("myJoinGroup")
+    public PageResult<MyInitiatedGroupPageResponse> myJoinGroup(@Validated MyInitiatedGroupPageRequest request) {
+        return groupPurchaseApplicationService.myJoinGroup(request);
     }
 
 }

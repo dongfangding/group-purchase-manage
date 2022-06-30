@@ -8,8 +8,8 @@ import com.ddf.boot.common.core.util.DateUtils;
 import com.ddf.boot.common.core.util.PageUtil;
 import com.ddf.group.purchase.api.enume.GroupPurchaseStatusEnum;
 import com.ddf.group.purchase.api.request.group.CreateFromWxJieLongRequest;
-import com.ddf.group.purchase.api.request.group.GroupPurchaseInfoPageRequest;
-import com.ddf.group.purchase.api.response.group.GroupPurchaseInfoPageResponse;
+import com.ddf.group.purchase.api.request.group.MyInitiatedGroupPageRequest;
+import com.ddf.group.purchase.api.response.group.MyInitiatedGroupPageResponse;
 import com.ddf.group.purchase.core.application.GroupPurchaseApplicationService;
 import com.ddf.group.purchase.core.client.UserClient;
 import com.ddf.group.purchase.core.exception.ExceptionCode;
@@ -101,11 +101,11 @@ public class GroupPurchaseApplicationServiceImpl implements GroupPurchaseApplica
     }
 
     @Override
-    public PageResult<GroupPurchaseInfoPageResponse> myInitiatedGroup(GroupPurchaseInfoPageRequest request) {
+    public PageResult<MyInitiatedGroupPageResponse> myInitiatedGroup(MyInitiatedGroupPageRequest request) {
         request.setGroupMasterUid(Long.parseLong(UserContextUtil.getUserId()));
         return PageUtil.startPage(request, () -> {
             groupPurchaseInfoRepository.listGroupPurchaseInfo(request);
-        }, GroupPurchaseInfo.class, GroupPurchaseInfoPageResponse.class);
+        }, GroupPurchaseInfo.class, MyInitiatedGroupPageResponse.class);
 //        return PageUtil.startPage(request, () -> {
 //            groupPurchaseInfoRepository.listGroupPurchaseInfo(request);
 //        }, list -> {
@@ -115,7 +115,12 @@ public class GroupPurchaseApplicationServiceImpl implements GroupPurchaseApplica
     }
 
     @Override
-    public PageResult<GroupPurchaseInfoPageResponse> pageList(GroupPurchaseInfoPageRequest request) {
+    public PageResult<MyInitiatedGroupPageResponse> pageList(MyInitiatedGroupPageRequest request) {
+        return null;
+    }
+
+    @Override
+    public PageResult<MyInitiatedGroupPageResponse> myJoinGroup(MyInitiatedGroupPageRequest request) {
         return null;
     }
 }
