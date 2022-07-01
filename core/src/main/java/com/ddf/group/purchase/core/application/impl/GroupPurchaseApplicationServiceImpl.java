@@ -9,7 +9,9 @@ import com.ddf.boot.common.core.util.PageUtil;
 import com.ddf.group.purchase.api.enume.GroupPurchaseStatusEnum;
 import com.ddf.group.purchase.api.request.group.CreateFromWxJieLongRequest;
 import com.ddf.group.purchase.api.request.group.MyInitiatedGroupPageRequest;
+import com.ddf.group.purchase.api.request.group.MyJoinGroupPageRequest;
 import com.ddf.group.purchase.api.response.group.MyInitiatedGroupPageResponse;
+import com.ddf.group.purchase.api.response.group.MyJoinGroupPageResponse;
 import com.ddf.group.purchase.core.application.GroupPurchaseApplicationService;
 import com.ddf.group.purchase.core.client.UserClient;
 import com.ddf.group.purchase.core.exception.ExceptionCode;
@@ -22,7 +24,10 @@ import com.ddf.group.purchase.core.repository.GroupPurchaseInfoRepository;
 import com.ddf.group.purchase.core.repository.UserInfoRepository;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -120,7 +125,27 @@ public class GroupPurchaseApplicationServiceImpl implements GroupPurchaseApplica
     }
 
     @Override
-    public PageResult<MyInitiatedGroupPageResponse> myJoinGroup(MyInitiatedGroupPageRequest request) {
-        return null;
+    public PageResult<MyJoinGroupPageResponse> myJoinGroup(MyJoinGroupPageRequest request) {
+        final PageResult<MyJoinGroupPageResponse> pageResult = PageUtil.startPage(request, () -> {
+            userJoinGroupInfoExtMapper.myJoinGroup(request);
+        });
+        if (pageResult.isEmpty()) {
+            return pageResult;
+        }
+        final Set<Long> uidSet = pageResult.getContent()
+                .stream()
+                .map(MyJoinGroupPageResponse::getGroupMasterUid)
+                .collect(Collectors.toSet());
+        final Map<Long, UserInfo> userInfoMap = userInfoRepository.mapListUsers(uidSet);
+        pageResult.getContent().forEach(group -> {
+            UserInfo tempUser = userInfoMap.get(group.getGroupMasterUid());
+            if (Objects.nonNull(tempUser)) {
+                group.setGroupMasterName(tempUser.getNickname());
+                group.setGroupMasterCommunityId(tempUser.getCommunityId());
+                group.setGroupMasterBuildingNo(tempUser.getBuildingNo());
+                group.setGroupMasterRoomNo(tempUser.getRoomNo());
+            }
+        });
+        return pageResult;
     }
 }

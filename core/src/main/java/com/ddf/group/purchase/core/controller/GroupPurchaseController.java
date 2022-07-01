@@ -1,9 +1,12 @@
 package com.ddf.group.purchase.core.controller;
 
+import com.ddf.boot.common.authentication.util.UserContextUtil;
 import com.ddf.boot.common.core.model.PageResult;
 import com.ddf.group.purchase.api.request.group.CreateFromWxJieLongRequest;
 import com.ddf.group.purchase.api.request.group.MyInitiatedGroupPageRequest;
+import com.ddf.group.purchase.api.request.group.MyJoinGroupPageRequest;
 import com.ddf.group.purchase.api.response.group.MyInitiatedGroupPageResponse;
+import com.ddf.group.purchase.api.response.group.MyJoinGroupPageResponse;
 import com.ddf.group.purchase.core.application.GroupPurchaseApplicationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,7 +60,8 @@ public class GroupPurchaseController {
      * @return
      */
     @GetMapping("myJoinGroup")
-    public PageResult<MyInitiatedGroupPageResponse> myJoinGroup(@Validated MyInitiatedGroupPageRequest request) {
+    public PageResult<MyJoinGroupPageResponse> myJoinGroup(@Validated MyJoinGroupPageRequest request) {
+        request.setJoinUid(Long.parseLong(UserContextUtil.getUserId()));
         return groupPurchaseApplicationService.myJoinGroup(request);
     }
 

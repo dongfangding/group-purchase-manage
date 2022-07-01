@@ -8,7 +8,11 @@ import com.ddf.group.purchase.core.mapper.ext.UserInfoExtMapper;
 import com.ddf.group.purchase.core.model.cqrs.user.CompleteUserInfoCommand;
 import com.ddf.group.purchase.core.model.entity.UserInfo;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -157,5 +161,18 @@ public class UserInfoRepository {
                 .eq(UserInfo::getBuildingNo, buildingNo)
                 .eq(UserInfo::getRoomNo, roomNo);
         return userInfoExtMapper.selectList(wrapper);
+    }
+
+    /**
+     * 根据用户id集合查询用户对应的列表信息
+     *
+     * @param uidList
+     * @return
+     */
+    public Map<Long, UserInfo> mapListUsers(Set<Long> uidList) {
+        final LambdaQueryWrapper<UserInfo> wrapper = Wrappers.lambdaQuery();
+        wrapper.in(UserInfo::getId, uidList);
+        final List<UserInfo> users = userInfoExtMapper.selectList(wrapper);
+        return users.stream().collect(Collectors.toMap(UserInfo::getId, Function.identity()));
     }
 }

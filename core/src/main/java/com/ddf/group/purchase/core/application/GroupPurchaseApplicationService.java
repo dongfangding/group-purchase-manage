@@ -3,7 +3,9 @@ package com.ddf.group.purchase.core.application;
 import com.ddf.boot.common.core.model.PageResult;
 import com.ddf.group.purchase.api.request.group.CreateFromWxJieLongRequest;
 import com.ddf.group.purchase.api.request.group.MyInitiatedGroupPageRequest;
+import com.ddf.group.purchase.api.request.group.MyJoinGroupPageRequest;
 import com.ddf.group.purchase.api.response.group.MyInitiatedGroupPageResponse;
+import com.ddf.group.purchase.api.response.group.MyJoinGroupPageResponse;
 
 /**
  * <p>团购业务层</p >
@@ -43,5 +45,5 @@ public interface GroupPurchaseApplicationService {
      * @param request
      * @return
      */
-    PageResult<MyInitiatedGroupPageResponse> myJoinGroup(MyInitiatedGroupPageRequest request);
+    PageResult<MyJoinGroupPageResponse> myJoinGroup(MyJoinGroupPageRequest request);
 }
