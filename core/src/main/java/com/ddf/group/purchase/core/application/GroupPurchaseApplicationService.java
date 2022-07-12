@@ -2,6 +2,7 @@ package com.ddf.group.purchase.core.application;
 
 import com.ddf.boot.common.core.model.PageResult;
 import com.ddf.group.purchase.api.request.group.CreateFromWxJieLongRequest;
+import com.ddf.group.purchase.api.request.group.CustomizeCreateRequest;
 import com.ddf.group.purchase.api.request.group.MyInitiatedGroupPageRequest;
 import com.ddf.group.purchase.api.request.group.MyJoinGroupPageRequest;
 import com.ddf.group.purchase.api.response.group.MyInitiatedGroupPageResponse;
@@ -22,6 +23,13 @@ public interface GroupPurchaseApplicationService {
      * @param request
      */
     void createFromWxJieLong(CreateFromWxJieLongRequest request);
+
+    /**
+     * 自定义文本创建团购信息
+     *
+     * @param request
+     */
+    void customizeCreate(CustomizeCreateRequest request);
 
     /**
      * 我发起的团购列表查询

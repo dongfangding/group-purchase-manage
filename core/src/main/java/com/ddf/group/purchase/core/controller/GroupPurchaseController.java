@@ -3,6 +3,7 @@ package com.ddf.group.purchase.core.controller;
 import com.ddf.boot.common.authentication.util.UserContextUtil;
 import com.ddf.boot.common.core.model.PageResult;
 import com.ddf.group.purchase.api.request.group.CreateFromWxJieLongRequest;
+import com.ddf.group.purchase.api.request.group.CustomizeCreateRequest;
 import com.ddf.group.purchase.api.request.group.MyInitiatedGroupPageRequest;
 import com.ddf.group.purchase.api.request.group.MyJoinGroupPageRequest;
 import com.ddf.group.purchase.api.response.group.MyInitiatedGroupPageResponse;
@@ -40,6 +41,16 @@ public class GroupPurchaseController {
     @PostMapping("createFromWxJieLong")
     public void createFromWxJieLong(@RequestBody @Validated CreateFromWxJieLongRequest request) {
         groupPurchaseApplicationService.createFromWxJieLong(request);
+    }
+
+    /**
+     * 自定义文本创建团购信息
+     *
+     * @param request
+     */
+    @PostMapping("customizeCreate")
+    public void customizeCreate(@RequestBody @Validated CustomizeCreateRequest request) {
+        groupPurchaseApplicationService.customizeCreate(request);
     }
 
     /**

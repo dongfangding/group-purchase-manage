@@ -8,6 +8,7 @@ import com.ddf.boot.common.core.util.DateUtils;
 import com.ddf.boot.common.core.util.PageUtil;
 import com.ddf.group.purchase.api.enume.GroupPurchaseStatusEnum;
 import com.ddf.group.purchase.api.request.group.CreateFromWxJieLongRequest;
+import com.ddf.group.purchase.api.request.group.CustomizeCreateRequest;
 import com.ddf.group.purchase.api.request.group.MyInitiatedGroupPageRequest;
 import com.ddf.group.purchase.api.request.group.MyJoinGroupPageRequest;
 import com.ddf.group.purchase.api.response.group.MyInitiatedGroupPageResponse;
@@ -106,6 +107,19 @@ public class GroupPurchaseApplicationServiceImpl implements GroupPurchaseApplica
     }
 
     @Override
+    public void customizeCreate(CustomizeCreateRequest request) {
+        final Long currentTimeSeconds = DateUtils.currentTimeSeconds();
+        final GroupPurchaseInfo groupPurchaseInfo = new GroupPurchaseInfo();
+        groupPurchaseInfo.setName(request.getName());
+        groupPurchaseInfo.setGroupMasterUid(UserContextUtil.getLongUserId());
+        groupPurchaseInfo.setStatus(GroupPurchaseStatusEnum.CREATED.getValue());
+        groupPurchaseInfo.setRemark(request.getRemark());
+        groupPurchaseInfo.setCtime(currentTimeSeconds);
+        groupPurchaseInfo.setMtime(currentTimeSeconds);
+        groupPurchaseInfoExtMapper.insert(groupPurchaseInfo);
+    }
+
+    @Override
     public PageResult<MyInitiatedGroupPageResponse> myInitiatedGroup(MyInitiatedGroupPageRequest request) {
         request.setGroupMasterUid(Long.parseLong(UserContextUtil.getUserId()));
         return PageUtil.startPage(request, () -> {
@@ -115,7 +129,7 @@ public class GroupPurchaseApplicationServiceImpl implements GroupPurchaseApplica
 //            groupPurchaseInfoRepository.listGroupPurchaseInfo(request);
 //        }, list -> {
 //            // fixme 这里类型丢失了，变成了Object
-//            return GroupPurchaseInfoConvert.INSTANCE.convert(list);                                                                                                                                                                                                                                                                      ANCE.convert(list);
+//            return GroupPurchaseInfoConvert.INSTANCE.convert( list);                                                                                                                                                                                                                                                                      ANCE.convert(list);
 //        });
     }
 
