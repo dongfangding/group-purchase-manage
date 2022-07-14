@@ -18,6 +18,7 @@ import com.ddf.group.purchase.api.response.group.MyInitiatedGroupPageResponse;
 import com.ddf.group.purchase.api.response.group.MyJoinGroupPageResponse;
 import com.ddf.group.purchase.core.application.GroupPurchaseApplicationService;
 import com.ddf.group.purchase.core.client.UserClient;
+import com.ddf.group.purchase.core.converter.GroupPurchaseInfoConvert;
 import com.ddf.group.purchase.core.exception.ExceptionCode;
 import com.ddf.group.purchase.core.model.entity.GroupPurchaseInfo;
 import com.ddf.group.purchase.core.model.entity.UserInfo;
@@ -106,6 +107,7 @@ public class GroupPurchaseApplicationServiceImpl implements GroupPurchaseApplica
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void customizeCreate(CustomizeCreateRequest request) {
         final Long currentTimeSeconds = DateUtils.currentTimeSeconds();
         final GroupPurchaseInfo groupPurchaseInfo = new GroupPurchaseInfo();
@@ -128,6 +130,7 @@ public class GroupPurchaseApplicationServiceImpl implements GroupPurchaseApplica
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public boolean updateGroupStatus(UpdateGroupStatusRequest request) {
         switch (request.getStatus()) {
             case ARRIVED:
@@ -143,9 +146,8 @@ public class GroupPurchaseApplicationServiceImpl implements GroupPurchaseApplica
 
     @Override
     public PageResult<MyInitiatedGroupPageResponse> myInitiatedGroup(MyInitiatedGroupPageRequest request) {
-        request.setGroupMasterUid(Long.parseLong(UserContextUtil.getUserId()));
         return PageUtil.startPage(request, () -> {
-            groupPurchaseInfoRepository.listGroupPurchaseInfo(request);
+            groupPurchaseInfoRepository.listGroupPurchaseInfo(GroupPurchaseInfoConvert.INSTANCE.convert(request));
         }, GroupPurchaseInfo.class, MyInitiatedGroupPageResponse.class);
 //        return PageUtil.startPage(request, () -> {
 //            groupPurchaseInfoRepository.listGroupPurchaseInfo(request);
@@ -163,7 +165,7 @@ public class GroupPurchaseApplicationServiceImpl implements GroupPurchaseApplica
     @Override
     public PageResult<MyJoinGroupPageResponse> myJoinGroup(MyJoinGroupPageRequest request) {
         final PageResult<MyJoinGroupPageResponse> pageResult = PageUtil.startPage(request, () -> {
-            groupPurchaseInfoRepository.myJoinGroup(request);
+            groupPurchaseInfoRepository.myJoinGroup(GroupPurchaseInfoConvert.INSTANCE.convert(request));
         });
         if (pageResult.isEmpty()) {
             return pageResult;

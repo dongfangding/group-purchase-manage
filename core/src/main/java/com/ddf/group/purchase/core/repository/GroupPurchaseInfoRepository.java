@@ -5,12 +5,12 @@ import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.ddf.boot.common.core.util.DateUtils;
 import com.ddf.group.purchase.api.enume.GroupPurchaseStatusEnum;
-import com.ddf.group.purchase.api.request.group.MyInitiatedGroupPageRequest;
-import com.ddf.group.purchase.api.request.group.MyJoinGroupPageRequest;
 import com.ddf.group.purchase.api.response.group.MyJoinGroupPageResponse;
 import com.ddf.group.purchase.core.mapper.GroupPurchaseInfoMapper;
 import com.ddf.group.purchase.core.mapper.GroupPurchaseTraceMapper;
 import com.ddf.group.purchase.core.mapper.ext.UserJoinGroupInfoExtMapper;
+import com.ddf.group.purchase.core.model.cqrs.group.MyInitiatedGroupQuery;
+import com.ddf.group.purchase.core.model.cqrs.group.MyJoinGroupQuery;
 import com.ddf.group.purchase.core.model.entity.GroupPurchaseInfo;
 import com.ddf.group.purchase.core.model.entity.GroupPurchaseTrace;
 import com.ddf.group.purchase.core.model.entity.UserJoinGroupInfo;
@@ -49,7 +49,7 @@ public class GroupPurchaseInfoRepository {
         if (result) {
             final GroupPurchaseTrace trace = new GroupPurchaseTrace();
             trace.setGroupPurchaseId(groupPurchaseInfo.getId());
-            trace.setStatus(GroupPurchaseStatusEnum.ARRIVED.getValue());
+            trace.setStatus(GroupPurchaseStatusEnum.CREATED.getValue());
             trace.setCtime(DateUtils.currentTimeSeconds());
             insertTrace(trace);
         }
@@ -69,15 +69,18 @@ public class GroupPurchaseInfoRepository {
     /**
      * 团购列表查询
      *
-     * @param request
+     * @param query
      * @return
      */
-    public List<GroupPurchaseInfo> listGroupPurchaseInfo(MyInitiatedGroupPageRequest request) {
+    public List<GroupPurchaseInfo> listGroupPurchaseInfo(MyInitiatedGroupQuery query) {
         final LambdaQueryWrapper<GroupPurchaseInfo> wrapper = Wrappers.lambdaQuery();
-        if (Objects.nonNull(request.getGroupMasterUid())) {
-            wrapper.eq(GroupPurchaseInfo::getGroupMasterUid, request.getGroupMasterUid());
+        if (Objects.nonNull(query.getGroupMasterUid())) {
+            wrapper.eq(GroupPurchaseInfo::getGroupMasterUid, query.getGroupMasterUid());
         }
-        wrapper.likeLeft(GroupPurchaseInfo::getName, request.getGroupName());
+        if (Objects.nonNull(query.getStatus())) {
+            wrapper.eq(GroupPurchaseInfo::getStatus, query.getStatus().getValue());
+        }
+        wrapper.likeLeft(GroupPurchaseInfo::getName, query.getGroupName());
         return groupPurchaseInfoMapper.selectList(wrapper);
     }
 
@@ -188,10 +191,10 @@ public class GroupPurchaseInfoRepository {
     /**
      * 我的参团列表查询
      *
-     * @param request
+     * @param query
      * @return
      */
-    public List<MyJoinGroupPageResponse> myJoinGroup(MyJoinGroupPageRequest request) {
-        return userJoinGroupInfoExtMapper.myJoinGroup(request);
+    public List<MyJoinGroupPageResponse> myJoinGroup(MyJoinGroupQuery query) {
+        return userJoinGroupInfoExtMapper.myJoinGroup(query);
     }
 }

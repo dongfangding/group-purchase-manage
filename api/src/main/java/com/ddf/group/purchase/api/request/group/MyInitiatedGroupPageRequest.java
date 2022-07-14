@@ -1,6 +1,7 @@
 package com.ddf.group.purchase.api.request.group;
 
 import com.ddf.boot.common.core.model.PageRequest;
+import com.ddf.group.purchase.api.enume.GroupPurchaseStatusEnum;
 import java.io.Serializable;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -30,8 +31,8 @@ public class MyInitiatedGroupPageRequest implements Serializable, PageRequest {
     private String groupName;
 
     /**
-     * 团长uid
+     * 团购状态
      */
-    private Long groupMasterUid;
+    private GroupPurchaseStatusEnum status;
 
 }

@@ -1,8 +1,8 @@
 package com.ddf.group.purchase.core.mapper.ext;
 
-import com.ddf.group.purchase.api.request.group.MyJoinGroupPageRequest;
 import com.ddf.group.purchase.api.response.group.MyJoinGroupPageResponse;
 import com.ddf.group.purchase.core.mapper.UserJoinGroupInfoMapper;
+import com.ddf.group.purchase.core.model.cqrs.group.MyJoinGroupQuery;
 import com.ddf.group.purchase.core.model.entity.UserJoinGroupInfo;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
@@ -24,8 +24,8 @@ public interface UserJoinGroupInfoExtMapper extends UserJoinGroupInfoMapper {
     /**
      * 我的参团列表查询
      *
-     * @param request
+     * @param query
      * @return
      */
-    List<MyJoinGroupPageResponse> myJoinGroup(@Param("request") MyJoinGroupPageRequest request);
+    List<MyJoinGroupPageResponse> myJoinGroup(@Param("query") MyJoinGroupQuery query);
 }
