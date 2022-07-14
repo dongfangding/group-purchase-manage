@@ -3,8 +3,10 @@ package com.ddf.group.purchase.core.application;
 import com.ddf.boot.common.core.model.PageResult;
 import com.ddf.group.purchase.api.request.group.CreateFromWxJieLongRequest;
 import com.ddf.group.purchase.api.request.group.CustomizeCreateRequest;
+import com.ddf.group.purchase.api.request.group.ModifyGroupRequest;
 import com.ddf.group.purchase.api.request.group.MyInitiatedGroupPageRequest;
 import com.ddf.group.purchase.api.request.group.MyJoinGroupPageRequest;
+import com.ddf.group.purchase.api.request.group.UpdateGroupStatusRequest;
 import com.ddf.group.purchase.api.response.group.MyInitiatedGroupPageResponse;
 import com.ddf.group.purchase.api.response.group.MyJoinGroupPageResponse;
 
@@ -30,6 +32,21 @@ public interface GroupPurchaseApplicationService {
      * @param request
      */
     void customizeCreate(CustomizeCreateRequest request);
+
+    /**
+     * 修改我创建的团购信息
+     *
+     * @param request
+     */
+    void modifyGroupInfo(ModifyGroupRequest request);
+
+    /**
+     * 更改团购状态
+     *
+     * @param request
+     * @return
+     */
+    boolean updateGroupStatus(UpdateGroupStatusRequest request);
 
     /**
      * 我发起的团购列表查询

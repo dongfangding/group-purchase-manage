@@ -4,8 +4,10 @@ import com.ddf.boot.common.authentication.util.UserContextUtil;
 import com.ddf.boot.common.core.model.PageResult;
 import com.ddf.group.purchase.api.request.group.CreateFromWxJieLongRequest;
 import com.ddf.group.purchase.api.request.group.CustomizeCreateRequest;
+import com.ddf.group.purchase.api.request.group.ModifyGroupRequest;
 import com.ddf.group.purchase.api.request.group.MyInitiatedGroupPageRequest;
 import com.ddf.group.purchase.api.request.group.MyJoinGroupPageRequest;
+import com.ddf.group.purchase.api.request.group.UpdateGroupStatusRequest;
 import com.ddf.group.purchase.api.response.group.MyInitiatedGroupPageResponse;
 import com.ddf.group.purchase.api.response.group.MyJoinGroupPageResponse;
 import com.ddf.group.purchase.core.application.GroupPurchaseApplicationService;
@@ -54,6 +56,16 @@ public class GroupPurchaseController {
     }
 
     /**
+     * 修改我创建的团购信息
+     *
+     * @param request
+     */
+    @PostMapping("modifyGroupInfo")
+    public void modifyGroupInfo(@RequestBody @Validated ModifyGroupRequest request) {
+        groupPurchaseApplicationService.modifyGroupInfo(request);
+    }
+
+    /**
      * 我发起的团购
      *
      * @param request
@@ -76,4 +88,15 @@ public class GroupPurchaseController {
         return groupPurchaseApplicationService.myJoinGroup(request);
     }
 
+
+    /**
+     * 更新团购状态
+     *
+     * @param request
+     * @return
+     */
+    @PostMapping("updateGroupStatus")
+    public boolean updateGroupStatus(@RequestBody @Validated UpdateGroupStatusRequest request) {
+        return groupPurchaseApplicationService.updateGroupStatus(request);
+    }
 }

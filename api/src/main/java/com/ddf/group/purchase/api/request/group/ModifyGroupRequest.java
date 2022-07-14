@@ -1,27 +1,29 @@
 package com.ddf.group.purchase.api.request.group;
 
-import com.ddf.boot.common.core.model.PageRequest;
 import java.io.Serializable;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
- * <p>我发起的团购查询</p >
+ * <p>description</p >
  *
  * @author Snowball
  * @version 1.0
- * @date 2022/06/28 20:59
+ * @date 2022/07/12 20:22
  */
 @Data
-public class MyInitiatedGroupPageRequest implements Serializable, PageRequest {
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class ModifyGroupRequest implements Serializable {
     private static final long serialVersionUID = 1516322558409231083L;
 
-    @NotNull(message = "pageNum不能为空")
-    private Integer pageNum;
-
-    @NotNull(message = "pageSize不能为空")
-    private Integer pageSize;
+    @NotNull(message = "团购id不能为空")
+    private Long id;
 
     /**
      * 团购名称，模糊搜索
@@ -29,9 +31,7 @@ public class MyInitiatedGroupPageRequest implements Serializable, PageRequest {
     @Size(max = 128, message = "团购名称长度不能超过128")
     private String groupName;
 
-    /**
-     * 团长uid
-     */
-    private Long groupMasterUid;
+    @Size(max = 3000, message = "团购内容长度不能超过3000")
+    private String remark;
 
 }

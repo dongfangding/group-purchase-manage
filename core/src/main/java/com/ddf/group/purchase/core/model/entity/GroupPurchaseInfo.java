@@ -61,18 +61,4 @@ public class GroupPurchaseInfo implements Serializable {
     private Long mtime;
 
     private static final long serialVersionUID = 1L;
-
-    public static final String COL_ID = "id";
-
-    public static final String COL_NAME = "name";
-
-    public static final String COL_GROUP_MASTER_UID = "group_master_uid";
-
-    public static final String COL_STATUS = "status";
-
-    public static final String COL_REMARK = "remark";
-
-    public static final String COL_CTIME = "ctime";
-
-    public static final String COL_MTIME = "mtime";
 }

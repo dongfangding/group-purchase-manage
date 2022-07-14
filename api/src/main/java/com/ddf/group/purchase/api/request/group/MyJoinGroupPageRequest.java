@@ -3,6 +3,7 @@ package com.ddf.group.purchase.api.request.group;
 import com.ddf.boot.common.core.model.PageRequest;
 import java.io.Serializable;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import lombok.Data;
 
 /**
@@ -25,6 +26,7 @@ public class MyJoinGroupPageRequest implements Serializable, PageRequest {
     /**
      * 团购名称，模糊搜索
      */
+    @Size(max = 128, message = "团购名称长度不能超过128")
     private String groupName;
 
     /**

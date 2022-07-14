@@ -107,36 +107,6 @@ public class UserInfo {
     @TableField(value = "ctime")
     private Long ctime;
 
-    public static final String COL_ID = "id";
-
-    public static final String COL_COMMUNITY_ID = "community_id";
-
-    public static final String COL_BUILDING_NO = "building_no";
-
-    public static final String COL_ROOM_NO = "room_no";
-
-    public static final String COL_NICKNAME = "nickname";
-
-    public static final String COL_MOBILE = "mobile";
-
-    public static final String COL_WX_ID = "wx_id";
-
-    public static final String COL_WX_BUSINESS_CARD_QRCODE_URL = "wx_business_card_qrcode_url";
-
-    public static final String COL_WX_COLLECTION_MONEY_QRCODE_URL = "wx_collection_money_qrcode_url";
-
-    public static final String COL_EMAIL = "email";
-
-    public static final String COL_EMAIL_VERIFIED = "email_verified";
-
-    public static final String COL_AVATAR_URL = "avatar_url";
-
-    public static final String COL_AVATAR_THUMB_URL = "avatar_thumb_url";
-
-    public static final String COL_PASSWORD = "password";
-
-    public static final String COL_CTIME = "ctime";
-
     /**
      * @return id
      */

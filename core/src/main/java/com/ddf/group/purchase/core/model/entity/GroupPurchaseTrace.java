@@ -8,41 +8,38 @@ import java.io.Serializable;
 import lombok.Data;
 
 /**
-* <p>用户参团记录</p >
+* <p>description</p >
 *
 * @author Snowball
 * @version 1.0
-* @date 2022/05/23 23:11
+* @date 2022/07/14 18:13
 */
+/**
+    * 团购状态跟踪
+    */
 @Data
-@TableName(value = "user_join_group_info")
-public class UserJoinGroupInfo implements Serializable {
+@TableName(value = "group_purchase_trace")
+public class GroupPurchaseTrace implements Serializable {
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
     /**
-     * 团购主表记录id
+     * 团购记录id
      */
     @TableField(value = "group_purchase_id")
     private Long groupPurchaseId;
 
     /**
-     * 参团用户id
+     * 状态
      */
-    @TableField(value = "join_uid")
-    private Long joinUid;
+    @TableField(value = "`status`")
+    private Integer status;
 
     /**
-     * 创建时间
+     * 变更时间
      */
     @TableField(value = "ctime")
     private Long ctime;
-
-    /**
-     * 是否订阅最新信息（状态和备注更新变化）
-     */
-    @TableField(value = "subscribe_progress")
-    private Boolean subscribeProgress;
 
     private static final long serialVersionUID = 1L;
 }

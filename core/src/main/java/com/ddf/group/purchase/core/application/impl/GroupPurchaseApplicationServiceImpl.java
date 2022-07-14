@@ -6,18 +6,19 @@ import com.ddf.boot.common.core.exception200.BusinessException;
 import com.ddf.boot.common.core.model.PageResult;
 import com.ddf.boot.common.core.util.DateUtils;
 import com.ddf.boot.common.core.util.PageUtil;
+import com.ddf.boot.common.core.util.PreconditionUtil;
 import com.ddf.group.purchase.api.enume.GroupPurchaseStatusEnum;
 import com.ddf.group.purchase.api.request.group.CreateFromWxJieLongRequest;
 import com.ddf.group.purchase.api.request.group.CustomizeCreateRequest;
+import com.ddf.group.purchase.api.request.group.ModifyGroupRequest;
 import com.ddf.group.purchase.api.request.group.MyInitiatedGroupPageRequest;
 import com.ddf.group.purchase.api.request.group.MyJoinGroupPageRequest;
+import com.ddf.group.purchase.api.request.group.UpdateGroupStatusRequest;
 import com.ddf.group.purchase.api.response.group.MyInitiatedGroupPageResponse;
 import com.ddf.group.purchase.api.response.group.MyJoinGroupPageResponse;
 import com.ddf.group.purchase.core.application.GroupPurchaseApplicationService;
 import com.ddf.group.purchase.core.client.UserClient;
 import com.ddf.group.purchase.core.exception.ExceptionCode;
-import com.ddf.group.purchase.core.mapper.ext.GroupPurchaseInfoExtMapper;
-import com.ddf.group.purchase.core.mapper.ext.UserJoinGroupInfoExtMapper;
 import com.ddf.group.purchase.core.model.entity.GroupPurchaseInfo;
 import com.ddf.group.purchase.core.model.entity.UserInfo;
 import com.ddf.group.purchase.core.model.entity.UserJoinGroupInfo;
@@ -49,9 +50,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class GroupPurchaseApplicationServiceImpl implements GroupPurchaseApplicationService {
 
     private final UserClient userClient;
-    private final GroupPurchaseInfoExtMapper groupPurchaseInfoExtMapper;
     private final UserInfoRepository userInfoRepository;
-    private final UserJoinGroupInfoExtMapper userJoinGroupInfoExtMapper;
     private final GroupPurchaseInfoRepository groupPurchaseInfoRepository;
 
     @Override
@@ -77,7 +76,7 @@ public class GroupPurchaseApplicationServiceImpl implements GroupPurchaseApplica
         groupPurchaseInfo.setRemark(data.getExample() + "\n" + data.getRemarks());
         groupPurchaseInfo.setCtime(currentTimeSeconds);
         groupPurchaseInfo.setMtime(currentTimeSeconds);
-        groupPurchaseInfoExtMapper.insert(groupPurchaseInfo);
+        groupPurchaseInfoRepository.insertGroupPurchaseInfo(groupPurchaseInfo);
 
         List<UserJoinGroupInfo> joins = new ArrayList<>();
         // 将信息自动绑定给用户的参团记录
@@ -102,7 +101,7 @@ public class GroupPurchaseApplicationServiceImpl implements GroupPurchaseApplica
             }
         }
         if (CollUtil.isNotEmpty(joins)) {
-            userJoinGroupInfoExtMapper.batchInsert(joins);
+            groupPurchaseInfoRepository.batchInsertUserJoinGroup(joins);
         }
     }
 
@@ -116,7 +115,30 @@ public class GroupPurchaseApplicationServiceImpl implements GroupPurchaseApplica
         groupPurchaseInfo.setRemark(request.getRemark());
         groupPurchaseInfo.setCtime(currentTimeSeconds);
         groupPurchaseInfo.setMtime(currentTimeSeconds);
-        groupPurchaseInfoExtMapper.insert(groupPurchaseInfo);
+        groupPurchaseInfoRepository.insertGroupPurchaseInfo(groupPurchaseInfo);
+    }
+
+    @Override
+    public void modifyGroupInfo(ModifyGroupRequest request) {
+        final GroupPurchaseInfo groupPurchaseInfo = groupPurchaseInfoRepository.selectGroupPurchaseInfoById(request.getId());
+        PreconditionUtil.checkArgument(Objects.nonNull(groupPurchaseInfo), ExceptionCode.RECORD_NOT_EXIST);
+        PreconditionUtil.checkArgument(Objects.equals(groupPurchaseInfo.getGroupMasterUid(), UserContextUtil.getLongUserId()),
+                ExceptionCode.RECORD_NOT_EXIST);
+        groupPurchaseInfoRepository.modifyGroupBaseInfo(request.getId(), request.getGroupName(), request.getRemark());
+    }
+
+    @Override
+    public boolean updateGroupStatus(UpdateGroupStatusRequest request) {
+        switch (request.getStatus()) {
+            case ARRIVED:
+                return groupPurchaseInfoRepository.updateStatusToArrived(request.getId());
+            case COMPLETED:
+                return groupPurchaseInfoRepository.updateStatusToCompleted(request.getId());
+            case CANCELED:
+                return groupPurchaseInfoRepository.updateStatusToCanceled(request.getId());
+            default:
+                return false;
+        }
     }
 
     @Override
@@ -141,7 +163,7 @@ public class GroupPurchaseApplicationServiceImpl implements GroupPurchaseApplica
     @Override
     public PageResult<MyJoinGroupPageResponse> myJoinGroup(MyJoinGroupPageRequest request) {
         final PageResult<MyJoinGroupPageResponse> pageResult = PageUtil.startPage(request, () -> {
-            userJoinGroupInfoExtMapper.myJoinGroup(request);
+            groupPurchaseInfoRepository.myJoinGroup(request);
         });
         if (pageResult.isEmpty()) {
             return pageResult;
