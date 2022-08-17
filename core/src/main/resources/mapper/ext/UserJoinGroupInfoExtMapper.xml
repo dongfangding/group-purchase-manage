@@ -28,4 +28,10 @@
         </if>
         order by ujgi.ctime desc
     </select>
+
+    <select id="selectJoinUids" resultType="java.lang.Long">
+        select join_uid from user_join_group_info
+        where group_purchase_id = #{groupId}
+        and subscribe_progress = 1
+    </select>
 </mapper>

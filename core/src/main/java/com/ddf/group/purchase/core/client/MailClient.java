@@ -2,6 +2,7 @@ package com.ddf.group.purchase.core.client;
 
 import cn.hutool.core.util.RandomUtil;
 import com.ddf.boot.common.core.util.MailUtil;
+import com.ddf.group.purchase.api.enume.GroupPurchaseStatusEnum;
 import com.ddf.group.purchase.core.config.properties.ApplicationProperties;
 import com.ddf.group.purchase.core.repository.CommonRepository;
 import lombok.RequiredArgsConstructor;
@@ -43,6 +44,23 @@ public class MailClient {
         content += "<a href='" + url + "'>" + url + "</a>";
         content += "<p>如果以上链接无法打开，请复制链接到浏览器中打开，该链接五分钟内有效，请及时验证。</p>";
         content += "(该邮件由系统自动发出，请勿回复)";
+        mailUtil.sendMimeMail(new String[] {email}, subject, content);
+    }
+
+
+    /**
+     * 团购状态变更提醒邮件
+     *
+     * @param email
+     * @param groupName
+     * @param status
+     */
+    @Async("mailThreadPool")
+    public void sendGroupLatestInfo(String email, String groupName, GroupPurchaseStatusEnum status) {
+        String subject = "团购吧[" + groupName + "]信息变更提醒";
+        String content = "<p>您在团购吧参与的团购[" + groupName + "]最新状态变更为<font color='red'>" + status.getValue()
+                + "</fond>，请前往系统查询详情</p>"
+                + "(该邮件由系统自动发出，请勿回复)";
         mailUtil.sendMimeMail(new String[] {email}, subject, content);
     }
 

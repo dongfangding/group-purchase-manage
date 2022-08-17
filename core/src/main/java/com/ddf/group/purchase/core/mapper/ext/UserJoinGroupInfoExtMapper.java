@@ -28,4 +28,12 @@ public interface UserJoinGroupInfoExtMapper extends UserJoinGroupInfoMapper {
      * @return
      */
     List<MyJoinGroupPageResponse> myJoinGroup(@Param("query") MyJoinGroupQuery query);
+
+    /**
+     * 查询团购下的参团用户id集合
+     *
+     * @param groupId
+     * @return
+     */
+    List<Long> selectJoinUids(@Param("groupId") Long groupId);
 }

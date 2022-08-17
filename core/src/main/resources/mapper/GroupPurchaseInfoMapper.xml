@@ -11,9 +11,10 @@
     <result column="remark" jdbcType="VARCHAR" property="remark" />
     <result column="ctime" jdbcType="BIGINT" property="ctime" />
     <result column="mtime" jdbcType="BIGINT" property="mtime" />
+    <result column="public_flag" jdbcType="BIT" property="publicFlag" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--@mbg.generated-->
-    id, `name`, group_master_uid, `status`, remark, ctime, mtime
+    id, `name`, group_master_uid, `status`, remark, ctime, mtime, public_flag
   </sql>
 </mapper>

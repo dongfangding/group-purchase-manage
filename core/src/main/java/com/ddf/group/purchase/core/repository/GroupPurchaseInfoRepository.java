@@ -5,15 +5,11 @@ import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.ddf.boot.common.core.util.DateUtils;
 import com.ddf.group.purchase.api.enume.GroupPurchaseStatusEnum;
-import com.ddf.group.purchase.api.response.group.MyJoinGroupPageResponse;
 import com.ddf.group.purchase.core.mapper.GroupPurchaseInfoMapper;
 import com.ddf.group.purchase.core.mapper.GroupPurchaseTraceMapper;
-import com.ddf.group.purchase.core.mapper.ext.UserJoinGroupInfoExtMapper;
 import com.ddf.group.purchase.core.model.cqrs.group.MyInitiatedGroupQuery;
-import com.ddf.group.purchase.core.model.cqrs.group.MyJoinGroupQuery;
 import com.ddf.group.purchase.core.model.entity.GroupPurchaseInfo;
 import com.ddf.group.purchase.core.model.entity.GroupPurchaseTrace;
-import com.ddf.group.purchase.core.model.entity.UserJoinGroupInfo;
 import java.util.List;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
@@ -37,7 +33,6 @@ public class GroupPurchaseInfoRepository {
     private final GroupPurchaseInfoMapper groupPurchaseInfoMapper;
     private final GroupPurchaseTraceMapper groupPurchaseTraceMapper;
 
-    private final UserJoinGroupInfoExtMapper userJoinGroupInfoExtMapper;
 
     /**
      * 添加团购记录
@@ -182,22 +177,22 @@ public class GroupPurchaseInfoRepository {
         return groupPurchaseTraceMapper.insert(groupPurchaseTrace) > 0;
     }
 
-    /**
-     * 批量插入用户参团记录
-     *
-     * @param joins
-     */
-    public void batchInsertUserJoinGroup(List<UserJoinGroupInfo> joins) {
-        userJoinGroupInfoExtMapper.batchInsert(joins);
-    }
+
 
     /**
-     * 我的参团列表查询
+     * 更新团购发布状态
      *
-     * @param query
+     * @param id
+     * @param groupMasterUid
+     * @param publicFlag
      * @return
      */
-    public List<MyJoinGroupPageResponse> myJoinGroup(MyJoinGroupQuery query) {
-        return userJoinGroupInfoExtMapper.myJoinGroup(query);
+    public boolean updatePublicFlag(Long id, Long groupMasterUid, boolean publicFlag) {
+        final LambdaUpdateWrapper<GroupPurchaseInfo> wrapper = Wrappers.lambdaUpdate();
+        wrapper.eq(GroupPurchaseInfo::getId, id)
+                .eq(GroupPurchaseInfo::getGroupMasterUid, groupMasterUid);
+        wrapper.set(GroupPurchaseInfo::getPublicFlag, publicFlag);
+        return groupPurchaseInfoMapper.update(null, wrapper) > 0;
     }
+
 }

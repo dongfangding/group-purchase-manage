@@ -6,6 +6,8 @@ import com.ddf.group.purchase.api.request.group.CustomizeCreateRequest;
 import com.ddf.group.purchase.api.request.group.ModifyGroupRequest;
 import com.ddf.group.purchase.api.request.group.MyInitiatedGroupPageRequest;
 import com.ddf.group.purchase.api.request.group.MyJoinGroupPageRequest;
+import com.ddf.group.purchase.api.request.group.PublishGroupRequest;
+import com.ddf.group.purchase.api.request.group.SubscribeGroupRequest;
 import com.ddf.group.purchase.api.request.group.UpdateGroupStatusRequest;
 import com.ddf.group.purchase.api.response.group.MyInitiatedGroupPageResponse;
 import com.ddf.group.purchase.api.response.group.MyJoinGroupPageResponse;
@@ -71,4 +73,21 @@ public interface GroupPurchaseApplicationService {
      * @return
      */
     PageResult<MyJoinGroupPageResponse> myJoinGroup(MyJoinGroupPageRequest request);
+
+
+    /**
+     * 发布团购
+     *
+     * @param request
+     * @return
+     */
+    boolean publishGroup(PublishGroupRequest request);
+
+    /**
+     * 订阅/取消订阅团购信息
+     *
+     * @param request
+     * @return
+     */
+    boolean subscribeGroup(SubscribeGroupRequest request);
 }
