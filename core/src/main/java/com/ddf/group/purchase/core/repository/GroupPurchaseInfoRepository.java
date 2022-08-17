@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -80,7 +81,9 @@ public class GroupPurchaseInfoRepository {
         if (Objects.nonNull(query.getStatus())) {
             wrapper.eq(GroupPurchaseInfo::getStatus, query.getStatus().getValue());
         }
-        wrapper.likeLeft(GroupPurchaseInfo::getName, query.getGroupName());
+        if (StringUtils.isNotBlank(query.getGroupName())) {
+            wrapper.likeLeft(GroupPurchaseInfo::getName, query.getGroupName());
+        }
         return groupPurchaseInfoMapper.selectList(wrapper);
     }
 
