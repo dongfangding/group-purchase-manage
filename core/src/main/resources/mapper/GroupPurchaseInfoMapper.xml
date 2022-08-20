@@ -8,13 +8,20 @@
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="group_master_uid" jdbcType="BIGINT" property="groupMasterUid" />
     <result column="status" jdbcType="INTEGER" property="status" />
-    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="content" jdbcType="VARCHAR" property="content" />
     <result column="ctime" jdbcType="BIGINT" property="ctime" />
     <result column="mtime" jdbcType="BIGINT" property="mtime" />
     <result column="public_flag" jdbcType="BIT" property="publicFlag" />
+    <result column="wx_id_card_url" jdbcType="VARCHAR" property="wxIdCardUrl" />
+    <result column="pic_urls" jdbcType="VARCHAR" property="picUrls" />
+    <result column="video_url" jdbcType="VARCHAR" property="videoUrl" />
+    <result column="start_time" jdbcType="BIGINT" property="startTime" />
+    <result column="end_time" jdbcType="BIGINT" property="endTime" />
+    <result column="service_community_id" jdbcType="BIGINT" property="serviceCommunityId" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--@mbg.generated-->
-    id, `name`, group_master_uid, `status`, remark, ctime, mtime, public_flag
+    id, `name`, group_master_uid, `status`, content, ctime, mtime, public_flag, wx_id_card_url, 
+    pic_urls, video_url, start_time, end_time, service_community_id
   </sql>
 </mapper>

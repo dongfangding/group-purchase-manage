@@ -8,7 +8,7 @@ import com.ddf.group.purchase.core.model.entity.GroupPurchaseInfo;
  *
  * @author Snowball
  * @version 1.0
- * @date 2022/07/17 15:33
+ * @date 2022/08/20 21:13
  */
 public interface GroupPurchaseInfoMapper extends BaseMapper<GroupPurchaseInfo> {
     int deleteByPrimaryKey(Long id);

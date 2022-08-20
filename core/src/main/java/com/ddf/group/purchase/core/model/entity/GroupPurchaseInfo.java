@@ -4,21 +4,31 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
 * <p>description</p >
 *
 * @author Snowball
 * @version 1.0
-* @date 2022/07/17 15:33
+* @date 2022/08/20 21:13
 */
 
 
 /**
  * 团购主表信息
  */
+@Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @TableName(value = "group_purchase_info")
 public class GroupPurchaseInfo {
+    public static final String COL_REMARK = "remark";
+    public static final String COL_WX_IDCARD_URL = "wx_idcard_url";
     private static final long serialVersionUID = 1L;
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
@@ -46,10 +56,10 @@ public class GroupPurchaseInfo {
     private Integer status;
 
     /**
-     * 备注
+     * 团购富文本内容
      */
-    @TableField(value = "remark")
-    private String remark;
+    @TableField(value = "content")
+    private String content;
 
     /**
      * 创建时间秒时间戳
@@ -69,6 +79,42 @@ public class GroupPurchaseInfo {
     @TableField(value = "public_flag")
     private Boolean publicFlag;
 
+    /**
+     * 个人微信名片二维码地址
+     */
+    @TableField(value = "wx_id_card_url")
+    private String wxIdCardUrl;
+
+    /**
+     * 图片附件地址，多个用逗号分隔
+     */
+    @TableField(value = "pic_urls")
+    private String picUrls;
+
+    /**
+     * 视频附件地址
+     */
+    @TableField(value = "video_url")
+    private String videoUrl;
+
+    /**
+     * 团购开始时间
+     */
+    @TableField(value = "start_time")
+    private Long startTime;
+
+    /**
+     * 团购结束时间
+     */
+    @TableField(value = "end_time")
+    private Long endTime;
+
+    /**
+     * 服务小区
+     */
+    @TableField(value = "service_community_id")
+    private Long serviceCommunityId;
+
     public static final String COL_ID = "id";
 
     public static final String COL_NAME = "name";
@@ -77,7 +123,7 @@ public class GroupPurchaseInfo {
 
     public static final String COL_STATUS = "status";
 
-    public static final String COL_REMARK = "remark";
+    public static final String COL_CONTENT = "content";
 
     public static final String COL_CTIME = "ctime";
 
@@ -85,159 +131,15 @@ public class GroupPurchaseInfo {
 
     public static final String COL_PUBLIC_FLAG = "public_flag";
 
-    /**
-     * @return id
-     */
-    public Long getId() {
-        return id;
-    }
+    public static final String COL_WX_ID_CARD_URL = "wx_id_card_url";
 
-    /**
-     * @param id
-     */
-    public void setId(Long id) {
-        this.id = id;
-    }
+    public static final String COL_PIC_URLS = "pic_urls";
 
-    /**
-     * 获取团购名称
-     *
-     * @return name - 团购名称
-     */
-    public String getName() {
-        return name;
-    }
+    public static final String COL_VIDEO_URL = "video_url";
 
-    /**
-     * 设置团购名称
-     *
-     * @param name 团购名称
-     */
-    public void setName(String name) {
-        this.name = name;
-    }
+    public static final String COL_START_TIME = "start_time";
 
-    /**
-     * 获取团长uid
-     *
-     * @return group_master_uid - 团长uid
-     */
-    public Long getGroupMasterUid() {
-        return groupMasterUid;
-    }
+    public static final String COL_END_TIME = "end_time";
 
-    /**
-     * 设置团长uid
-     *
-     * @param groupMasterUid 团长uid
-     */
-    public void setGroupMasterUid(Long groupMasterUid) {
-        this.groupMasterUid = groupMasterUid;
-    }
-
-    /**
-     * 获取状态
-     * 1. 已创建
-     * 2. 已到货
-     * 3. 已完成
-     * 4. 已取消
-     *
-     * @return status - 状态
-     * 1. 已创建
-     * 2. 已到货
-     * 3. 已完成
-     * 4. 已取消
-     */
-    public Integer getStatus() {
-        return status;
-    }
-
-    /**
-     * 设置状态
-     * 1. 已创建
-     * 2. 已到货
-     * 3. 已完成
-     * 4. 已取消
-     *
-     * @param status 状态
-     *               1. 已创建
-     *               2. 已到货
-     *               3. 已完成
-     *               4. 已取消
-     */
-    public void setStatus(Integer status) {
-        this.status = status;
-    }
-
-    /**
-     * 获取备注
-     *
-     * @return remark - 备注
-     */
-    public String getRemark() {
-        return remark;
-    }
-
-    /**
-     * 设置备注
-     *
-     * @param remark 备注
-     */
-    public void setRemark(String remark) {
-        this.remark = remark;
-    }
-
-    /**
-     * 获取创建时间秒时间戳
-     *
-     * @return ctime - 创建时间秒时间戳
-     */
-    public Long getCtime() {
-        return ctime;
-    }
-
-    /**
-     * 设置创建时间秒时间戳
-     *
-     * @param ctime 创建时间秒时间戳
-     */
-    public void setCtime(Long ctime) {
-        this.ctime = ctime;
-    }
-
-    /**
-     * 获取更新时间秒时间戳
-     *
-     * @return mtime - 更新时间秒时间戳
-     */
-    public Long getMtime() {
-        return mtime;
-    }
-
-    /**
-     * 设置更新时间秒时间戳
-     *
-     * @param mtime 更新时间秒时间戳
-     */
-    public void setMtime(Long mtime) {
-        this.mtime = mtime;
-    }
-
-    /**
-     * 获取是否公开到团购市场，不公开的话，不会在市场展示
-     *
-     * @return public_flag - 是否公开到团购市场，不公开的话，不会在市场展示
-     */
-    public Boolean getPublicFlag() {
-        return publicFlag;
-    }
-
-    /**
-     * 设置是否公开到团购市场，不公开的话，不会在市场展示
-     *
-     * @param publicFlag 是否公开到团购市场，不公开的话，不会在市场展示
-     */
-    public void setPublicFlag(Boolean publicFlag) {
-        this.publicFlag = publicFlag;
-    }
+    public static final String COL_SERVICE_COMMUNITY_ID = "service_community_id";
 }

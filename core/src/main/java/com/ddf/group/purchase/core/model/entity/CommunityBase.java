@@ -4,22 +4,30 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import java.io.Serializable;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
-* <p>小区管理</p >
+* <p>description</p >
 *
 * @author Snowball
 * @version 1.0
-* @date 2022/05/15 20:49
+* @date 2022/08/20 20:25
 */
-@TableName(value = "community_base")
+
+
+/**
+ * 小区管理
+ */
 @Data
-public class CommunityBase implements Serializable {
-
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@TableName(value = "community_base")
+public class CommunityBase {
     private static final long serialVersionUID = 8604619880193573465L;
-
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
@@ -41,4 +49,11 @@ public class CommunityBase implements Serializable {
     @TableField(value = "invalid_flag")
     private Boolean invalidFlag;
 
+    public static final String COL_ID = "id";
+
+    public static final String COL_COMMUNITY_NAME = "community_name";
+
+    public static final String COL_COMMUNITY_ADDRESS = "community_address";
+
+    public static final String COL_INVALID_FLAG = "invalid_flag";
 }
