@@ -23,6 +23,8 @@ import com.ddf.group.purchase.core.client.MailClient;
 import com.ddf.group.purchase.core.client.UserClient;
 import com.ddf.group.purchase.core.converter.GroupPurchaseInfoConvert;
 import com.ddf.group.purchase.core.exception.ExceptionCode;
+import com.ddf.group.purchase.core.mapper.ext.GroupPurchaseGoodExtMapper;
+import com.ddf.group.purchase.core.model.entity.GroupPurchaseGood;
 import com.ddf.group.purchase.core.model.entity.GroupPurchaseInfo;
 import com.ddf.group.purchase.core.model.entity.UserInfo;
 import com.ddf.group.purchase.core.model.entity.UserJoinGroupInfo;
@@ -59,6 +61,7 @@ public class GroupPurchaseApplicationServiceImpl implements GroupPurchaseApplica
     private final UserInfoRepository userInfoRepository;
     private final GroupPurchaseInfoRepository groupPurchaseInfoRepository;
     private final UserJoinGroupInfoRepository userJoinGroupInfoRepository;
+    private final GroupPurchaseGoodExtMapper groupPurchaseGoodExtMapper;
     private final MailClient mailClient;
 
     @Override
@@ -66,7 +69,7 @@ public class GroupPurchaseApplicationServiceImpl implements GroupPurchaseApplica
     public void createFromWxJieLong(CreateFromWxJieLongRequest request) {
         final UserInfo userInfo = userClient.currentUserInfo();
         // 解析出来的数据
-        final CreateFromWxJieLongRequest.Data data = request.getData();
+        final CreateFromWxJieLongRequest.Data data = request.parseData();
         // 接龙内容
         final List<CreateFromWxJieLongRequest.UserData> userDataList = data.getUserDataList();
         // 接龙发起人
@@ -81,7 +84,7 @@ public class GroupPurchaseApplicationServiceImpl implements GroupPurchaseApplica
         groupPurchaseInfo.setName(data.getName());
         groupPurchaseInfo.setGroupMasterUid(userInfo.getId());
         groupPurchaseInfo.setStatus(GroupPurchaseStatusEnum.CREATED.getValue());
-        groupPurchaseInfo.setRemark(data.getExample() + "\n" + data.getRemarks());
+        groupPurchaseInfo.setContent(data.getExample() + "\n" + data.getRemarks());
         groupPurchaseInfo.setCtime(currentTimeSeconds);
         groupPurchaseInfo.setMtime(currentTimeSeconds);
         groupPurchaseInfoRepository.insertGroupPurchaseInfo(groupPurchaseInfo);
@@ -117,14 +120,19 @@ public class GroupPurchaseApplicationServiceImpl implements GroupPurchaseApplica
     @Transactional(rollbackFor = Exception.class)
     public void customizeCreate(CustomizeCreateRequest request) {
         final Long currentTimeSeconds = DateUtils.currentTimeSeconds();
-        final GroupPurchaseInfo groupPurchaseInfo = new GroupPurchaseInfo();
-        groupPurchaseInfo.setName(request.getName());
+        final GroupPurchaseInfo groupPurchaseInfo = GroupPurchaseInfoConvert.INSTANCE.convertGroup(request);
         groupPurchaseInfo.setGroupMasterUid(UserContextUtil.getLongUserId());
+        final UserInfo userInfo = userInfoRepository.getById(UserContextUtil.getLongUserId());
         groupPurchaseInfo.setStatus(GroupPurchaseStatusEnum.CREATED.getValue());
-        groupPurchaseInfo.setRemark(request.getRemark());
         groupPurchaseInfo.setCtime(currentTimeSeconds);
         groupPurchaseInfo.setMtime(currentTimeSeconds);
-        groupPurchaseInfoRepository.insertGroupPurchaseInfo(groupPurchaseInfo);
+        groupPurchaseInfo.setServiceCommunityId(userInfo.getCommunityId().longValue());
+        final boolean bool = groupPurchaseInfoRepository.insertGroupPurchaseInfo(groupPurchaseInfo);
+        if (bool) {
+            final GroupPurchaseGood good = GroupPurchaseInfoConvert.INSTANCE.convertGood(request);
+            good.setGroupPurchaseId(groupPurchaseInfo.getId());
+            groupPurchaseGoodExtMapper.insert(good);
+        }
     }
 
     @Override

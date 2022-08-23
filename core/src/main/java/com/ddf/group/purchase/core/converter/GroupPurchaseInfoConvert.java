@@ -1,10 +1,12 @@
 package com.ddf.group.purchase.core.converter;
 
+import com.ddf.group.purchase.api.request.group.CustomizeCreateRequest;
 import com.ddf.group.purchase.api.request.group.MyInitiatedGroupPageRequest;
 import com.ddf.group.purchase.api.request.group.MyJoinGroupPageRequest;
 import com.ddf.group.purchase.api.response.group.MyInitiatedGroupPageResponse;
 import com.ddf.group.purchase.core.model.cqrs.group.MyInitiatedGroupQuery;
 import com.ddf.group.purchase.core.model.cqrs.group.MyJoinGroupQuery;
+import com.ddf.group.purchase.core.model.entity.GroupPurchaseGood;
 import com.ddf.group.purchase.core.model.entity.GroupPurchaseInfo;
 import java.util.List;
 import org.mapstruct.Mapper;
@@ -22,6 +24,22 @@ import org.mapstruct.factory.Mappers;
 public interface GroupPurchaseInfoConvert {
 
     GroupPurchaseInfoConvert INSTANCE = Mappers.getMapper(GroupPurchaseInfoConvert.class);
+
+    /**
+     * 自定义创建团购请求参数类转换团购主表
+     *
+     * @param request
+     * @return
+     */
+    GroupPurchaseInfo convertGroup(CustomizeCreateRequest request);
+
+    /**
+     * 自定义创建团购请求参数类转换团购商品信息
+     *
+     * @param request
+     * @return
+     */
+    GroupPurchaseGood convertGood(CustomizeCreateRequest request);
 
     /**
      * 团购主表转响应类

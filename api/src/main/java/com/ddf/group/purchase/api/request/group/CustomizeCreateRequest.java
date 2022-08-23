@@ -78,6 +78,7 @@ public class CustomizeCreateRequest implements Serializable {
     /**
      * 商品名称
      */
+    @NotBlank(message = "商品名称不能为空")
     private String goodName;
 
     /**
@@ -88,11 +89,13 @@ public class CustomizeCreateRequest implements Serializable {
     /**
      * 商品单价
      */
+    @NotNull(message = "商品单价不能为空")
     private BigDecimal price;
 
     /**
      * 商品库存
      */
+    @NotNull(message = "商品库存不能为空")
     private Integer stock;
 
     /**

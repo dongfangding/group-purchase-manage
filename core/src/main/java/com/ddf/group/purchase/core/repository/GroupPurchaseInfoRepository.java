@@ -87,14 +87,14 @@ public class GroupPurchaseInfoRepository {
      *
      * @param id
      * @param groupName
-     * @param remark
+     * @param content
      * @return
      */
-    public boolean modifyGroupBaseInfo(Long id, String groupName, String remark) {
+    public boolean modifyGroupBaseInfo(Long id, String groupName, String content) {
         final LambdaUpdateWrapper<GroupPurchaseInfo> wrapper = Wrappers.lambdaUpdate();
         wrapper.eq(GroupPurchaseInfo::getId, id);
         wrapper.set(GroupPurchaseInfo::getName, groupName);
-        wrapper.set(GroupPurchaseInfo::getRemark, remark);
+        wrapper.set(GroupPurchaseInfo::getContent, content);
         wrapper.set(GroupPurchaseInfo::getMtime, DateUtils.currentTimeSeconds());
         return groupPurchaseInfoMapper.update(null, wrapper) > 0;
     }

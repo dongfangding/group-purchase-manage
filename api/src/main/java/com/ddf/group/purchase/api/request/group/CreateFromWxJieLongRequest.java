@@ -6,10 +6,14 @@ import cn.hutool.core.util.StrUtil;
 import com.ddf.boot.common.core.util.JsonUtil;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.validation.constraints.NotBlank;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.util.Assert;
 
 /**
@@ -54,7 +58,7 @@ public class CreateFromWxJieLongRequest implements Serializable {
      *
      * @return
      */
-    public Data getData() {
+    public Data parseData() {
         Assert.isTrue(text != null && text.startsWith("#接龙"), "接龙文本不合法，请完整复制接龙文本内容");
         final String[] split = text.split("\n");
         // 接龙内容名称,开头的固定内容格式#接龙跳过不处理
@@ -96,6 +100,8 @@ public class CreateFromWxJieLongRequest implements Serializable {
      */
     @lombok.Data
     @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class Data {
 
         /**
@@ -126,6 +132,8 @@ public class CreateFromWxJieLongRequest implements Serializable {
      */
     @lombok.Data
     @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class UserData {
 
         /**
@@ -176,7 +184,7 @@ public class CreateFromWxJieLongRequest implements Serializable {
                 "大家快点接龙，三点结束";
         final CreateFromWxJieLongRequest request = new CreateFromWxJieLongRequest();
         request.setText(text);
-        System.out.println(JsonUtil.asString(request.getData()));
+        System.out.println(JsonUtil.asString(request.parseData()));
 
         text = "#接龙\n" +
             "接龙，这次不填写接龙格式，也不填写补充信息\n" +
@@ -184,7 +192,10 @@ public class CreateFromWxJieLongRequest implements Serializable {
             "1.尘 消毒液两瓶\n" +
             "2.295-909 消毒药三瓶";
         request.setText(text);
-        System.out.println(JsonUtil.asString(request.getData()));
-    }
+        System.out.println(JsonUtil.asString(request.parseData()));
 
+        Map<String, Object> map = new HashMap<>();
+        map.put("request", request);
+        System.out.println(JsonUtil.toJson(map));
+    }
 }
