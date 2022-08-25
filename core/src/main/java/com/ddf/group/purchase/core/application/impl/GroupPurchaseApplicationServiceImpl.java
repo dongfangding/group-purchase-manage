@@ -4,6 +4,7 @@ import cn.hutool.core.collection.CollUtil;
 import com.ddf.boot.common.authentication.util.UserContextUtil;
 import com.ddf.boot.common.core.exception200.BusinessException;
 import com.ddf.boot.common.core.model.PageResult;
+import com.ddf.boot.common.core.util.BeanUtil;
 import com.ddf.boot.common.core.util.DateUtils;
 import com.ddf.boot.common.core.util.PageUtil;
 import com.ddf.boot.common.core.util.PreconditionUtil;
@@ -24,10 +25,12 @@ import com.ddf.group.purchase.core.client.UserClient;
 import com.ddf.group.purchase.core.converter.GroupPurchaseInfoConvert;
 import com.ddf.group.purchase.core.exception.ExceptionCode;
 import com.ddf.group.purchase.core.mapper.ext.GroupPurchaseGoodExtMapper;
+import com.ddf.group.purchase.core.mapper.ext.GroupPurchaseInfoExtMapper;
 import com.ddf.group.purchase.core.model.entity.GroupPurchaseGood;
 import com.ddf.group.purchase.core.model.entity.GroupPurchaseInfo;
 import com.ddf.group.purchase.core.model.entity.UserInfo;
 import com.ddf.group.purchase.core.model.entity.UserJoinGroupInfo;
+import com.ddf.group.purchase.core.repository.GroupPurchaseGoodRepository;
 import com.ddf.group.purchase.core.repository.GroupPurchaseInfoRepository;
 import com.ddf.group.purchase.core.repository.UserInfoRepository;
 import com.ddf.group.purchase.core.repository.UserJoinGroupInfoRepository;
@@ -62,6 +65,8 @@ public class GroupPurchaseApplicationServiceImpl implements GroupPurchaseApplica
     private final GroupPurchaseInfoRepository groupPurchaseInfoRepository;
     private final UserJoinGroupInfoRepository userJoinGroupInfoRepository;
     private final GroupPurchaseGoodExtMapper groupPurchaseGoodExtMapper;
+    private final GroupPurchaseInfoExtMapper groupPurchaseInfoExtMapper;
+    private final GroupPurchaseGoodRepository groupPurchaseGoodRepository;
     private final MailClient mailClient;
 
     @Override
@@ -141,7 +146,18 @@ public class GroupPurchaseApplicationServiceImpl implements GroupPurchaseApplica
         PreconditionUtil.checkArgument(Objects.nonNull(groupPurchaseInfo), ExceptionCode.RECORD_NOT_EXIST);
         PreconditionUtil.checkArgument(Objects.equals(groupPurchaseInfo.getGroupMasterUid(), UserContextUtil.getLongUserId()),
                 ExceptionCode.RECORD_NOT_EXIST);
-        groupPurchaseInfoRepository.modifyGroupBaseInfo(request.getId(), request.getGroupName(), request.getRemark());
+        PreconditionUtil.checkArgument(Objects.equals(GroupPurchaseStatusEnum.CREATED.getValue(), groupPurchaseInfo.getStatus()),
+                ExceptionCode.RECORD_STATUS_NOT_ALLOW_MODIFY);
+        BeanUtil.copy(request, groupPurchaseInfo);
+        // 修改团购基本信息
+        final int i = groupPurchaseInfoExtMapper.updateById(groupPurchaseInfo);
+        if (i > 0) {
+            final GroupPurchaseGood purchaseGood = groupPurchaseGoodRepository.getByGroupId(groupPurchaseInfo.getId());
+            if (Objects.nonNull(purchaseGood)) {
+                BeanUtil.copy(purchaseGood, request);
+                groupPurchaseGoodExtMapper.updateById(purchaseGood);
+            }
+        }
     }
 
     @Override
