@@ -9,6 +9,7 @@ import com.ddf.group.purchase.api.request.group.MyJoinGroupPageRequest;
 import com.ddf.group.purchase.api.request.group.PublishGroupRequest;
 import com.ddf.group.purchase.api.request.group.SubscribeGroupRequest;
 import com.ddf.group.purchase.api.request.group.UpdateGroupStatusRequest;
+import com.ddf.group.purchase.api.response.group.GroupPurchaseListResponse;
 import com.ddf.group.purchase.api.response.group.MyInitiatedGroupPageResponse;
 import com.ddf.group.purchase.api.response.group.MyJoinGroupPageResponse;
 
@@ -56,7 +57,7 @@ public interface GroupPurchaseApplicationService {
      * @param request
      * @return
      */
-    PageResult<MyInitiatedGroupPageResponse> myInitiatedGroup(MyInitiatedGroupPageRequest request);
+    PageResult<GroupPurchaseListResponse> myInitiatedGroup(MyInitiatedGroupPageRequest request);
 
     /**
      * 团购列表查询

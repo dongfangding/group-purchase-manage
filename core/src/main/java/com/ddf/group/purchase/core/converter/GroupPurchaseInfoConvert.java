@@ -4,6 +4,7 @@ import com.ddf.group.purchase.api.request.group.CustomizeCreateRequest;
 import com.ddf.group.purchase.api.request.group.MyInitiatedGroupPageRequest;
 import com.ddf.group.purchase.api.request.group.MyJoinGroupPageRequest;
 import com.ddf.group.purchase.api.response.group.MyInitiatedGroupPageResponse;
+import com.ddf.group.purchase.core.model.cqrs.group.GroupListQuery;
 import com.ddf.group.purchase.core.model.cqrs.group.MyInitiatedGroupQuery;
 import com.ddf.group.purchase.core.model.cqrs.group.MyJoinGroupQuery;
 import com.ddf.group.purchase.core.model.entity.GroupPurchaseGood;
@@ -65,7 +66,10 @@ public interface GroupPurchaseInfoConvert {
      * @return
      */
     @Mapping(target = "groupMasterUid", expression = "java(com.ddf.boot.common.authentication.util.UserContextUtil.getLongUserId())")
-    MyInitiatedGroupQuery convert(MyInitiatedGroupPageRequest request);
+    MyInitiatedGroupQuery convertToMyInitiatedGroupQuery(MyInitiatedGroupPageRequest request);
+
+    @Mapping(target = "groupMasterUid", expression = "java(com.ddf.boot.common.authentication.util.UserContextUtil.getLongUserId())")
+    GroupListQuery convert(MyInitiatedGroupPageRequest request);
 
     /**
      *

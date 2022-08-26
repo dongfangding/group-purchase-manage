@@ -27,8 +27,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @TableName(value = "group_purchase_info")
 public class GroupPurchaseInfo {
-    public static final String COL_REMARK = "remark";
-    public static final String COL_WX_IDCARD_URL = "wx_idcard_url";
     private static final long serialVersionUID = 1L;
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
@@ -114,32 +112,4 @@ public class GroupPurchaseInfo {
      */
     @TableField(value = "service_community_id")
     private Long serviceCommunityId;
-
-    public static final String COL_ID = "id";
-
-    public static final String COL_NAME = "name";
-
-    public static final String COL_GROUP_MASTER_UID = "group_master_uid";
-
-    public static final String COL_STATUS = "status";
-
-    public static final String COL_CONTENT = "content";
-
-    public static final String COL_CTIME = "ctime";
-
-    public static final String COL_MTIME = "mtime";
-
-    public static final String COL_PUBLIC_FLAG = "public_flag";
-
-    public static final String COL_WX_ID_CARD_URL = "wx_id_card_url";
-
-    public static final String COL_PIC_URLS = "pic_urls";
-
-    public static final String COL_VIDEO_URL = "video_url";
-
-    public static final String COL_START_TIME = "start_time";
-
-    public static final String COL_END_TIME = "end_time";
-
-    public static final String COL_SERVICE_COMMUNITY_ID = "service_community_id";
 }

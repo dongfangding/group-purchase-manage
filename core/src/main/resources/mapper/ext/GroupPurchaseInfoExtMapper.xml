@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ddf.group.purchase.core.mapper.ext.GroupPurchaseInfoExtMapper">
+    <select id="list" resultType="com.ddf.group.purchase.api.response.group.GroupPurchaseListResponse"
+            parameterType="com.ddf.group.purchase.core.model.cqrs.group.GroupListQuery">
+        select master.id,
+               master.name,
+               master.group_master_uid,
+               master.status,
+               master.content,
+               master.ctime,
+               master.mtime,
+               master.public_flag,
+               master.wx_id_card_url,
+               master.pic_urls,
+               master.video_url,
+               master.start_time,
+               master.end_time,
+               master.service_community_id,
+               good.good_name,
+               good.good_description,
+               good.price,
+               good.stock,
+               good.limit_type,
+               good.limit_value
+        from group_purchase_info master
+                 left join group_purchase_good good
+                           on master.id = good.group_purchase_id
+        <where>
+            <if test="groupMasterUid != null">
+                and group_master_uid = #{groupMasterUid}
+            </if>
+            <if test="groupName != null and groupName != ''">
+                and name like concat('%', #{groupName})
+            </if>
+            <if test="status != null">
+                and status = #{status.value}
+            </if>
+        </where>
+    </select>
+</mapper>

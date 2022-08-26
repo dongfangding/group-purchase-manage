@@ -72,20 +72,4 @@ public class GroupPurchaseGood {
      */
     @TableField(value = "limit_value")
     private Long limitValue;
-
-    public static final String COL_ID = "id";
-
-    public static final String COL_GROUP_PURCHASE_ID = "group_purchase_id";
-
-    public static final String COL_GOOD_NAME = "good_name";
-
-    public static final String COL_GOOD_DESCRIPTION = "good_description";
-
-    public static final String COL_PRICE = "price";
-
-    public static final String COL_STOCK = "stock";
-
-    public static final String COL_LIMIT_TYPE = "limit_type";
-
-    public static final String COL_LIMIT_VALUE = "limit_value";
 }

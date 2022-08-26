@@ -2,6 +2,7 @@ package com.ddf.group.purchase.core.mapper.ext;
 
 import com.ddf.group.purchase.api.response.group.GroupPurchaseListResponse;
 import com.ddf.group.purchase.core.mapper.GroupPurchaseInfoMapper;
+import com.ddf.group.purchase.core.model.cqrs.group.GroupListQuery;
 import java.util.List;
 
 /**
@@ -16,7 +17,9 @@ public interface GroupPurchaseInfoExtMapper extends GroupPurchaseInfoMapper {
     /**
      * 用户发布团购列表查询
      *
+     * @param groupListQuery
      * @return
      */
-    List<GroupPurchaseListResponse> list();
+    List<GroupPurchaseListResponse> list(GroupListQuery groupListQuery);
+
 }

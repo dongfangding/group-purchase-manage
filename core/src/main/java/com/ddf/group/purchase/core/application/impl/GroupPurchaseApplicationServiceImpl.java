@@ -17,6 +17,7 @@ import com.ddf.group.purchase.api.request.group.MyJoinGroupPageRequest;
 import com.ddf.group.purchase.api.request.group.PublishGroupRequest;
 import com.ddf.group.purchase.api.request.group.SubscribeGroupRequest;
 import com.ddf.group.purchase.api.request.group.UpdateGroupStatusRequest;
+import com.ddf.group.purchase.api.response.group.GroupPurchaseListResponse;
 import com.ddf.group.purchase.api.response.group.MyInitiatedGroupPageResponse;
 import com.ddf.group.purchase.api.response.group.MyJoinGroupPageResponse;
 import com.ddf.group.purchase.core.application.GroupPurchaseApplicationService;
@@ -194,10 +195,10 @@ public class GroupPurchaseApplicationServiceImpl implements GroupPurchaseApplica
     }
 
     @Override
-    public PageResult<MyInitiatedGroupPageResponse> myInitiatedGroup(MyInitiatedGroupPageRequest request) {
+    public PageResult<GroupPurchaseListResponse> myInitiatedGroup(MyInitiatedGroupPageRequest request) {
         return PageUtil.startPage(request, () -> {
-            groupPurchaseInfoRepository.listGroupPurchaseInfo(GroupPurchaseInfoConvert.INSTANCE.convert(request));
-        }, GroupPurchaseInfo.class, MyInitiatedGroupPageResponse.class);
+            groupPurchaseInfoExtMapper.list(GroupPurchaseInfoConvert.INSTANCE.convert(request));
+        }, GroupPurchaseInfo.class, GroupPurchaseListResponse.class);
 //        return PageUtil.startPage(request, () -> {
 //            groupPurchaseInfoRepository.listGroupPurchaseInfo(request);
 //        }, list -> {
