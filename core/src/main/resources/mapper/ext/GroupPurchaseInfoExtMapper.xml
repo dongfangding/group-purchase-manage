@@ -36,6 +36,10 @@
             <if test="status != null">
                 and status = #{status.value}
             </if>
+            <if test="publicFlag != null">
+                and public_flag = #{publicFlag}
+            </if>
         </where>
+        order by ctime desc
     </select>
 </mapper>

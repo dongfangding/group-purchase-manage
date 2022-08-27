@@ -27,6 +27,8 @@ public enum ExceptionCode implements BaseCallbackCode {
     RECORD_NOT_EXIST("record_not_exist", "记录不存在"),
     RECORD_STATUS_NOT_ALLOW_MODIFY("record_status_not_allow_modify", "当前状态不允许修改"),
     DATA_NOT_MATCH_USER("data_not_match_user", "数据和用户身份不匹配"),
+    RECORD_STATUS_NOT_ALLOW_UPDATE("record_status_not_allow_update", "不允许的状态变更操作"),
+    RECORD_NOT_ALLOW_CANCEL_PUBLISH("record_not_allow_cancel_publish", "当前不允许取消发布！")
 
     ;
 

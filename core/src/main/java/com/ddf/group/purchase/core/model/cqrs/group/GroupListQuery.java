@@ -38,4 +38,9 @@ public class GroupListQuery implements PageRequest, Serializable {
      */
     private GroupPurchaseStatusEnum status;
 
+    /**
+     * 发布标识
+     */
+    private Boolean publicFlag;
+
 }

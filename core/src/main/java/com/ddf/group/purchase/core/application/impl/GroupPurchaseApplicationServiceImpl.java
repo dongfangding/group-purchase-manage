@@ -18,6 +18,7 @@ import com.ddf.group.purchase.api.request.group.PublishGroupRequest;
 import com.ddf.group.purchase.api.request.group.SubscribeGroupRequest;
 import com.ddf.group.purchase.api.request.group.UpdateGroupStatusRequest;
 import com.ddf.group.purchase.api.response.group.GroupPurchaseListResponse;
+import com.ddf.group.purchase.api.response.group.MarketplaceGroupPurchaseListResponse;
 import com.ddf.group.purchase.api.response.group.MyInitiatedGroupPageResponse;
 import com.ddf.group.purchase.api.response.group.MyJoinGroupPageResponse;
 import com.ddf.group.purchase.core.application.GroupPurchaseApplicationService;
@@ -27,6 +28,7 @@ import com.ddf.group.purchase.core.converter.GroupPurchaseInfoConvert;
 import com.ddf.group.purchase.core.exception.ExceptionCode;
 import com.ddf.group.purchase.core.mapper.ext.GroupPurchaseGoodExtMapper;
 import com.ddf.group.purchase.core.mapper.ext.GroupPurchaseInfoExtMapper;
+import com.ddf.group.purchase.core.model.cqrs.group.GroupListQuery;
 import com.ddf.group.purchase.core.model.entity.GroupPurchaseGood;
 import com.ddf.group.purchase.core.model.entity.GroupPurchaseInfo;
 import com.ddf.group.purchase.core.model.entity.UserInfo;
@@ -239,11 +241,46 @@ public class GroupPurchaseApplicationServiceImpl implements GroupPurchaseApplica
 
     @Override
     public boolean publishGroup(PublishGroupRequest request) {
-        return groupPurchaseInfoRepository.updatePublicFlag(request.getId(), UserContextUtil.getLongUserId(), request.isPublicFlag());
+        PreconditionUtil.checkArgument(groupPurchaseInfoRepository.updatePublicFlag(request.getId(), UserContextUtil.getLongUserId(), request.isPublicFlag()), ExceptionCode.RECORD_STATUS_NOT_ALLOW_UPDATE);
+        return true;
     }
 
     @Override
     public boolean subscribeGroup(SubscribeGroupRequest request) {
         return userJoinGroupInfoRepository.subscribe(request.getGroupId(), UserContextUtil.getLongUserId(), request.isSubscribeFlag());
+    }
+
+    @Override
+    public PageResult<MarketplaceGroupPurchaseListResponse> marketplaceGroupPageList(
+            MyInitiatedGroupPageRequest request) {
+        final GroupListQuery query = GroupPurchaseInfoConvert.INSTANCE.convert(request);
+        query.setPublicFlag(Boolean.TRUE);
+        final PageResult<GroupPurchaseListResponse> result = PageUtil.startPage(request, () -> {
+            groupPurchaseInfoExtMapper.list(query);
+        });
+        if (result.isEmpty()) {
+            return PageUtil.empty(request);
+        }
+        final Set<Long> uidList = result.getContent()
+                .stream()
+                .map(GroupPurchaseListResponse::getGroupMasterUid)
+                .distinct()
+                .collect(Collectors.toSet());
+        final Map<Long, UserInfo> map = userInfoRepository.mapListUsers(uidList);
+        final List<MarketplaceGroupPurchaseListResponse> listResponses = result.getContent()
+                .stream()
+                .map(val -> {
+                    final MarketplaceGroupPurchaseListResponse dto = BeanUtil.copy(
+                            val, MarketplaceGroupPurchaseListResponse.class);
+                    if (map.containsKey(val.getGroupMasterUid())) {
+                        dto.setGroupMasterName(map.get(val.getGroupMasterUid())
+                                .getNickname());
+                        dto.setGroupMasterAvatarUrl(map.get(val.getGroupMasterUid())
+                                .getAvatarUrl());
+                    }
+                    return dto;
+                })
+                .collect(Collectors.toList());
+        return PageUtil.ofPageRequest(request, result.getTotal(), listResponses);
     }
 }
