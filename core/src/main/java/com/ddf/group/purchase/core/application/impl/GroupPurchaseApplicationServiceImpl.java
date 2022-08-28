@@ -11,6 +11,7 @@ import com.ddf.boot.common.core.util.PreconditionUtil;
 import com.ddf.group.purchase.api.enume.GroupPurchaseStatusEnum;
 import com.ddf.group.purchase.api.request.group.CreateFromWxJieLongRequest;
 import com.ddf.group.purchase.api.request.group.CustomizeCreateRequest;
+import com.ddf.group.purchase.api.request.group.JoinGroupRequest;
 import com.ddf.group.purchase.api.request.group.ModifyGroupRequest;
 import com.ddf.group.purchase.api.request.group.MyInitiatedGroupPageRequest;
 import com.ddf.group.purchase.api.request.group.MyJoinGroupPageRequest;
@@ -28,13 +29,19 @@ import com.ddf.group.purchase.core.converter.GroupPurchaseInfoConvert;
 import com.ddf.group.purchase.core.exception.ExceptionCode;
 import com.ddf.group.purchase.core.mapper.ext.GroupPurchaseGoodExtMapper;
 import com.ddf.group.purchase.core.mapper.ext.GroupPurchaseInfoExtMapper;
+import com.ddf.group.purchase.core.mapper.ext.GroupPurchaseItemExtMapper;
+import com.ddf.group.purchase.core.mapper.ext.GroupPurchaseItemGoodExtMapper;
 import com.ddf.group.purchase.core.model.cqrs.group.GroupListQuery;
 import com.ddf.group.purchase.core.model.entity.GroupPurchaseGood;
 import com.ddf.group.purchase.core.model.entity.GroupPurchaseInfo;
+import com.ddf.group.purchase.core.model.entity.GroupPurchaseItem;
+import com.ddf.group.purchase.core.model.entity.GroupPurchaseItemGood;
 import com.ddf.group.purchase.core.model.entity.UserInfo;
 import com.ddf.group.purchase.core.model.entity.UserJoinGroupInfo;
 import com.ddf.group.purchase.core.repository.GroupPurchaseGoodRepository;
 import com.ddf.group.purchase.core.repository.GroupPurchaseInfoRepository;
+import com.ddf.group.purchase.core.repository.GroupPurchaseItemGoodRepository;
+import com.ddf.group.purchase.core.repository.GroupPurchaseItemRepository;
 import com.ddf.group.purchase.core.repository.UserInfoRepository;
 import com.ddf.group.purchase.core.repository.UserJoinGroupInfoRepository;
 import java.util.ArrayList;
@@ -70,7 +77,34 @@ public class GroupPurchaseApplicationServiceImpl implements GroupPurchaseApplica
     private final GroupPurchaseGoodExtMapper groupPurchaseGoodExtMapper;
     private final GroupPurchaseInfoExtMapper groupPurchaseInfoExtMapper;
     private final GroupPurchaseGoodRepository groupPurchaseGoodRepository;
+    private final GroupPurchaseItemGoodRepository groupPurchaseItemGoodRepository;
+    private final GroupPurchaseItemRepository groupPurchaseItemRepository;
+    private final GroupPurchaseItemExtMapper groupPurchaseItemExtMapper;
+    private final GroupPurchaseItemGoodExtMapper groupPurchaseItemGoodExtMapper;
     private final MailClient mailClient;
+
+    @Override
+    public GroupPurchaseListResponse groupDetail(Long groupId) {
+        return groupPurchaseInfoExtMapper.details(groupId);
+    }
+
+    @Override
+    public GroupPurchaseInfo checkGroupUserCanOperate(Long groupId) {
+        final GroupPurchaseInfo info = groupPurchaseInfoRepository.selectGroupPurchaseInfoById(groupId);
+        PreconditionUtil.checkArgument(Objects.nonNull(info), ExceptionCode.RECORD_NOT_EXIST);
+        PreconditionUtil.checkArgument(info.getPublicFlag(), ExceptionCode.GROUP_NOT_PUBLISH);
+        PreconditionUtil.checkArgument(Objects.equals(GroupPurchaseStatusEnum.CREATED.getValue(), info.getStatus()),
+                ExceptionCode.RECORD_GROUPED_NOT_ALLOW_JOIN);
+        final Long timeSeconds = DateUtils.currentTimeSeconds();
+        if (timeSeconds < info.getStartTime()) {
+            throw new BusinessException(ExceptionCode.GROUP_TIME_NOT_START);
+        }
+        if (timeSeconds > info.getEndTime()) {
+            throw new BusinessException(ExceptionCode.GROUP_TIME_OVER_END);
+        }
+        // TODO 服务小区校验
+        return info;
+    }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -241,6 +275,8 @@ public class GroupPurchaseApplicationServiceImpl implements GroupPurchaseApplica
 
     @Override
     public boolean publishGroup(PublishGroupRequest request) {
+        final GroupPurchaseInfo purchaseInfo = groupPurchaseInfoRepository.selectGroupPurchaseInfoById(request.getId());
+        // fixme 通知，只要没成团，可以任意修改状态
         PreconditionUtil.checkArgument(groupPurchaseInfoRepository.updatePublicFlag(request.getId(), UserContextUtil.getLongUserId(), request.isPublicFlag()), ExceptionCode.RECORD_STATUS_NOT_ALLOW_UPDATE);
         return true;
     }
@@ -264,7 +300,6 @@ public class GroupPurchaseApplicationServiceImpl implements GroupPurchaseApplica
         final Set<Long> uidList = result.getContent()
                 .stream()
                 .map(GroupPurchaseListResponse::getGroupMasterUid)
-                .distinct()
                 .collect(Collectors.toSet());
         final Map<Long, UserInfo> map = userInfoRepository.mapListUsers(uidList);
         final List<MarketplaceGroupPurchaseListResponse> listResponses = result.getContent()
@@ -283,4 +318,47 @@ public class GroupPurchaseApplicationServiceImpl implements GroupPurchaseApplica
                 .collect(Collectors.toList());
         return PageUtil.ofPageRequest(request, result.getTotal(), listResponses);
     }
+
+    @Override
+    public void join(JoinGroupRequest request) {
+        final Long groupId = request.getGroupId();
+        final Long goodId = request.getGoodId();
+        final GroupPurchaseInfo purchaseInfo = checkGroupUserCanOperate(groupId);
+        final GroupPurchaseGood good = groupPurchaseGoodExtMapper.selectById(goodId);
+        PreconditionUtil.checkArgument(Objects.nonNull(good), ExceptionCode.GROUP_GOOD_NOT_EXIST);
+
+        final Long currentUserId = UserContextUtil.getLongUserId();
+        final Long currentTimeSeconds = DateUtils.currentTimeSeconds();
+        GroupPurchaseItem purchaseItem = groupPurchaseItemRepository.selectUserGroupItem(groupId, goodId);
+        if (Objects.isNull(purchaseItem)) {
+            purchaseItem = new GroupPurchaseItem();
+            purchaseItem.setGroupPurchaseId(groupId);
+            purchaseItem.setJoinUid(currentUserId);
+            purchaseItem.setCtime(currentTimeSeconds);
+            purchaseItem.setSubscribeProgress(Boolean.TRUE);
+            groupPurchaseItemExtMapper.insert(purchaseItem);
+        }
+
+        GroupPurchaseItemGood purchaseItemGood = groupPurchaseItemGoodRepository.selectUserGroupGood(
+                groupId, currentUserId, goodId);
+        if (Objects.isNull(purchaseItemGood)) {
+            purchaseItemGood = new GroupPurchaseItemGood();
+            purchaseItemGood.setCtime(currentTimeSeconds);
+            purchaseItemGood.setGroupPurchaseId(groupId);
+            purchaseItemGood.setGroupPurchaseItemId(purchaseItem.getId());
+            purchaseItemGood.setGroupPurchaseGoodId(goodId);
+            purchaseItemGood.setGroupPurchaseGoodName(good.getGoodName());
+            purchaseItemGood.setJoinUid(currentUserId);
+            purchaseItemGood.setGoodNum(request.getGoodNum());
+            purchaseItemGood.setCtime(currentTimeSeconds);
+            purchaseItemGood.setMtime(currentTimeSeconds);
+            groupPurchaseItemGoodExtMapper.insert(purchaseItemGood);
+        } else {
+            purchaseItemGood.setGoodNum(request.getGoodNum());
+            purchaseItemGood.setMtime(currentTimeSeconds);
+            groupPurchaseItemGoodExtMapper.updateById(purchaseItemGood);
+        }
+    }
+
+
 }

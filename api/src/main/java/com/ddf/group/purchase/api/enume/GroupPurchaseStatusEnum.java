@@ -22,9 +22,10 @@ public enum GroupPurchaseStatusEnum {
      */
     UNKNOWN(0, "未知"),
     CREATED(1, "已创建"),
-    ARRIVED(2, "已到货"),
-    COMPLETED(3, "已完成"),
-    CANCELED(4, "已取消"),
+    GROUPED(2, "已成团"),
+    ARRIVED(3, "已到货"),
+    COMPLETED(4, "已完成"),
+    CANCELED(5, "已取消"),
     ;
 
     @Getter

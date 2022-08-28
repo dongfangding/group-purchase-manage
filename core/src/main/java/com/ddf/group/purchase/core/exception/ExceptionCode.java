@@ -28,7 +28,12 @@ public enum ExceptionCode implements BaseCallbackCode {
     RECORD_STATUS_NOT_ALLOW_MODIFY("record_status_not_allow_modify", "当前状态不允许修改"),
     DATA_NOT_MATCH_USER("data_not_match_user", "数据和用户身份不匹配"),
     RECORD_STATUS_NOT_ALLOW_UPDATE("record_status_not_allow_update", "不允许的状态变更操作"),
-    RECORD_NOT_ALLOW_CANCEL_PUBLISH("record_not_allow_cancel_publish", "当前不允许取消发布！")
+    RECORD_NOT_ALLOW_CANCEL_PUBLISH("record_not_allow_cancel_publish", "当前不允许取消发布！"),
+    RECORD_GROUPED_NOT_ALLOW_JOIN("record_grouped_not_allow_join", "当前团购已成团，无法参团~"),
+    GROUP_TIME_NOT_START("group_time_not_start", "团购时间尚未开放~"),
+    GROUP_TIME_OVER_END("group_time_over_end", "团购时间已结束~"),
+    GROUP_NOT_PUBLISH("group_not_publish", "团购尚未开放~"),
+    GROUP_GOOD_NOT_EXIST("group_good_not_exist", "团购商品不存在~")
 
     ;
 

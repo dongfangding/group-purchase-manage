@@ -17,6 +17,7 @@
                master.start_time,
                master.end_time,
                master.service_community_id,
+               good.id as goodId,
                good.good_name,
                good.good_description,
                good.price,
@@ -41,5 +42,33 @@
             </if>
         </where>
         order by ctime desc
+    </select>
+
+    <select id="details" resultType="com.ddf.group.purchase.api.response.group.GroupPurchaseListResponse">
+        select master.id,
+               master.name,
+               master.group_master_uid,
+               master.status,
+               master.content,
+               master.ctime,
+               master.mtime,
+               master.public_flag,
+               master.wx_id_card_url,
+               master.pic_urls,
+               master.video_url,
+               master.start_time,
+               master.end_time,
+               master.service_community_id,
+               good.id as goodId,
+               good.good_name,
+               good.good_description,
+               good.price,
+               good.stock,
+               good.limit_type,
+               good.limit_value
+        from group_purchase_info master
+                 left join group_purchase_good good
+                           on master.id = good.group_purchase_id
+            where master.id = #{groupId}
     </select>
 </mapper>

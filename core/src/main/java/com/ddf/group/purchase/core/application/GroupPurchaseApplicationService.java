@@ -3,6 +3,7 @@ package com.ddf.group.purchase.core.application;
 import com.ddf.boot.common.core.model.PageResult;
 import com.ddf.group.purchase.api.request.group.CreateFromWxJieLongRequest;
 import com.ddf.group.purchase.api.request.group.CustomizeCreateRequest;
+import com.ddf.group.purchase.api.request.group.JoinGroupRequest;
 import com.ddf.group.purchase.api.request.group.ModifyGroupRequest;
 import com.ddf.group.purchase.api.request.group.MyInitiatedGroupPageRequest;
 import com.ddf.group.purchase.api.request.group.MyJoinGroupPageRequest;
@@ -13,6 +14,7 @@ import com.ddf.group.purchase.api.response.group.GroupPurchaseListResponse;
 import com.ddf.group.purchase.api.response.group.MarketplaceGroupPurchaseListResponse;
 import com.ddf.group.purchase.api.response.group.MyInitiatedGroupPageResponse;
 import com.ddf.group.purchase.api.response.group.MyJoinGroupPageResponse;
+import com.ddf.group.purchase.core.model.entity.GroupPurchaseInfo;
 
 /**
  * <p>团购业务层</p >
@@ -22,6 +24,22 @@ import com.ddf.group.purchase.api.response.group.MyJoinGroupPageResponse;
  * @date 2022/05/29 23:16
  */
 public interface GroupPurchaseApplicationService {
+
+    /**
+     * 团购明细
+     *
+     * @param groupId
+     * @return
+     */
+    GroupPurchaseListResponse groupDetail(Long groupId);
+
+    /**
+     * 校验团购信息主表是否可以被用户操作（非团长）
+     *
+     * @param groupId
+     * @return
+     */
+    GroupPurchaseInfo checkGroupUserCanOperate(Long groupId);
 
     /**
      * 基于微信接龙文案创建团购信息
@@ -100,4 +118,11 @@ public interface GroupPurchaseApplicationService {
      * @return
      */
     PageResult<MarketplaceGroupPurchaseListResponse> marketplaceGroupPageList(MyInitiatedGroupPageRequest request);
+
+    /**
+     * 参团
+     *
+     * @param request
+     */
+    void join(JoinGroupRequest request);
 }

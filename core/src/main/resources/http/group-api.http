@@ -76,3 +76,16 @@ Authorization: Bearer $2a$10$uRefPMDyCDic3vCsqwL1au5AbIa9WVsP79LSX9GsE0abXWinOrG
   "groupName": "",
   "status": null
 }
+
+### 参团
+POST http://localhost:8083/group-purchase-manage/groupPurchase/join
+Content-Type: application/json
+Authorization: Bearer $2a$10$UJN2pJvXAqOTtFj095LgH.vpEfZjfFAvsMIyTZ1qatwkxjYd68io6<=>d45b256b0b88de9e5cbd1332db5b8d9a3c74fb771678a07ea5ac1dcfd427759704d29645830e3ee05aaa6db04b4b43ef48ee86811c3bd506203ea42ac63d67d99a01600e8229679679f15f695d436837a4e78cf07d5e3e787a228a0ae212b2b0732751e97494bd4eddedbbb8c41d6f603f3933599f0f14a8b2d148475748546e8c5632f0e3430582662a2f18f2ef8b2ffa09a7ae72f8bf080f65431a846d57e0ff1e6acca77fb20d579e83fcd4375070
+
+{
+  "groupId": 20,
+  "goodId": 1,
+  "goodNum": 10
+}
+
+

@@ -89,6 +89,10 @@ public class GroupPurchaseListResponse implements Serializable {
      */
     private Long serviceCommunityId;
 
+    /**
+     * 商品记录id
+     */
+    private Long goodId;
 
     /**
      * 商品名称

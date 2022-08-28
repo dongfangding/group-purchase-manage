@@ -4,6 +4,7 @@ import com.ddf.group.purchase.api.response.group.GroupPurchaseListResponse;
 import com.ddf.group.purchase.core.mapper.GroupPurchaseInfoMapper;
 import com.ddf.group.purchase.core.model.cqrs.group.GroupListQuery;
 import java.util.List;
+import org.apache.ibatis.annotations.Param;
 
 /**
 * <p>团购主表</p >
@@ -21,5 +22,13 @@ public interface GroupPurchaseInfoExtMapper extends GroupPurchaseInfoMapper {
      * @return
      */
     List<GroupPurchaseListResponse> list(GroupListQuery groupListQuery);
+
+    /**
+     * 明细
+     *
+     * @param groupId
+     * @return
+     */
+    GroupPurchaseListResponse details(@Param("groupId") Long groupId);
 
 }
