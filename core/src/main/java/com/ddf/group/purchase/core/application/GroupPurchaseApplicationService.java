@@ -10,11 +10,13 @@ import com.ddf.group.purchase.api.request.group.MyJoinGroupPageRequest;
 import com.ddf.group.purchase.api.request.group.PublishGroupRequest;
 import com.ddf.group.purchase.api.request.group.SubscribeGroupRequest;
 import com.ddf.group.purchase.api.request.group.UpdateGroupStatusRequest;
+import com.ddf.group.purchase.api.response.group.GroupItemResponse;
 import com.ddf.group.purchase.api.response.group.GroupPurchaseListResponse;
 import com.ddf.group.purchase.api.response.group.MarketplaceGroupPurchaseListResponse;
 import com.ddf.group.purchase.api.response.group.MyInitiatedGroupPageResponse;
 import com.ddf.group.purchase.api.response.group.MyJoinGroupPageResponse;
 import com.ddf.group.purchase.core.model.entity.GroupPurchaseInfo;
+import java.util.List;
 
 /**
  * <p>团购业务层</p >
@@ -125,4 +127,12 @@ public interface GroupPurchaseApplicationService {
      * @param request
      */
     void join(JoinGroupRequest request);
+
+    /**
+     * 查看指定团购的参团详情
+     *
+     * @param groupId
+     * @return
+     */
+    List<GroupItemResponse> joinInfo(Long groupId);
 }

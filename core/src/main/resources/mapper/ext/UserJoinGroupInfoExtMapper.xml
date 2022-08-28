@@ -14,10 +14,10 @@
                gpi.name,
                gpi.group_master_uid   as groupMasterUid,
                gpi.status,
-               gpi.remark,
+               gpi.content,
                gpi.ctime,
                gpi.mtime
-        from user_join_group_info ujgi
+        from group_purchase_item ujgi
                  left join group_purchase_info gpi on ujgi.group_purchase_id = gpi.id
         where ujgi.join_uid = #{query.joinUid}
         <if test="query.status != null">
@@ -30,7 +30,7 @@
     </select>
 
     <select id="selectJoinUids" resultType="java.lang.Long">
-        select join_uid from user_join_group_info
+        select join_uid from group_purchase_item
         where group_purchase_id = #{groupId}
         and subscribe_progress = 1
     </select>

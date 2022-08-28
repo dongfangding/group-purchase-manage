@@ -18,6 +18,7 @@ import com.ddf.group.purchase.api.request.group.MyJoinGroupPageRequest;
 import com.ddf.group.purchase.api.request.group.PublishGroupRequest;
 import com.ddf.group.purchase.api.request.group.SubscribeGroupRequest;
 import com.ddf.group.purchase.api.request.group.UpdateGroupStatusRequest;
+import com.ddf.group.purchase.api.response.group.GroupItemResponse;
 import com.ddf.group.purchase.api.response.group.GroupPurchaseListResponse;
 import com.ddf.group.purchase.api.response.group.MarketplaceGroupPurchaseListResponse;
 import com.ddf.group.purchase.api.response.group.MyInitiatedGroupPageResponse;
@@ -45,6 +46,7 @@ import com.ddf.group.purchase.core.repository.GroupPurchaseItemRepository;
 import com.ddf.group.purchase.core.repository.UserInfoRepository;
 import com.ddf.group.purchase.core.repository.UserJoinGroupInfoRepository;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -57,6 +59,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 /**
  * <p>团购业务层</p >
@@ -290,6 +293,7 @@ public class GroupPurchaseApplicationServiceImpl implements GroupPurchaseApplica
     public PageResult<MarketplaceGroupPurchaseListResponse> marketplaceGroupPageList(
             MyInitiatedGroupPageRequest request) {
         final GroupListQuery query = GroupPurchaseInfoConvert.INSTANCE.convert(request);
+        query.setGroupMasterUid(null);
         query.setPublicFlag(Boolean.TRUE);
         final PageResult<GroupPurchaseListResponse> result = PageUtil.startPage(request, () -> {
             groupPurchaseInfoExtMapper.list(query);
@@ -358,6 +362,25 @@ public class GroupPurchaseApplicationServiceImpl implements GroupPurchaseApplica
             purchaseItemGood.setMtime(currentTimeSeconds);
             groupPurchaseItemGoodExtMapper.updateById(purchaseItemGood);
         }
+    }
+
+    @Override
+    public List<GroupItemResponse> joinInfo(Long groupId) {
+        final List<GroupItemResponse> responses = groupPurchaseItemExtMapper.listGroupItem(groupId);
+        if (CollectionUtils.isEmpty(responses)) {
+            return Collections.emptyList();
+        }
+        final Set<Long> uidSet = responses.stream()
+                .map(GroupItemResponse::getJoinUid)
+                .collect(Collectors.toSet());
+        final Map<Long, UserInfo> map = userInfoRepository.mapListUsers(uidSet);
+        responses.forEach(obj -> {
+            if (map.containsKey(obj.getJoinUid())) {
+                obj.setJoinUserName(map.get(obj.getJoinUid()).getNickname());
+                obj.setJoinUserAvatarUrl(map.get(obj.getJoinUid()).getAvatarUrl());
+            }
+        });
+        return responses;
     }
 
 

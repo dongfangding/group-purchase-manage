@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.ddf.group.purchase.core.mapper.ext.GroupPurchaseItemGoodExtMapper;
 import com.ddf.group.purchase.core.model.entity.GroupPurchaseItemGood;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,5 +39,19 @@ public class GroupPurchaseItemGoodRepository {
                 .eq(GroupPurchaseItemGood::getJoinUid, userId)
                 .eq(GroupPurchaseItemGood::getGroupPurchaseGoodId, goodId);
         return groupPurchaseItemGoodExtMapper.selectOne(wrapper);
+    }
+
+    /**
+     * 查找指定用户指定团购的购买商品列表
+     *
+     * @param groupId
+     * @param userId
+     * @return
+     */
+    public List<GroupPurchaseItemGood> listUserGroupGood(Long groupId, Long userId) {
+        final LambdaQueryWrapper<GroupPurchaseItemGood> wrapper = Wrappers.lambdaQuery();
+        wrapper.eq(GroupPurchaseItemGood::getGroupPurchaseId, groupId)
+                .eq(GroupPurchaseItemGood::getJoinUid, userId);
+        return groupPurchaseItemGoodExtMapper.selectList(wrapper);
     }
 }
