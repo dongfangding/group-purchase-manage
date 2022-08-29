@@ -3,13 +3,17 @@ package com.ddf.group.purchase.core.controller;
 import com.ddf.common.captcha.model.request.CaptchaRequest;
 import com.ddf.common.captcha.model.response.ApplicationCaptchaResult;
 import com.ddf.group.purchase.api.request.common.SendSmsCodeRequest;
+import com.ddf.group.purchase.api.response.common.SysDictResponse;
+import com.ddf.group.purchase.core.converter.CommonConverter;
 import com.ddf.group.purchase.core.helper.CommonHelper;
+import com.ddf.group.purchase.core.repository.SysDictRepository;
 import comm.ddf.common.vps.dto.UploadResponse;
 import comm.ddf.common.vps.helper.VpsClient;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,7 +36,13 @@ public class CommonController {
 
     private final CommonHelper commonHelper;
     private final VpsClient vpsClient;
+    private final SysDictRepository sysDictRepository;
 
+
+    @GetMapping("listDict")
+    public List<SysDictResponse> listDict(@RequestParam String dictType) {
+        return CommonConverter.INSTANCE.convert(sysDictRepository.listDictByCodeFromCache(dictType));
+    }
 
     /**
      * 生成验证码
