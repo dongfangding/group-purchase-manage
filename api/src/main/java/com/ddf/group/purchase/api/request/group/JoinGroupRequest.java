@@ -1,13 +1,12 @@
 package com.ddf.group.purchase.api.request.group;
 
 import java.io.Serializable;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.Range;
 
 /**
  * <p>参团请求</p >
@@ -40,7 +39,6 @@ public class JoinGroupRequest implements Serializable {
      * 商品数量
      */
     @NotNull(message = "商品数量不能为空")
-    @Min(value = 1, message = "商品数量不合法")
-    @Max(value = 99999, message = "商品数量不合法")
+    @Range(min = 1, max = 99999, message = "商品数量不合法")
     private Integer goodNum;
 }

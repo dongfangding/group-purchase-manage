@@ -71,6 +71,8 @@ public class CommonHelper {
     public void verifyCaptcha(CaptchaVerifyRequest request) {
         captchaHelper.check(CaptchaCheckRequest.builder()
                 .uuid(request.getUuid())
+                .verification(request.isVerification())
+                .captchaVerification(request.getCaptchaVerification())
                 .captchaType(request.getCaptchaType())
                 .verifyCode(request.getVerifyCode())
                 .build());
@@ -108,7 +110,7 @@ public class CommonHelper {
      */
     public ApplicationSmsSendResponse sendAndLoadSmsCodeWithLimit(SendSmsCodeRequest sendSmsCodeRequest) {
         // 验证码校验
-        verifyCaptcha(sendSmsCodeRequest.getCaptchaVerifyRequest());
+        verifyCaptcha(sendSmsCodeRequest.getCaptchaVerifyRequest().setVerification(true));
         final String uid = StrUtil.blankToDefault(UserContextUtil.getUserId(), WebUtil.getHost());
         return redisTemplateHelper.sliderWindowAccessExpiredAtCheckException(
                 RedisKeys.getSmsRateLimitKey(uid),

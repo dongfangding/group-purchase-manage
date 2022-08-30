@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.Range;
 
 /**
  * <p>description</p >
@@ -98,6 +99,7 @@ public class ModifyGroupRequest implements Serializable {
      * 商品库存
      */
     @NotNull(message = "商品库存不能为空")
+    @Range(min = 1, message = "商品库存数量不合法")
     private Integer stock;
 
     /**

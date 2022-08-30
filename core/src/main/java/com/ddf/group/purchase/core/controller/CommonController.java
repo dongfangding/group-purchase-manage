@@ -2,6 +2,7 @@ package com.ddf.group.purchase.core.controller;
 
 import com.ddf.common.captcha.model.request.CaptchaRequest;
 import com.ddf.common.captcha.model.response.ApplicationCaptchaResult;
+import com.ddf.group.purchase.api.request.common.CaptchaVerifyRequest;
 import com.ddf.group.purchase.api.request.common.SendSmsCodeRequest;
 import com.ddf.group.purchase.api.response.common.SysDictResponse;
 import com.ddf.group.purchase.core.converter.CommonConverter;
@@ -56,6 +57,16 @@ public class CommonController {
     }
 
     /**
+     * 验证码校验
+     *
+     * @param request
+     */
+    @PostMapping("checkCaptcha")
+    public void checkCaptcha(@RequestBody @Validated CaptchaVerifyRequest request) {
+        commonHelper.verifyCaptcha(request);
+    }
+
+    /**
      * 发送短信验证码
      *
      * @param sendSmsCodeRequest
@@ -63,6 +74,7 @@ public class CommonController {
      */
     @PostMapping("/sendSmsCode")
     public void sendSmsCode(@RequestBody @Validated SendSmsCodeRequest sendSmsCodeRequest) {
+        commonHelper.verifyCaptcha(sendSmsCodeRequest.getCaptchaVerifyRequest().setVerification(true));
         commonHelper.sendSmsCode(sendSmsCodeRequest);
     }
 

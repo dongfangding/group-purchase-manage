@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.Range;
 
 /**
  * <p>自定义创建团购内容</p >
@@ -96,6 +97,7 @@ public class CustomizeCreateRequest implements Serializable {
      * 商品库存
      */
     @NotNull(message = "商品库存不能为空")
+    @Range(min = 1, message = "商品库存数量不合法")
     private Integer stock;
 
     /**
