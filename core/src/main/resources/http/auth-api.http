@@ -4,7 +4,18 @@ Content-Type: application/json
 
 # CLICK_WORDS MATH PIC_SLIDE
 {
-  "captchaType": "MATH"
+  "captchaType": "CLICK_WORDS"
+}
+
+
+### 校验验证码
+POST http://localhost:8083/group-purchase-manage/common/checkCaptcha
+Content-Type: application/json
+
+{
+  "captchaType": "CLICK_WORDS",
+  "uuid": "bd6347fe7f1f40c48daf1aa8a4afede6",
+  "verifyCode": "[{\"secretKey\":\"null\",\"x\":100,\"y\":40},{\"secretKey\":\"null\",\"x\":148,\"y\":67},{\"secretKey\":\"null\",\"x\":203,\"y\":125}]"
 }
 
 ### 发送手机验证码
@@ -16,7 +27,8 @@ Content-Type: application/json
   "captchaVerifyRequest": {
     "uuid": "ca9f54317cff4cfd82826591aa489510",
     "verifyCode": "[{\"secretKey\":\"null\",\"x\":46,\"y\":73},{\"secretKey\":\"null\",\"x\":159,\"y\":33},{\"secretKey\":\"null\",\"x\":202,\"y\":55}]",
-    "captchaType": "CLICK_WORDS"
+    "captchaType": "CLICK_WORDS",
+    "captchaVerification": "bd6347fe7f1f40c48daf1aa8a4afede6---[{\"secretKey\":\"null\",\"x\":100,\"y\":40},{\"secretKey\":\"null\",\"x\":148,\"y\":67},{\"secretKey\":\"null\",\"x\":203,\"y\":125}]"
   }
 }
 
@@ -35,7 +47,8 @@ Content-Type: application/json
   "captchaVerifyRequest": {
     "uuid": "ca9f54317cff4cfd82826591aa489510",
     "verifyCode": "[{\"secretKey\":\"null\",\"x\":46,\"y\":73},{\"secretKey\":\"null\",\"x\":159,\"y\":33},{\"secretKey\":\"null\",\"x\":202,\"y\":55}]",
-    "captchaType": "CLICK_WORDS"
+    "captchaType": "CLICK_WORDS",
+    "captchaVerification": "7d4ff808746a473994c7c22ca3118f79---[{\"secretKey\":\"null\",\"x\":101,\"y\":49},{\"secretKey\":\"null\",\"x\":152,\"y\":33},{\"secretKey\":\"null\",\"x\":203,\"y\":31}]"
   }
 }
 
