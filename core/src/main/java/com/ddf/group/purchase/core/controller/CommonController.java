@@ -4,6 +4,7 @@ import com.ddf.common.captcha.model.request.CaptchaRequest;
 import com.ddf.common.captcha.model.response.ApplicationCaptchaResult;
 import com.ddf.group.purchase.api.request.common.CaptchaVerifyRequest;
 import com.ddf.group.purchase.api.request.common.SendSmsCodeRequest;
+import com.ddf.group.purchase.api.response.common.ApplicationSmsSendResponse;
 import com.ddf.group.purchase.api.response.common.SysDictResponse;
 import com.ddf.group.purchase.core.converter.CommonConverter;
 import com.ddf.group.purchase.core.helper.CommonHelper;
@@ -73,9 +74,8 @@ public class CommonController {
      * @return
      */
     @PostMapping("/sendSmsCode")
-    public void sendSmsCode(@RequestBody @Validated SendSmsCodeRequest sendSmsCodeRequest) {
-        commonHelper.verifyCaptcha(sendSmsCodeRequest.getCaptchaVerifyRequest().setVerification(true));
-        commonHelper.sendSmsCode(sendSmsCodeRequest);
+    public ApplicationSmsSendResponse sendSmsCode(@RequestBody @Validated SendSmsCodeRequest sendSmsCodeRequest) {
+        return commonHelper.sendAndLoadSmsCodeWithLimit(sendSmsCodeRequest);
     }
 
     /**
