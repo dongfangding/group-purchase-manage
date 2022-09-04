@@ -1,8 +1,11 @@
 package com.ddf.group.purchase.core.controller;
 
+import com.ddf.boot.common.authentication.util.UserContextUtil;
 import com.ddf.group.purchase.api.request.user.CompleteUserInfoRequest;
+import com.ddf.group.purchase.api.request.user.EmailVerifyRequest;
 import com.ddf.group.purchase.api.response.user.PersonalInfoResponse;
 import com.ddf.group.purchase.core.application.UserApplicationService;
+import com.ddf.group.purchase.core.client.MailClient;
 import com.ddf.group.purchase.core.helper.CommonHelper;
 import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -30,6 +33,7 @@ public class UserInfoController {
 
     private final UserApplicationService userApplicationService;
     private final CommonHelper commonHelper;
+    private final MailClient mailClient;
 
     /**
      * 完善用户信息
@@ -39,6 +43,16 @@ public class UserInfoController {
     @PostMapping("completeInfo")
     public PersonalInfoResponse completeInfo(@RequestBody @Validated CompleteUserInfoRequest request) {
         return userApplicationService.completeInfo(request);
+    }
+
+    /**
+     * 单独发送邮箱验证邮件
+     *
+     * @param request
+     */
+    @PostMapping("sendEmailVerify")
+    public void sendEmailVerify(@RequestBody @Validated EmailVerifyRequest request) {
+        mailClient.sendEmailActive(UserContextUtil.getLongUserId(), request.getEmail());
     }
 
     /**

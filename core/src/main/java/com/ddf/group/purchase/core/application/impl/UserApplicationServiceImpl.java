@@ -82,7 +82,6 @@ public class UserApplicationServiceImpl implements UserApplicationService {
                 .buildingNo(request.getBuildingNo())
                 .roomNo(request.getRoomNo())
                 .nickname(request.getNickname())
-                .email(request.getEmail())
                 .avatarUrl(request.getAvatarUrl())
                 .avatarThumbUrl(request.getAvatarThumbUrl())
                 .build();
@@ -97,6 +96,7 @@ public class UserApplicationServiceImpl implements UserApplicationService {
             if (!Objects.equals(request.getEmail(), userInfo.getEmail())) {
                 command.setEmailVerified(Boolean.FALSE);
             }
+            command.setEmail(request.getEmail());
         }
         userInfoRepository.completeUserInfo(command);
         return personalInfo();
