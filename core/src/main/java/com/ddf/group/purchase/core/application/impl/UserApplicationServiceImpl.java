@@ -71,9 +71,9 @@ public class UserApplicationServiceImpl implements UserApplicationService {
     }
 
     @Override
-    public void completeInfo(CompleteUserInfoRequest request) {
+    public PersonalInfoResponse completeInfo(CompleteUserInfoRequest request) {
         if (StrUtil.isAllEmpty(request.getEmail(), request.getNickname(), request.getAvatarUrl(), request.getAvatarThumbUrl())) {
-            return;
+            return personalInfo();
         }
         final UserInfo userInfo = userClient.currentUserInfo();
         final CompleteUserInfoCommand command = CompleteUserInfoCommand.builder()
@@ -89,6 +89,8 @@ public class UserApplicationServiceImpl implements UserApplicationService {
         // 邮件未认证或者更改邮件重新发送激活邮件
         if (StrUtil.isNotBlank(request.getEmail()) &&
                 (!Objects.equals(request.getEmail(), userInfo.getEmail()) || !userInfo.getEmailVerified())) {
+            PreconditionUtil.checkArgument(Objects.isNull(userInfoRepository.getUserByVerifiedEmail(request.getEmail())),
+                    ExceptionCode.EMAIL_HAD_BINDING_OTHERS);
             userInfo.setEmail(request.getEmail());
             mailClient.sendEmailActive(userInfo.getId(), request.getEmail());
             // 如果是更改了邮件，则重新设置状态为未认证
@@ -97,6 +99,7 @@ public class UserApplicationServiceImpl implements UserApplicationService {
             }
         }
         userInfoRepository.completeUserInfo(command);
+        return personalInfo();
     }
 
     @Override

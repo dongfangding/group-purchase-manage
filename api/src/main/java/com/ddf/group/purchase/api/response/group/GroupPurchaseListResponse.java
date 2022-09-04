@@ -4,6 +4,7 @@ import com.ddf.boot.common.core.util.DateUtils;
 import com.ddf.group.purchase.api.enume.GroupPurchaseStatusEnum;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.List;
 import lombok.Data;
 
 /**
@@ -123,6 +124,8 @@ public class GroupPurchaseListResponse implements Serializable {
      * 限制数量，与limit_type匹配使用
      */
     private Long limitValue;
+
+    private List<GroupItemResponse> joinItems;
 
     public String getStatusName() {
         return GroupPurchaseStatusEnum.resolve(status).getDesc();

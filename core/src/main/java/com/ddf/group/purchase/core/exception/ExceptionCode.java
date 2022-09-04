@@ -19,6 +19,7 @@ public enum ExceptionCode implements BaseCallbackCode {
     VERIFY_CODE_NOT_MATCH("verify_code_not_match", "验证码不匹配"),
     SMS_CODE_LIMIT("SMS_CODE_LIMIT", "今日短信发送额度已用完，无法继续使用~"),
     MOBILE_NOT_REGISTERED("mobile_not_registered", "手机号尚未注册~"),
+    EMAIL_HAD_BINDING_OTHERS("EMAIL_HAD_BINDING_OTHERS", "该邮箱已被其他用户绑定~"),
     LOGIN_PASSWORD_ERROR("login_password_error", "密码不匹配，请确认~"),
     LOGIN_STRATEGY_MAPPING_ERROR("login_strategy_mapping_error", "登录策略异常~", "服务器开小差了~"),
     EMAIL_ACTIVE_TOKEN_EXPIRED("email_active_token_expired", "激活链接已过期，请重新验证"),

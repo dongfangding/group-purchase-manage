@@ -4,7 +4,7 @@ Content-Type: application/json
 
 # CLICK_WORDS MATH PIC_SLIDE
 {
-  "captchaType": "CLICK_WORDS"
+  "captchaType": "PIC_SLIDE"
 }
 
 

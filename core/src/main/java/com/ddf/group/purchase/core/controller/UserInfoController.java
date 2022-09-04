@@ -37,8 +37,8 @@ public class UserInfoController {
      * @param request
      */
     @PostMapping("completeInfo")
-    public void completeInfo(@RequestBody @Validated CompleteUserInfoRequest request) {
-        userApplicationService.completeInfo(request);
+    public PersonalInfoResponse completeInfo(@RequestBody @Validated CompleteUserInfoRequest request) {
+        return userApplicationService.completeInfo(request);
     }
 
     /**

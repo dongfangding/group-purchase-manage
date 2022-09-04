@@ -56,19 +56,29 @@ public class UserInfoRepository {
 
 
     /**
-     * 根据邮箱查询用户
+     * 根据邮箱查询用户列表， 存在多个，是因为可能邮箱都未认证
      *
      * @param email
      * @return
      */
-    public UserInfo getByEmail(String email) {
+    public List<UserInfo> listUserByEmail(String email) {
         final LambdaQueryWrapper<UserInfo> wrapper = Wrappers.lambdaQuery();
         wrapper.eq(UserInfo::getEmail, email);
-        return userInfoExtMapper.selectOne(wrapper);
+        return userInfoExtMapper.selectList(wrapper);
     }
 
-
-
+    /**
+     * 根据已认证的邮箱查询用户
+     *
+     * @param email
+     * @return
+     */
+    public UserInfo getUserByVerifiedEmail(String email) {
+        final LambdaQueryWrapper<UserInfo> wrapper = Wrappers.lambdaQuery();
+        wrapper.eq(UserInfo::getEmail, email)
+                .eq(UserInfo::getEmailVerified, true);
+        return userInfoExtMapper.selectOne(wrapper);
+    }
 
     /**
      * 根据手机号查询用户

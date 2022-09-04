@@ -25,7 +25,7 @@ public interface UserApplicationService {
      *
      * @param request
      */
-    void completeInfo(CompleteUserInfoRequest request);
+    PersonalInfoResponse completeInfo(CompleteUserInfoRequest request);
 
     /**
      * 个人中心

@@ -88,7 +88,9 @@ public class GroupPurchaseApplicationServiceImpl implements GroupPurchaseApplica
 
     @Override
     public GroupPurchaseListResponse groupDetail(Long groupId) {
-        return groupPurchaseInfoExtMapper.details(groupId);
+        final GroupPurchaseListResponse details = groupPurchaseInfoExtMapper.details(groupId);
+        details.setJoinItems(joinInfo(groupId));
+        return details;
     }
 
     @Override
