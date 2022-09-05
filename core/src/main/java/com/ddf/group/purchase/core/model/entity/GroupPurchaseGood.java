@@ -4,18 +4,16 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import java.io.Serializable;
 import java.math.BigDecimal;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 /**
 * <p>description</p >
 *
 * @author Snowball
 * @version 1.0
-* @date 2022/08/20 23:01
+* @date 2022/09/05 15:14
 */
 
 
@@ -23,11 +21,8 @@ import lombok.NoArgsConstructor;
  * 团购商品表
  */
 @Data
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
 @TableName(value = "group_purchase_good")
-public class GroupPurchaseGood {
+public class GroupPurchaseGood implements Serializable {
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
@@ -72,4 +67,12 @@ public class GroupPurchaseGood {
      */
     @TableField(value = "limit_value")
     private Long limitValue;
+
+    /**
+     * 商品图片
+     */
+    @TableField(value = "good_pic")
+    private String goodPic;
+
+    private static final long serialVersionUID = 1L;
 }

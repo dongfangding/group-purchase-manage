@@ -90,6 +90,11 @@ public class ModifyGroupRequest implements Serializable {
     private String goodDescription;
 
     /**
+     * 商品图片
+     */
+    private String goodPic;
+
+    /**
      * 商品单价
      */
     @NotNull(message = "商品单价不能为空")

@@ -9,14 +9,19 @@
     <result column="group_purchase_item_id" jdbcType="BIGINT" property="groupPurchaseItemId" />
     <result column="group_purchase_good_id" jdbcType="BIGINT" property="groupPurchaseGoodId" />
     <result column="group_purchase_good_name" jdbcType="VARCHAR" property="groupPurchaseGoodName" />
+    <result column="group_purchase_good_pic" jdbcType="VARCHAR" property="groupPurchaseGoodPic" />
     <result column="join_uid" jdbcType="BIGINT" property="joinUid" />
     <result column="good_num" jdbcType="INTEGER" property="goodNum" />
     <result column="ctime" jdbcType="BIGINT" property="ctime" />
     <result column="mtime" jdbcType="BIGINT" property="mtime" />
+    <result column="price" jdbcType="DECIMAL" property="price" />
+    <result column="good_description" jdbcType="VARCHAR" property="goodDescription" />
+    <result column="total_price" jdbcType="DECIMAL" property="totalPrice" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--@mbg.generated-->
     id, group_purchase_id, group_purchase_item_id, group_purchase_good_id, group_purchase_good_name, 
-    join_uid, good_num, ctime, mtime
+    group_purchase_good_pic, join_uid, good_num, ctime, mtime, price, good_description, 
+    total_price
   </sql>
 </mapper>

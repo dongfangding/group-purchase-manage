@@ -2,6 +2,7 @@ package com.ddf.group.purchase.api.response.group;
 
 import com.ddf.group.purchase.api.enume.GroupPurchaseStatusEnum;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import lombok.Data;
 
 /**
@@ -14,7 +15,7 @@ import lombok.Data;
 @Data
 public class MyJoinGroupPageResponse implements Serializable {
 
-    private Long id;
+    private Long groupId;
 
     /**
      * 团购名称
@@ -47,6 +48,11 @@ public class MyJoinGroupPageResponse implements Serializable {
     private String groupMasterRoomNo;
 
     /**
+     * 团购名称
+     */
+    private String groupPurchaseName;
+
+    /**
      * 状态
      * 1. 已创建
      * 2. 已到货
@@ -58,7 +64,7 @@ public class MyJoinGroupPageResponse implements Serializable {
     /**
      * 备注
      */
-    private String remark;
+    private String content;
 
     /**
      * 创建时间秒时间戳
@@ -75,7 +81,40 @@ public class MyJoinGroupPageResponse implements Serializable {
      */
     private Long joinTime;
 
+    /**
+     * 是否订阅团购最新信息
+     */
+    private Boolean subscribeProgress;
+
+    // -------------商品信息
+
+    /**
+     * 商品名称
+     */
+    private String goodName;
+
+    /**
+     * 商品描述
+     */
+    private String goodDescription;
+
+    /**
+     * 商品图片
+     */
+    private String goodPic;
+
+    /**
+     * 商品单价
+     */
+    private BigDecimal price;
+
+    /**
+     * 商品单价
+     */
+    private BigDecimal totalPrice;
+
     public String getStatusName() {
         return GroupPurchaseStatusEnum.resolve(status).getDesc();
     }
+
 }

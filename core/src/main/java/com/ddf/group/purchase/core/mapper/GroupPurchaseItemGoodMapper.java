@@ -8,7 +8,7 @@ import com.ddf.group.purchase.core.model.entity.GroupPurchaseItemGood;
  *
  * @author Snowball
  * @version 1.0
- * @date 2022/08/28 15:51
+ * @date 2022/09/05 19:17
  */
 public interface GroupPurchaseItemGoodMapper extends BaseMapper<GroupPurchaseItemGood> {
 }

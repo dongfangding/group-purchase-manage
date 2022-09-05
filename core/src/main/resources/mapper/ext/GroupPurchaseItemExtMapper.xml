@@ -31,4 +31,46 @@
                            on item.id = good.group_purchase_item_id
         where item.group_purchase_id = #{groupId}
     </select>
+
+    <insert id="batchInsert">
+        insert into group_purchase_item(group_purchase_id, join_uid, ctime, subscribe_progress) values
+        <foreach collection="list" item="record" separator=",">
+            (#{record.groupPurchaseId}, #{record.joinUid}, #{record.ctime}, #{record.subscribeProgress})
+        </foreach>
+    </insert>
+
+    <select id="myJoinGroup" resultType="com.ddf.group.purchase.api.response.group.MyJoinGroupPageResponse">
+        select item.group_purchase_id             as groupId,
+               item.ctime                         as joinTime,
+               item.subscribe_progress            as subscribeProgress,
+               gp.name,
+               gp.status,
+               gp.group_master_uid                as groupMasterUid,
+               gp.content,
+               gp.ctime,
+               gp.mtime,
+               item_good.group_purchase_good_name as goodName,
+               item_good.good_description         as goodDescription,
+               item_good.group_purchase_good_pic  as goodPic,
+               item_good.price,
+               item_good.total_price              as totalPrice
+        from group_purchase_item item
+                 left join group_purchase_info gp on item.group_purchase_id = gp.id
+                 left join group_purchase_item_good item_good on item.id = item_good.group_purchase_item_id
+        where item.join_uid = #{query.joinUid}
+        <if test="query.status != null">
+            and gp.status = #{query.status.value}
+        </if>
+        <if test="query.groupName != null and query.groupName != ''">
+            and gp.name like concat(#{query.groupName}, '%')
+        </if>
+        order by item.ctime desc
+    </select>
+
+    <select id="selectJoinUids" resultType="java.lang.Long">
+        select join_uid
+        from group_purchase_item
+        where group_purchase_id = #{groupId}
+          and subscribe_progress = 1
+    </select>
 </mapper>

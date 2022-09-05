@@ -96,6 +96,11 @@ public class MyInitiatedGroupPageResponse implements Serializable {
     private String goodDescription;
 
     /**
+     * 商品图片
+     */
+    private String goodPic;
+
+    /**
      * 商品单价
      */
     private BigDecimal price;

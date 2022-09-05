@@ -12,9 +12,11 @@
     <result column="stock" jdbcType="INTEGER" property="stock" />
     <result column="limit_type" jdbcType="VARCHAR" property="limitType" />
     <result column="limit_value" jdbcType="BIGINT" property="limitValue" />
+    <result column="good_pic" jdbcType="VARCHAR" property="goodPic" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--@mbg.generated-->
-    id, group_purchase_id, good_name, good_description, price, stock, limit_type, limit_value
+    id, group_purchase_id, good_name, good_description, price, stock, limit_type, limit_value, 
+    good_pic
   </sql>
 </mapper>

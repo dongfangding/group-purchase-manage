@@ -2,6 +2,8 @@ package com.ddf.group.purchase.core.mapper.ext;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.ddf.group.purchase.api.response.group.GroupItemResponse;
+import com.ddf.group.purchase.api.response.group.MyJoinGroupPageResponse;
+import com.ddf.group.purchase.core.model.cqrs.group.MyJoinGroupQuery;
 import com.ddf.group.purchase.core.model.entity.GroupPurchaseItem;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
@@ -22,4 +24,26 @@ public interface GroupPurchaseItemExtMapper extends BaseMapper<GroupPurchaseItem
      * @return
      */
     List<GroupItemResponse> listGroupItem(@Param("groupId") Long groupId);
+
+    /**
+     * 批量插入
+     * @param joins
+     */
+    void batchInsert(@Param("list") List<GroupPurchaseItem> joins);
+
+    /**
+     * 我的参团列表查询
+     *
+     * @param query
+     * @return
+     */
+    List<MyJoinGroupPageResponse> myJoinGroup(@Param("query") MyJoinGroupQuery query);
+
+    /**
+     * 查询团购下的参团用户id集合
+     *
+     * @param groupId
+     * @return
+     */
+    List<Long> selectJoinUids(@Param("groupId") Long groupId);
 }

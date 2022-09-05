@@ -38,13 +38,12 @@ import com.ddf.group.purchase.core.model.entity.GroupPurchaseInfo;
 import com.ddf.group.purchase.core.model.entity.GroupPurchaseItem;
 import com.ddf.group.purchase.core.model.entity.GroupPurchaseItemGood;
 import com.ddf.group.purchase.core.model.entity.UserInfo;
-import com.ddf.group.purchase.core.model.entity.UserJoinGroupInfo;
 import com.ddf.group.purchase.core.repository.GroupPurchaseGoodRepository;
 import com.ddf.group.purchase.core.repository.GroupPurchaseInfoRepository;
 import com.ddf.group.purchase.core.repository.GroupPurchaseItemGoodRepository;
 import com.ddf.group.purchase.core.repository.GroupPurchaseItemRepository;
 import com.ddf.group.purchase.core.repository.UserInfoRepository;
-import com.ddf.group.purchase.core.repository.UserJoinGroupInfoRepository;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -76,7 +75,6 @@ public class GroupPurchaseApplicationServiceImpl implements GroupPurchaseApplica
     private final UserClient userClient;
     private final UserInfoRepository userInfoRepository;
     private final GroupPurchaseInfoRepository groupPurchaseInfoRepository;
-    private final UserJoinGroupInfoRepository userJoinGroupInfoRepository;
     private final GroupPurchaseGoodExtMapper groupPurchaseGoodExtMapper;
     private final GroupPurchaseInfoExtMapper groupPurchaseInfoExtMapper;
     private final GroupPurchaseGoodRepository groupPurchaseGoodRepository;
@@ -136,7 +134,7 @@ public class GroupPurchaseApplicationServiceImpl implements GroupPurchaseApplica
         groupPurchaseInfo.setMtime(currentTimeSeconds);
         groupPurchaseInfoRepository.insertGroupPurchaseInfo(groupPurchaseInfo);
 
-        List<UserJoinGroupInfo> joins = new ArrayList<>();
+        List<GroupPurchaseItem> joins = new ArrayList<>();
         // 将信息自动绑定给用户的参团记录
         for (CreateFromWxJieLongRequest.UserData userData : userDataList) {
             // 跳过团长和信息不全的用户
@@ -150,7 +148,7 @@ public class GroupPurchaseApplicationServiceImpl implements GroupPurchaseApplica
                 continue;
             }
             for (UserInfo user : list) {
-                final UserJoinGroupInfo joinGroupInfo = new UserJoinGroupInfo();
+                final GroupPurchaseItem joinGroupInfo = new GroupPurchaseItem();
                 joinGroupInfo.setGroupPurchaseId(groupPurchaseInfo.getId());
                 joinGroupInfo.setJoinUid(user.getId());
                 joinGroupInfo.setCtime(currentTimeSeconds);
@@ -159,7 +157,7 @@ public class GroupPurchaseApplicationServiceImpl implements GroupPurchaseApplica
             }
         }
         if (CollUtil.isNotEmpty(joins)) {
-            userJoinGroupInfoRepository.batchInsertUserJoinGroup(joins);
+            groupPurchaseItemRepository.batchInsertUserJoinGroup(joins);
         }
     }
 
@@ -183,6 +181,7 @@ public class GroupPurchaseApplicationServiceImpl implements GroupPurchaseApplica
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void modifyGroupInfo(ModifyGroupRequest request) {
         final GroupPurchaseInfo groupPurchaseInfo = groupPurchaseInfoRepository.selectGroupPurchaseInfoById(request.getId());
         PreconditionUtil.checkArgument(Objects.nonNull(groupPurchaseInfo), ExceptionCode.RECORD_NOT_EXIST);
@@ -193,12 +192,10 @@ public class GroupPurchaseApplicationServiceImpl implements GroupPurchaseApplica
         BeanUtil.copy(request, groupPurchaseInfo);
         // 修改团购基本信息
         final int i = groupPurchaseInfoExtMapper.updateById(groupPurchaseInfo);
-        if (i > 0) {
-            final GroupPurchaseGood purchaseGood = groupPurchaseGoodRepository.getByGroupId(groupPurchaseInfo.getId());
-            if (Objects.nonNull(purchaseGood)) {
-                BeanUtil.copy(purchaseGood, request);
-                groupPurchaseGoodExtMapper.updateById(purchaseGood);
-            }
+        final GroupPurchaseGood purchaseGood = groupPurchaseGoodRepository.getByGroupId(groupPurchaseInfo.getId());
+        if (Objects.nonNull(purchaseGood)) {
+            BeanUtil.copy(purchaseGood, request);
+            groupPurchaseGoodExtMapper.updateById(purchaseGood);
         }
     }
 
@@ -221,7 +218,7 @@ public class GroupPurchaseApplicationServiceImpl implements GroupPurchaseApplica
                 break;
         }
         if (result) {
-            final List<Long> joinUids = userJoinGroupInfoRepository.selectJoinUids(request.getId());
+            final List<Long> joinUids = groupPurchaseItemRepository.selectJoinUids(request.getId());
             if (CollUtil.isNotEmpty(joinUids)) {
                 final GroupPurchaseInfo groupPurchaseInfo = groupPurchaseInfoRepository.selectGroupPurchaseInfoById(request.getId());
                 final Map<Long, UserInfo> userInfoMap = userInfoRepository.mapListUsers(new HashSet<>(joinUids));
@@ -256,7 +253,7 @@ public class GroupPurchaseApplicationServiceImpl implements GroupPurchaseApplica
     @Override
     public PageResult<MyJoinGroupPageResponse> myJoinGroup(MyJoinGroupPageRequest request) {
         final PageResult<MyJoinGroupPageResponse> pageResult = PageUtil.startPage(request, () -> {
-            userJoinGroupInfoRepository.myJoinGroup(GroupPurchaseInfoConvert.INSTANCE.convert(request));
+            groupPurchaseItemRepository.myJoinGroup(GroupPurchaseInfoConvert.INSTANCE.convert(request));
         });
         if (pageResult.isEmpty()) {
             return pageResult;
@@ -288,7 +285,7 @@ public class GroupPurchaseApplicationServiceImpl implements GroupPurchaseApplica
 
     @Override
     public boolean subscribeGroup(SubscribeGroupRequest request) {
-        return userJoinGroupInfoRepository.subscribe(request.getGroupId(), UserContextUtil.getLongUserId(), request.isSubscribeFlag());
+        return groupPurchaseItemRepository.subscribe(request.getGroupId(), UserContextUtil.getLongUserId(), request.isSubscribeFlag());
     }
 
     @Override
@@ -326,6 +323,7 @@ public class GroupPurchaseApplicationServiceImpl implements GroupPurchaseApplica
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void join(JoinGroupRequest request) {
         final Long groupId = request.getGroupId();
         final Long goodId = request.getGoodId();
@@ -354,13 +352,17 @@ public class GroupPurchaseApplicationServiceImpl implements GroupPurchaseApplica
             purchaseItemGood.setGroupPurchaseItemId(purchaseItem.getId());
             purchaseItemGood.setGroupPurchaseGoodId(goodId);
             purchaseItemGood.setGroupPurchaseGoodName(good.getGoodName());
-            purchaseItemGood.setJoinUid(currentUserId);
+            purchaseItemGood.setGroupPurchaseGoodPic(good.getGoodPic());
+            purchaseItemGood.setPrice(good.getPrice());
             purchaseItemGood.setGoodNum(request.getGoodNum());
+            purchaseItemGood.setTotalPrice(good.getPrice().multiply(BigDecimal.valueOf(request.getGoodNum())));
+            purchaseItemGood.setJoinUid(currentUserId);
             purchaseItemGood.setCtime(currentTimeSeconds);
             purchaseItemGood.setMtime(currentTimeSeconds);
             groupPurchaseItemGoodExtMapper.insert(purchaseItemGood);
         } else {
             purchaseItemGood.setGoodNum(request.getGoodNum());
+            purchaseItemGood.setTotalPrice(good.getPrice().multiply(BigDecimal.valueOf(request.getGoodNum())));
             purchaseItemGood.setMtime(currentTimeSeconds);
             groupPurchaseItemGoodExtMapper.updateById(purchaseItemGood);
         }

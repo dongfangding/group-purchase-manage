@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import lombok.Data;
 
 /**
@@ -12,7 +13,7 @@ import lombok.Data;
  *
  * @author Snowball
  * @version 1.0
- * @date 2022/08/28 15:51
+ * @date 2022/09/05 19:17
  */
 @Data
 @TableName(value = "group_purchase_item_good")
@@ -45,6 +46,12 @@ public class GroupPurchaseItemGood implements Serializable {
     private String groupPurchaseGoodName;
 
     /**
+     * 购买商品图片
+     */
+    @TableField(value = "group_purchase_good_pic")
+    private String groupPurchaseGoodPic;
+
+    /**
      * 参团用户id
      */
     @TableField(value = "join_uid")
@@ -67,6 +74,24 @@ public class GroupPurchaseItemGood implements Serializable {
      */
     @TableField(value = "mtime")
     private Long mtime;
+
+    /**
+     * 商品单价
+     */
+    @TableField(value = "price")
+    private BigDecimal price;
+
+    /**
+     * 购买商品描述
+     */
+    @TableField(value = "good_description")
+    private String goodDescription;
+
+    /**
+     * 商品总价
+     */
+    @TableField(value = "total_price")
+    private BigDecimal totalPrice;
 
     private static final long serialVersionUID = 1L;
 }
