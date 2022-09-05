@@ -1,6 +1,7 @@
 package com.ddf.group.purchase.api.request.group;
 
 import com.ddf.boot.common.core.model.PageRequest;
+import com.ddf.group.purchase.api.enume.GroupPurchaseItemJoinStatusEnum;
 import com.ddf.group.purchase.api.enume.GroupPurchaseStatusEnum;
 import java.io.Serializable;
 import javax.validation.constraints.NotNull;
@@ -29,6 +30,11 @@ public class MyJoinGroupPageRequest implements Serializable, PageRequest {
      */
     @Size(max = 128, message = "团购名称长度不能超过128")
     private String groupName;
+
+    /**
+     * 参团状态
+     */
+    private GroupPurchaseItemJoinStatusEnum joinStatus;
 
     /**
      * 团购状态

@@ -1,5 +1,6 @@
 package com.ddf.group.purchase.core.model.cqrs.group;
 
+import com.ddf.group.purchase.api.enume.GroupPurchaseItemJoinStatusEnum;
 import com.ddf.group.purchase.api.enume.GroupPurchaseStatusEnum;
 import lombok.Data;
 
@@ -24,6 +25,12 @@ public class MyJoinGroupQuery {
      * 参团用户uid
      */
     private Long joinUid;
+
+
+    /**
+     * 参团状态
+     */
+    private GroupPurchaseItemJoinStatusEnum joinStatus;
 
     /**
      * 团购状态

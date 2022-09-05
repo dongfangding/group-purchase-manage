@@ -12,11 +12,13 @@ import lombok.Data;
 *
 * @author Snowball
 * @version 1.0
-* @date 2022/08/28 15:04
+* @date 2022/09/05 20:56
 */
+
+
 /**
-    * 用户参团记录
-    */
+ * 用户参团记录
+ */
 @Data
 @TableName(value = "group_purchase_item")
 public class GroupPurchaseItem implements Serializable {
@@ -46,6 +48,12 @@ public class GroupPurchaseItem implements Serializable {
      */
     @TableField(value = "subscribe_progress")
     private Boolean subscribeProgress;
+
+    /**
+     * 参团状态 0 待支付 1 已支付 2 已退款  3 已完成
+     */
+    @TableField(value = "join_status")
+    private Integer joinStatus;
 
     private static final long serialVersionUID = 1L;
 }

@@ -8,6 +8,7 @@ import com.ddf.boot.common.core.util.BeanUtil;
 import com.ddf.boot.common.core.util.DateUtils;
 import com.ddf.boot.common.core.util.PageUtil;
 import com.ddf.boot.common.core.util.PreconditionUtil;
+import com.ddf.group.purchase.api.enume.GroupPurchaseItemJoinStatusEnum;
 import com.ddf.group.purchase.api.enume.GroupPurchaseStatusEnum;
 import com.ddf.group.purchase.api.request.group.CreateFromWxJieLongRequest;
 import com.ddf.group.purchase.api.request.group.CustomizeCreateRequest;
@@ -338,6 +339,7 @@ public class GroupPurchaseApplicationServiceImpl implements GroupPurchaseApplica
             purchaseItem = new GroupPurchaseItem();
             purchaseItem.setGroupPurchaseId(groupId);
             purchaseItem.setJoinUid(currentUserId);
+            purchaseItem.setJoinStatus(GroupPurchaseItemJoinStatusEnum.WAIT_PAY.getValue());
             purchaseItem.setCtime(currentTimeSeconds);
             purchaseItem.setSubscribeProgress(Boolean.TRUE);
             groupPurchaseItemExtMapper.insert(purchaseItem);

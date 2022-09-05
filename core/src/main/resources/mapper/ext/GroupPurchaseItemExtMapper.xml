@@ -43,6 +43,7 @@
         select item.group_purchase_id             as groupId,
                item.ctime                         as joinTime,
                item.subscribe_progress            as subscribeProgress,
+               item.join_status                   as joinStatus,
                gp.name,
                gp.status,
                gp.group_master_uid                as groupMasterUid,
@@ -50,6 +51,7 @@
                gp.ctime,
                gp.mtime,
                item_good.group_purchase_good_name as goodName,
+               item_good.good_num                 as goodNum,
                item_good.good_description         as goodDescription,
                item_good.group_purchase_good_pic  as goodPic,
                item_good.price,
@@ -58,6 +60,9 @@
                  left join group_purchase_info gp on item.group_purchase_id = gp.id
                  left join group_purchase_item_good item_good on item.id = item_good.group_purchase_item_id
         where item.join_uid = #{query.joinUid}
+        <if test="query.joinStatus != null">
+            and item.join_status = #{query.joinStatus.value}
+        </if>
         <if test="query.status != null">
             and gp.status = #{query.status.value}
         </if>

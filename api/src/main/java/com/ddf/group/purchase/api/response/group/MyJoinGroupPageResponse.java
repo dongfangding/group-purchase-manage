@@ -1,5 +1,6 @@
 package com.ddf.group.purchase.api.response.group;
 
+import com.ddf.group.purchase.api.enume.GroupPurchaseItemJoinStatusEnum;
 import com.ddf.group.purchase.api.enume.GroupPurchaseStatusEnum;
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -86,6 +87,11 @@ public class MyJoinGroupPageResponse implements Serializable {
      */
     private Boolean subscribeProgress;
 
+    /**
+     * 参团状态
+     */
+    private Integer joinStatus;
+
     // -------------商品信息
 
     /**
@@ -103,6 +109,8 @@ public class MyJoinGroupPageResponse implements Serializable {
      */
     private String goodPic;
 
+    private Integer goodNum;
+
     /**
      * 商品单价
      */
@@ -116,5 +124,7 @@ public class MyJoinGroupPageResponse implements Serializable {
     public String getStatusName() {
         return GroupPurchaseStatusEnum.resolve(status).getDesc();
     }
-
+    public String getJoinStatusName() {
+        return GroupPurchaseItemJoinStatusEnum.resolve(joinStatus).getDesc();
+    }
 }
