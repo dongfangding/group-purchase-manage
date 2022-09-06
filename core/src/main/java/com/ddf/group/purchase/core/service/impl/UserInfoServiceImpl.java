@@ -1,7 +1,9 @@
 package com.ddf.group.purchase.core.service.impl;
 
+import cn.hutool.core.util.RandomUtil;
+import com.ddf.boot.common.core.util.DateUtils;
 import com.ddf.group.purchase.core.mapper.ext.UserInfoExtMapper;
-import com.ddf.group.purchase.core.repository.UserInfoRepository;
+import com.ddf.group.purchase.core.model.entity.UserInfo;
 import com.ddf.group.purchase.core.service.UserInfoService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,6 +23,15 @@ import org.springframework.stereotype.Service;
 public class UserInfoServiceImpl implements UserInfoService {
 
     private final UserInfoExtMapper userInfoExtMapper;
-    private final UserInfoRepository userInfoRepository;
+    @Override
+    public UserInfo registerUserInfo(String mobile, String password) {
+        final UserInfo userInfo = new UserInfo();
+        userInfo.setMobile(mobile);
+        userInfo.setNickname(RandomUtil.randomString(12));
+        userInfo.setPassword(password);
+        userInfo.setCtime(DateUtils.currentTimeSeconds());
+        userInfoExtMapper.insert(userInfo);
+        return userInfo;
+    }
 
 }

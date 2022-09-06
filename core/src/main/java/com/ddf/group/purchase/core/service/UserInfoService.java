@@ -1,5 +1,7 @@
 package com.ddf.group.purchase.core.service;
 
+import com.ddf.group.purchase.core.model.entity.UserInfo;
+
 /**
  * <p>用户信息</p >
  *
@@ -9,4 +11,12 @@ package com.ddf.group.purchase.core.service;
  */
 public interface UserInfoService {
 
+    /**
+     * 插入注册用户信息
+     *
+     * @param mobile
+     * @param password
+     * @return
+     */
+    UserInfo registerUserInfo(String mobile, String password);
 }

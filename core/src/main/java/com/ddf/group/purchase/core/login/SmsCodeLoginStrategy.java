@@ -1,13 +1,12 @@
 package com.ddf.group.purchase.core.login;
 
-import com.ddf.boot.common.core.util.PreconditionUtil;
 import com.ddf.group.purchase.api.enume.LoginTypeEnum;
 import com.ddf.group.purchase.api.request.common.SmsCodeVerifyRequest;
 import com.ddf.group.purchase.api.request.user.LoginRequest;
-import com.ddf.group.purchase.core.exception.ExceptionCode;
 import com.ddf.group.purchase.core.helper.CommonHelper;
 import com.ddf.group.purchase.core.model.entity.UserInfo;
 import com.ddf.group.purchase.core.repository.UserInfoRepository;
+import com.ddf.group.purchase.core.service.UserInfoService;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,6 +26,7 @@ import org.springframework.stereotype.Service;
 public class SmsCodeLoginStrategy implements LoginStrategy {
     private final UserInfoRepository userInfoRepository;
     private final CommonHelper commonHelper;
+    private final UserInfoService userInfoService;
 
     /**
      * 登录类型
@@ -48,8 +48,7 @@ public class SmsCodeLoginStrategy implements LoginStrategy {
     public UserInfo login(LoginRequest loginRequest) {
         final String mobile = loginRequest.getLoginIdentity();
         final String smsCode = loginRequest.getCredential();
-        final UserInfo userInfo = userInfoRepository.getByMobile(mobile);
-        PreconditionUtil.checkArgument(Objects.nonNull(userInfo), ExceptionCode.MOBILE_NOT_REGISTERED);
+        UserInfo userInfo = userInfoRepository.getByMobile(mobile);
         // 短信验证码校验
         final SmsCodeVerifyRequest verifyRequest = SmsCodeVerifyRequest.builder()
                 .mobile(mobile)
@@ -57,6 +56,10 @@ public class SmsCodeLoginStrategy implements LoginStrategy {
                 .uuid(loginRequest.getUuid())
                 .build();
         commonHelper.verifySmsCode(verifyRequest);
+        // 用户不存在，则执行简单注册
+        if (Objects.isNull(userInfo)) {
+            userInfo = userInfoService.registerUserInfo(mobile, null);
+        }
         return userInfo;
     }
 }

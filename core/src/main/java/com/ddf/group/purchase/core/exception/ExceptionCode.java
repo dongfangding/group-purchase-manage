@@ -34,7 +34,8 @@ public enum ExceptionCode implements BaseCallbackCode {
     GROUP_TIME_NOT_START("group_time_not_start", "团购时间尚未开放~"),
     GROUP_TIME_OVER_END("group_time_over_end", "团购时间已结束~"),
     GROUP_NOT_PUBLISH("group_not_publish", "团购尚未开放~"),
-    GROUP_GOOD_NOT_EXIST("group_good_not_exist", "团购商品不存在~")
+    GROUP_GOOD_NOT_EXIST("group_good_not_exist", "团购商品不存在~"),
+    GROUP_ITEM_ALLOW_PAY("group_item_allow_pay", "当前订单不可支付~");
 
     ;
 

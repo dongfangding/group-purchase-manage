@@ -93,7 +93,7 @@ Content-Type: application/json
 
 {
   "loginType": "SMS_CODE",
-  "loginIdentity": "111111",
+  "loginIdentity": "33344",
   "credential": "000000",
   "uuid": "tsr339yxaj3hipeq"
 }

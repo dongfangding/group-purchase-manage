@@ -8,6 +8,7 @@ import com.ddf.group.purchase.api.request.group.ModifyGroupRequest;
 import com.ddf.group.purchase.api.request.group.MyInitiatedGroupPageRequest;
 import com.ddf.group.purchase.api.request.group.MyJoinGroupPageRequest;
 import com.ddf.group.purchase.api.request.group.PublishGroupRequest;
+import com.ddf.group.purchase.api.request.group.SimulationPayRequest;
 import com.ddf.group.purchase.api.request.group.SubscribeGroupRequest;
 import com.ddf.group.purchase.api.request.group.UpdateGroupStatusRequest;
 import com.ddf.group.purchase.api.response.group.GroupItemResponse;
@@ -135,4 +136,12 @@ public interface GroupPurchaseApplicationService {
      * @return
      */
     List<GroupItemResponse> joinInfo(Long groupId);
+
+    /**
+     * 假支付
+     * 模拟
+     *
+     * @param request
+     */
+    boolean simulationPay(SimulationPayRequest request);
 }

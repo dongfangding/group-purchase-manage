@@ -12,7 +12,7 @@ import lombok.Data;
 *
 * @author Snowball
 * @version 1.0
-* @date 2022/09/05 20:56
+* @date 2022/09/06 16:37
 */
 
 
@@ -50,10 +50,16 @@ public class GroupPurchaseItem implements Serializable {
     private Boolean subscribeProgress;
 
     /**
-     * 参团状态 0 待支付 1 已支付 2 已退款  3 已完成
+     * 支付状态 0 待支付 1 已支付 2 已退款  3 已完成
      */
     @TableField(value = "join_status")
     private Integer joinStatus;
+
+    /**
+     * 状态变更时间
+     */
+    @TableField(value = "status_change_time")
+    private Long statusChangeTime;
 
     private static final long serialVersionUID = 1L;
 }

@@ -44,12 +44,14 @@
                item.ctime                         as joinTime,
                item.subscribe_progress            as subscribeProgress,
                item.join_status                   as joinStatus,
+               item.id                            as joinItemId,
                gp.name,
                gp.status,
                gp.group_master_uid                as groupMasterUid,
                gp.content,
                gp.ctime,
                gp.mtime,
+               item_good.group_purchase_good_id   as goodId,
                item_good.group_purchase_good_name as goodName,
                item_good.good_num                 as goodNum,
                item_good.good_description         as goodDescription,
@@ -78,4 +80,11 @@
         where group_purchase_id = #{groupId}
           and subscribe_progress = 1
     </select>
+
+    <update id="updatePaid">
+        update group_purchase_item
+        set join_status = ${@com.ddf.group.purchase.api.enume.GroupPurchaseItemJoinStatusEnum@PAID.getValue()},
+        status_change_time = UNIX_TIMESTAMP()
+        where id = #{id} and join_status = ${@com.ddf.group.purchase.api.enume.GroupPurchaseItemJoinStatusEnum@WAIT_PAY.getValue()}
+    </update>
 </mapper>

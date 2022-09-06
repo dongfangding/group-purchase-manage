@@ -17,6 +17,7 @@ import com.ddf.group.purchase.api.request.group.ModifyGroupRequest;
 import com.ddf.group.purchase.api.request.group.MyInitiatedGroupPageRequest;
 import com.ddf.group.purchase.api.request.group.MyJoinGroupPageRequest;
 import com.ddf.group.purchase.api.request.group.PublishGroupRequest;
+import com.ddf.group.purchase.api.request.group.SimulationPayRequest;
 import com.ddf.group.purchase.api.request.group.SubscribeGroupRequest;
 import com.ddf.group.purchase.api.request.group.UpdateGroupStatusRequest;
 import com.ddf.group.purchase.api.response.group.GroupItemResponse;
@@ -328,7 +329,7 @@ public class GroupPurchaseApplicationServiceImpl implements GroupPurchaseApplica
     public void join(JoinGroupRequest request) {
         final Long groupId = request.getGroupId();
         final Long goodId = request.getGoodId();
-        final GroupPurchaseInfo purchaseInfo = checkGroupUserCanOperate(groupId);
+        checkGroupUserCanOperate(groupId);
         final GroupPurchaseGood good = groupPurchaseGoodExtMapper.selectById(goodId);
         PreconditionUtil.checkArgument(Objects.nonNull(good), ExceptionCode.GROUP_GOOD_NOT_EXIST);
 
@@ -342,6 +343,7 @@ public class GroupPurchaseApplicationServiceImpl implements GroupPurchaseApplica
             purchaseItem.setJoinStatus(GroupPurchaseItemJoinStatusEnum.WAIT_PAY.getValue());
             purchaseItem.setCtime(currentTimeSeconds);
             purchaseItem.setSubscribeProgress(Boolean.TRUE);
+            purchaseItem.setStatusChangeTime(currentTimeSeconds);
             groupPurchaseItemExtMapper.insert(purchaseItem);
         }
 
@@ -387,6 +389,18 @@ public class GroupPurchaseApplicationServiceImpl implements GroupPurchaseApplica
             }
         });
         return responses;
+    }
+
+    @Override
+    public boolean simulationPay(SimulationPayRequest request) {
+        Long userId = UserContextUtil.getLongUserId();
+        final Long joinItemId = request.getJoinItemId();
+        final GroupPurchaseItem item = groupPurchaseItemExtMapper.selectById(joinItemId);
+        PreconditionUtil.checkArgument(Objects.equals(userId, item.getJoinUid()), ExceptionCode.DATA_NOT_MATCH_USER);
+        if (!Objects.equals(GroupPurchaseItemJoinStatusEnum.WAIT_PAY.getValue(), item.getJoinStatus())) {
+            throw new BusinessException(ExceptionCode.GROUP_ITEM_ALLOW_PAY);
+        }
+        return groupPurchaseItemExtMapper.updatePaid(joinItemId) > 0;
     }
 
 

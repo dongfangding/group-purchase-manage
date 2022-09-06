@@ -1,6 +1,7 @@
 package com.ddf.group.purchase.core.application;
 
 import com.ddf.group.purchase.api.request.user.CompleteUserInfoRequest;
+import com.ddf.group.purchase.api.request.user.ModifyPasswordRequest;
 import com.ddf.group.purchase.api.request.user.UserRegistryRequest;
 import com.ddf.group.purchase.api.response.user.PersonalInfoResponse;
 
@@ -33,4 +34,11 @@ public interface UserApplicationService {
      * @return
      */
     PersonalInfoResponse personalInfo();
+
+    /**
+     * 修改密码
+     *
+     * @param request
+     */
+    void modifyPassword(ModifyPasswordRequest request);
 }

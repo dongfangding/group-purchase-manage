@@ -78,6 +78,11 @@ public class MyJoinGroupPageResponse implements Serializable {
     private Long mtime;
 
     /**
+     * 参团明细记录id
+     */
+    private Long joinItemId;
+
+    /**
      * 参团时间
      */
     private Long joinTime;
@@ -93,6 +98,11 @@ public class MyJoinGroupPageResponse implements Serializable {
     private Integer joinStatus;
 
     // -------------商品信息
+
+    /**
+     * 商品id
+     */
+    private Long goodId;
 
     /**
      * 商品名称

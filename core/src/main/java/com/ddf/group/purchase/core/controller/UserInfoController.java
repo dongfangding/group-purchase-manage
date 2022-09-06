@@ -3,6 +3,7 @@ package com.ddf.group.purchase.core.controller;
 import com.ddf.boot.common.authentication.util.UserContextUtil;
 import com.ddf.group.purchase.api.request.user.CompleteUserInfoRequest;
 import com.ddf.group.purchase.api.request.user.EmailVerifyRequest;
+import com.ddf.group.purchase.api.request.user.ModifyPasswordRequest;
 import com.ddf.group.purchase.api.response.user.PersonalInfoResponse;
 import com.ddf.group.purchase.core.application.UserApplicationService;
 import com.ddf.group.purchase.core.client.MailClient;
@@ -73,5 +74,10 @@ public class UserInfoController {
     @GetMapping("personalInfo")
     public PersonalInfoResponse personalInfo() {
         return userApplicationService.personalInfo();
+    }
+
+    @PostMapping("modifyPassword")
+    public void modifyPassword(@RequestBody @Validated ModifyPasswordRequest request) {
+        userApplicationService.modifyPassword(request);
     }
 }

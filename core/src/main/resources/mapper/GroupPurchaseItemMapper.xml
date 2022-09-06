@@ -10,9 +10,10 @@
     <result column="ctime" jdbcType="BIGINT" property="ctime" />
     <result column="subscribe_progress" jdbcType="BIT" property="subscribeProgress" />
     <result column="join_status" jdbcType="TINYINT" property="joinStatus" />
+    <result column="status_change_time" jdbcType="BIGINT" property="statusChangeTime" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--@mbg.generated-->
-    id, group_purchase_id, join_uid, ctime, subscribe_progress, join_status
+    id, group_purchase_id, join_uid, ctime, subscribe_progress, join_status, status_change_time
   </sql>
 </mapper>

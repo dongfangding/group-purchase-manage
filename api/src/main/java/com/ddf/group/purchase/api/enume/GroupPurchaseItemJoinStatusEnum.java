@@ -21,7 +21,8 @@ public enum GroupPurchaseItemJoinStatusEnum {
     WAIT_PAY(0, "待支付"),
     PAID(1, "已支付"),
     COMPLETE(2, "已完成"),
-    REFUND(3, "已退款")
+    REFUND(3, "已退款"),
+    CLOSED(4, "已关闭")
     ;
 
     @Getter

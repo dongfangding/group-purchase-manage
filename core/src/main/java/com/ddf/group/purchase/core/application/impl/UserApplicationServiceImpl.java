@@ -1,11 +1,12 @@
 package com.ddf.group.purchase.core.application.impl;
 
 import cn.hutool.core.util.StrUtil;
+import com.ddf.boot.common.authentication.util.UserContextUtil;
 import com.ddf.boot.common.core.encode.BCryptPasswordEncoder;
-import com.ddf.boot.common.core.util.DateUtils;
 import com.ddf.boot.common.core.util.PreconditionUtil;
 import com.ddf.group.purchase.api.request.common.SmsCodeVerifyRequest;
 import com.ddf.group.purchase.api.request.user.CompleteUserInfoRequest;
+import com.ddf.group.purchase.api.request.user.ModifyPasswordRequest;
 import com.ddf.group.purchase.api.request.user.UserRegistryRequest;
 import com.ddf.group.purchase.api.response.user.PersonalInfoResponse;
 import com.ddf.group.purchase.core.application.UserApplicationService;
@@ -20,6 +21,7 @@ import com.ddf.group.purchase.core.model.entity.CommunityBase;
 import com.ddf.group.purchase.core.model.entity.UserInfo;
 import com.ddf.group.purchase.core.repository.CommunityBaseRepository;
 import com.ddf.group.purchase.core.repository.UserInfoRepository;
+import com.ddf.group.purchase.core.service.UserInfoService;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -38,6 +40,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor(onConstructor_={@Autowired})
 public class UserApplicationServiceImpl implements UserApplicationService {
 
+    private final UserInfoService userInfoService;
     private final UserInfoExtMapper userInfoExtMapper;
     private final CommunityBaseRepository communityBaseRepository;
     private final UserInfoRepository userInfoRepository;
@@ -62,12 +65,7 @@ public class UserApplicationServiceImpl implements UserApplicationService {
                 .uuid(request.getUuid())
                 .build();
         commonHelper.verifySmsCode(verifyRequest);
-
-        final UserInfo userInfo = new UserInfo();
-        userInfo.setMobile(request.getMobile());
-        userInfo.setPassword(bCryptPasswordEncoder.encode(request.getPassword()));
-        userInfo.setCtime(DateUtils.currentTimeSeconds());
-        userInfoExtMapper.insert(userInfo);
+        userInfoService.registerUserInfo(request.getMobile(), bCryptPasswordEncoder.encode(request.getPassword()));
     }
 
     @Override
@@ -110,5 +108,22 @@ public class UserApplicationServiceImpl implements UserApplicationService {
             communityBase = communityBaseRepository.getById(userInfo.getCommunityId().longValue());
         }
         return UserConvert.INSTANCE.convertToPersonalInfoResponse(userInfo, communityBase);
+    }
+
+    @Override
+    public void modifyPassword(ModifyPasswordRequest request) {
+        final UserInfo userInfo = userInfoRepository.getById(UserContextUtil.getLongUserId());
+        if (Objects.isNull(userInfo)) {
+            return;
+        }
+        // 短信验证码校验
+        final SmsCodeVerifyRequest verifyRequest = SmsCodeVerifyRequest.builder()
+                .mobile(userInfo.getMobile())
+                .mobileCode(request.getVerifyCode())
+                .uuid(request.getUuid())
+                .build();
+        commonHelper.verifySmsCode(verifyRequest);
+        userInfo.setPassword(bCryptPasswordEncoder.encode(request.getNewPassword()));
+        userInfoExtMapper.updateById(userInfo);
     }
 }

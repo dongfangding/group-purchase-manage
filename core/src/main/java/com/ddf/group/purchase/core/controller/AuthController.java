@@ -76,4 +76,5 @@ public class AuthController {
     public UserClaim currentUser() {
         return UserContextUtil.getUserClaim();
     }
+
 }
