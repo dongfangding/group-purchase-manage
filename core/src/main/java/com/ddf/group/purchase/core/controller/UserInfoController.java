@@ -4,10 +4,13 @@ import com.ddf.boot.common.authentication.util.UserContextUtil;
 import com.ddf.group.purchase.api.request.user.CompleteUserInfoRequest;
 import com.ddf.group.purchase.api.request.user.EmailVerifyRequest;
 import com.ddf.group.purchase.api.request.user.ModifyPasswordRequest;
+import com.ddf.group.purchase.api.request.user.UserAddressRequest;
 import com.ddf.group.purchase.api.response.user.PersonalInfoResponse;
+import com.ddf.group.purchase.api.response.user.UserAddressResponse;
 import com.ddf.group.purchase.core.application.UserApplicationService;
 import com.ddf.group.purchase.core.client.MailClient;
 import com.ddf.group.purchase.core.helper.CommonHelper;
+import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -79,5 +82,36 @@ public class UserInfoController {
     @PostMapping("modifyPassword")
     public void modifyPassword(@RequestBody @Validated ModifyPasswordRequest request) {
         userApplicationService.modifyPassword(request);
+    }
+
+    /**
+     * 用户收货地址维护
+     *
+     * @param request
+     */
+    @PostMapping("address/saveOrUpdate")
+    public void modifyPassword(@RequestBody @Validated UserAddressRequest request) {
+        userApplicationService.addressCommand(request);
+    }
+
+
+    /**
+     * 查询用户的收货地址
+     *
+     * @return
+     */
+    @GetMapping("address/all")
+    public List<UserAddressResponse> listUserAddress() {
+        return userApplicationService.listUserAddress(UserContextUtil.getLongUserId());
+    }
+
+    /**
+     * 删除用户收货地址
+     *
+     * @param id
+     */
+    @PostMapping("address/delete")
+    public int deleteUserAddress(@RequestParam Long id) {
+        return userApplicationService.deleteUserAddress(id, UserContextUtil.getLongUserId());
     }
 }

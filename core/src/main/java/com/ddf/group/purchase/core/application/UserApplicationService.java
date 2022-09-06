@@ -2,8 +2,11 @@ package com.ddf.group.purchase.core.application;
 
 import com.ddf.group.purchase.api.request.user.CompleteUserInfoRequest;
 import com.ddf.group.purchase.api.request.user.ModifyPasswordRequest;
+import com.ddf.group.purchase.api.request.user.UserAddressRequest;
 import com.ddf.group.purchase.api.request.user.UserRegistryRequest;
 import com.ddf.group.purchase.api.response.user.PersonalInfoResponse;
+import com.ddf.group.purchase.api.response.user.UserAddressResponse;
+import java.util.List;
 
 /**
  * <p>用户业务层</p >
@@ -41,4 +44,27 @@ public interface UserApplicationService {
      * @param request
      */
     void modifyPassword(ModifyPasswordRequest request);
+
+    /**
+     * 用户收货地址维护
+     *
+     * @param request
+     */
+    void addressCommand(UserAddressRequest request);
+
+    /**
+     * 查询用户的收货地址
+     *
+     * @param uid
+     * @return
+     */
+    List<UserAddressResponse> listUserAddress(Long uid);
+
+    /**
+     * 删除用户收货地址
+     *
+     * @param id
+     * @param userId
+     */
+    int deleteUserAddress(Long id, Long userId);
 }

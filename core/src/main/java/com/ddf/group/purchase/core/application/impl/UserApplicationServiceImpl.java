@@ -7,21 +7,28 @@ import com.ddf.boot.common.core.util.PreconditionUtil;
 import com.ddf.group.purchase.api.request.common.SmsCodeVerifyRequest;
 import com.ddf.group.purchase.api.request.user.CompleteUserInfoRequest;
 import com.ddf.group.purchase.api.request.user.ModifyPasswordRequest;
+import com.ddf.group.purchase.api.request.user.UserAddressRequest;
 import com.ddf.group.purchase.api.request.user.UserRegistryRequest;
 import com.ddf.group.purchase.api.response.user.PersonalInfoResponse;
+import com.ddf.group.purchase.api.response.user.UserAddressResponse;
 import com.ddf.group.purchase.core.application.UserApplicationService;
 import com.ddf.group.purchase.core.client.MailClient;
 import com.ddf.group.purchase.core.client.UserClient;
+import com.ddf.group.purchase.core.converter.UserAddressConvert;
 import com.ddf.group.purchase.core.converter.UserConvert;
 import com.ddf.group.purchase.core.exception.ExceptionCode;
 import com.ddf.group.purchase.core.helper.CommonHelper;
+import com.ddf.group.purchase.core.mapper.UserAddressMapper;
 import com.ddf.group.purchase.core.mapper.ext.UserInfoExtMapper;
 import com.ddf.group.purchase.core.model.cqrs.user.CompleteUserInfoCommand;
 import com.ddf.group.purchase.core.model.entity.CommunityBase;
+import com.ddf.group.purchase.core.model.entity.UserAddress;
 import com.ddf.group.purchase.core.model.entity.UserInfo;
 import com.ddf.group.purchase.core.repository.CommunityBaseRepository;
+import com.ddf.group.purchase.core.repository.UserAddressRepository;
 import com.ddf.group.purchase.core.repository.UserInfoRepository;
 import com.ddf.group.purchase.core.service.UserInfoService;
+import java.util.List;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -48,6 +55,8 @@ public class UserApplicationServiceImpl implements UserApplicationService {
     private final CommonHelper commonHelper;
     private final UserClient userClient;
     private final MailClient mailClient;
+    private final UserAddressMapper userAddressMapper;
+    private final UserAddressRepository userAddressRepository;
 
     /**
      * 注册
@@ -126,4 +135,26 @@ public class UserApplicationServiceImpl implements UserApplicationService {
         userInfo.setPassword(bCryptPasswordEncoder.encode(request.getNewPassword()));
         userInfoExtMapper.updateById(userInfo);
     }
+
+    @Override
+    public void addressCommand(UserAddressRequest request) {
+        final UserAddress userAddress = UserAddressConvert.INSTANCE.convert(request);
+        if (Objects.isNull(userAddress.getId())) {
+            userAddressMapper.insert(userAddress);
+        } else {
+            userAddressMapper.updateById(userAddress);
+        }
+    }
+
+    @Override
+    public List<UserAddressResponse> listUserAddress(Long uid) {
+        return UserAddressConvert.INSTANCE.convert(userAddressRepository.listUserAddress(uid));
+    }
+
+    @Override
+    public int deleteUserAddress(Long id, Long userId) {
+        return userAddressRepository.deleteUserAddress(id, userId);
+    }
+
+
 }
