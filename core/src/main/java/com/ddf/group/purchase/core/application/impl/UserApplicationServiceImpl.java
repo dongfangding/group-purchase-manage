@@ -140,6 +140,7 @@ public class UserApplicationServiceImpl implements UserApplicationService {
     public void addressCommand(UserAddressRequest request) {
         final UserAddress userAddress = UserAddressConvert.INSTANCE.convert(request);
         if (Objects.isNull(userAddress.getId())) {
+            userAddress.setUid(UserContextUtil.getLongUserId());
             userAddressMapper.insert(userAddress);
         } else {
             userAddressMapper.updateById(userAddress);

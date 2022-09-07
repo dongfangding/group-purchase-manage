@@ -22,6 +22,14 @@
                item.id                       as groupItemId,
                item.ctime,
                item.join_uid,
+               item.join_status              as joinStatus,
+               item.receiver_province        as receiverProvince,
+               item.receiver_city            as receiverCity,
+               item.receiver_area            as receiverArea,
+               item.receiver_name            as receiverName,
+               item.receiver_mobile          as receiverMobile,
+               item.receiver_detail_address  as receiverDetailAddress,
+               item.remark,
                good.id                       as itemGoodId,
                good.group_purchase_good_id   as goodId,
                good.group_purchase_good_name as goodName,
@@ -45,6 +53,13 @@
                item.subscribe_progress            as subscribeProgress,
                item.join_status                   as joinStatus,
                item.id                            as joinItemId,
+               item.receiver_province             as receiverProvince,
+               item.receiver_city                 as receiverCity,
+               item.receiver_area                 as receiverArea,
+               item.receiver_name                 as receiverName,
+               item.receiver_mobile               as receiverMobile,
+               item.receiver_detail_address       as receiverDetailAddress,
+               item.remark,
                gp.name,
                gp.status,
                gp.group_master_uid                as groupMasterUid,
@@ -58,6 +73,7 @@
                item_good.group_purchase_good_pic  as goodPic,
                item_good.price,
                item_good.total_price              as totalPrice
+
         from group_purchase_item item
                  left join group_purchase_info gp on item.group_purchase_id = gp.id
                  left join group_purchase_item_good item_good on item.id = item_good.group_purchase_item_id
@@ -83,8 +99,16 @@
 
     <update id="updatePaid">
         update group_purchase_item
-        set join_status = ${@com.ddf.group.purchase.api.enume.GroupPurchaseItemJoinStatusEnum@PAID.getValue()},
-        status_change_time = UNIX_TIMESTAMP()
-        where id = #{id} and join_status = ${@com.ddf.group.purchase.api.enume.GroupPurchaseItemJoinStatusEnum@WAIT_PAY.getValue()}
+        set join_status             = ${@com.ddf.group.purchase.api.enume.GroupPurchaseItemJoinStatusEnum@PAID.getValue()},
+            status_change_time      = UNIX_TIMESTAMP(),
+            remark                  = #{remark},
+            receiver_province       = #{address.receiverProvince},
+            receiver_city           = #{address.receiverCity},
+            receiver_area           = #{address.receiverArea},
+            receiver_name           = #{address.receiverName},
+            receiver_mobile         = #{address.receiverMobile},
+            receiver_detail_address = #{address.receiverDetailAddress}
+        where id = #{id}
+          and join_status = ${@com.ddf.group.purchase.api.enume.GroupPurchaseItemJoinStatusEnum@WAIT_PAY.getValue()}
     </update>
 </mapper>

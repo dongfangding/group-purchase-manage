@@ -12,7 +12,7 @@ import lombok.Data;
 *
 * @author Snowball
 * @version 1.0
-* @date 2022/09/06 16:37
+* @date 2022/09/07 20:47
 */
 
 
@@ -60,6 +60,48 @@ public class GroupPurchaseItem implements Serializable {
      */
     @TableField(value = "status_change_time")
     private Long statusChangeTime;
+
+    /**
+     * 收货人姓名
+     */
+    @TableField(value = "receiver_name")
+    private String receiverName;
+
+    /**
+     * 收货人手机号
+     */
+    @TableField(value = "receiver_mobile")
+    private String receiverMobile;
+
+    /**
+     * 收货人详细地址
+     */
+    @TableField(value = "receiver_detail_address")
+    private String receiverDetailAddress;
+
+    /**
+     * 收货人省份
+     */
+    @TableField(value = "receiver_province")
+    private String receiverProvince;
+
+    /**
+     * 收货人市
+     */
+    @TableField(value = "receiver_city")
+    private String receiverCity;
+
+    /**
+     * 收货人区
+     */
+    @TableField(value = "receiver_area")
+    private String receiverArea;
+
+    /**
+     * 备注
+     */
+    @TableField(value = "remark")
+    private String remark;
 
     private static final long serialVersionUID = 1L;
 }

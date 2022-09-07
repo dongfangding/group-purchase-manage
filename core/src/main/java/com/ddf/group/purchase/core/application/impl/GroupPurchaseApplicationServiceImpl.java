@@ -29,6 +29,7 @@ import com.ddf.group.purchase.core.application.GroupPurchaseApplicationService;
 import com.ddf.group.purchase.core.client.MailClient;
 import com.ddf.group.purchase.core.client.UserClient;
 import com.ddf.group.purchase.core.converter.GroupPurchaseInfoConvert;
+import com.ddf.group.purchase.core.converter.UserAddressConvert;
 import com.ddf.group.purchase.core.exception.ExceptionCode;
 import com.ddf.group.purchase.core.mapper.ext.GroupPurchaseGoodExtMapper;
 import com.ddf.group.purchase.core.mapper.ext.GroupPurchaseInfoExtMapper;
@@ -344,6 +345,12 @@ public class GroupPurchaseApplicationServiceImpl implements GroupPurchaseApplica
             purchaseItem.setCtime(currentTimeSeconds);
             purchaseItem.setSubscribeProgress(Boolean.TRUE);
             purchaseItem.setStatusChangeTime(currentTimeSeconds);
+            purchaseItem.setReceiverProvince(request.getReceiverProvince());
+            purchaseItem.setReceiverCity(request.getReceiverCity());
+            purchaseItem.setReceiverArea(request.getReceiverArea());
+            purchaseItem.setReceiverName(request.getReceiverName());
+            purchaseItem.setReceiverMobile(request.getReceiverMobile());
+            purchaseItem.setReceiverDetailAddress(request.getReceiverDetailAddress());
             groupPurchaseItemExtMapper.insert(purchaseItem);
         }
 
@@ -365,8 +372,8 @@ public class GroupPurchaseApplicationServiceImpl implements GroupPurchaseApplica
             purchaseItemGood.setMtime(currentTimeSeconds);
             groupPurchaseItemGoodExtMapper.insert(purchaseItemGood);
         } else {
-            purchaseItemGood.setGoodNum(request.getGoodNum());
-            purchaseItemGood.setTotalPrice(good.getPrice().multiply(BigDecimal.valueOf(request.getGoodNum())));
+            purchaseItemGood.setGoodNum(purchaseItemGood.getGoodNum() + request.getGoodNum());
+            purchaseItemGood.setTotalPrice(good.getPrice().multiply(BigDecimal.valueOf(purchaseItemGood.getGoodNum())));
             purchaseItemGood.setMtime(currentTimeSeconds);
             groupPurchaseItemGoodExtMapper.updateById(purchaseItemGood);
         }
@@ -400,7 +407,7 @@ public class GroupPurchaseApplicationServiceImpl implements GroupPurchaseApplica
         if (!Objects.equals(GroupPurchaseItemJoinStatusEnum.WAIT_PAY.getValue(), item.getJoinStatus())) {
             throw new BusinessException(ExceptionCode.GROUP_ITEM_ALLOW_PAY);
         }
-        return groupPurchaseItemExtMapper.updatePaid(joinItemId) > 0;
+        return groupPurchaseItemExtMapper.updatePaid(joinItemId, UserAddressConvert.INSTANCE.convert(request), request.getRemark()) > 0;
     }
 
 

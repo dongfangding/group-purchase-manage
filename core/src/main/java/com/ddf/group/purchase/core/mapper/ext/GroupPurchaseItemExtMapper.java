@@ -1,6 +1,7 @@
 package com.ddf.group.purchase.core.mapper.ext;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.ddf.group.purchase.api.request.group.AddressDomain;
 import com.ddf.group.purchase.api.response.group.GroupItemResponse;
 import com.ddf.group.purchase.api.response.group.MyJoinGroupPageResponse;
 import com.ddf.group.purchase.core.model.cqrs.group.MyJoinGroupQuery;
@@ -53,5 +54,5 @@ public interface GroupPurchaseItemExtMapper extends BaseMapper<GroupPurchaseItem
      * @param id
      * @return
      */
-    int updatePaid(@Param("id") Long id);
+    int updatePaid(@Param("id") Long id, @Param("address") AddressDomain addressDomain, @Param("remark") String remark);
 }

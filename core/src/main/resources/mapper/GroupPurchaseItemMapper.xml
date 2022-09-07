@@ -11,9 +11,18 @@
     <result column="subscribe_progress" jdbcType="BIT" property="subscribeProgress" />
     <result column="join_status" jdbcType="TINYINT" property="joinStatus" />
     <result column="status_change_time" jdbcType="BIGINT" property="statusChangeTime" />
+    <result column="receiver_name" jdbcType="VARCHAR" property="receiverName" />
+    <result column="receiver_mobile" jdbcType="VARCHAR" property="receiverMobile" />
+    <result column="receiver_detail_address" jdbcType="VARCHAR" property="receiverDetailAddress" />
+    <result column="receiver_province" jdbcType="VARCHAR" property="receiverProvince" />
+    <result column="receiver_city" jdbcType="VARCHAR" property="receiverCity" />
+    <result column="receiver_area" jdbcType="VARCHAR" property="receiverArea" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--@mbg.generated-->
-    id, group_purchase_id, join_uid, ctime, subscribe_progress, join_status, status_change_time
+    id, group_purchase_id, join_uid, ctime, subscribe_progress, join_status, status_change_time, 
+    receiver_name, receiver_mobile, receiver_detail_address, receiver_province, receiver_city, 
+    receiver_area, remark
   </sql>
 </mapper>

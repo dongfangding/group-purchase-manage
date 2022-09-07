@@ -52,7 +52,43 @@ public class GroupItemResponse implements Serializable {
      */
     private String joinUserAvatarUrl;
 
-//    /**
+    /**
+     * 参团备注
+     */
+    private String remark;
+
+    /**
+     * 收货人姓名
+     */
+    private String receiverName;
+
+    /**
+     * 收货人手机号
+     */
+    private String receiverMobile;
+
+    /**
+     * 收货人详细地址
+     */
+    private String receiverDetailAddress;
+
+    /**
+     * 收货人省份
+     */
+    private String receiverProvince;
+
+    /**
+     * 收货人市
+     */
+    private String receiverCity;
+
+    /**
+     * 收货人区
+     */
+    private String receiverArea;
+
+
+    //    /**
 //     * 购买商品明细
 //     */
 //    private List<Good> goods;

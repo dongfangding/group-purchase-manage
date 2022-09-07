@@ -1,5 +1,7 @@
 package com.ddf.group.purchase.core.converter;
 
+import com.ddf.group.purchase.api.request.group.AddressDomain;
+import com.ddf.group.purchase.api.request.group.SimulationPayRequest;
 import com.ddf.group.purchase.api.request.user.UserAddressRequest;
 import com.ddf.group.purchase.api.response.user.UserAddressResponse;
 import com.ddf.group.purchase.core.model.entity.UserAddress;
@@ -36,4 +38,7 @@ public interface UserAddressConvert {
 
     @Mappings({})
     List<UserAddressResponse> convert(List<UserAddress> userAddressList);
+
+    @Mappings({})
+    AddressDomain convert(SimulationPayRequest request);
 }
