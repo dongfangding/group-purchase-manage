@@ -330,13 +330,13 @@ public class GroupPurchaseApplicationServiceImpl implements GroupPurchaseApplica
     public void join(JoinGroupRequest request) {
         final Long groupId = request.getGroupId();
         final Long goodId = request.getGoodId();
+        final Long currentUserId = UserContextUtil.getLongUserId();
         checkGroupUserCanOperate(groupId);
         final GroupPurchaseGood good = groupPurchaseGoodExtMapper.selectById(goodId);
         PreconditionUtil.checkArgument(Objects.nonNull(good), ExceptionCode.GROUP_GOOD_NOT_EXIST);
 
-        final Long currentUserId = UserContextUtil.getLongUserId();
         final Long currentTimeSeconds = DateUtils.currentTimeSeconds();
-        GroupPurchaseItem purchaseItem = groupPurchaseItemRepository.selectUserGroupItem(groupId, goodId);
+        GroupPurchaseItem purchaseItem = groupPurchaseItemRepository.selectUserGroupItem(groupId, currentUserId);
         if (Objects.isNull(purchaseItem)) {
             purchaseItem = new GroupPurchaseItem();
             purchaseItem.setGroupPurchaseId(groupId);
@@ -370,7 +370,7 @@ public class GroupPurchaseApplicationServiceImpl implements GroupPurchaseApplica
             purchaseItemGood.setMtime(currentTimeSeconds);
             groupPurchaseItemGoodExtMapper.insert(purchaseItemGood);
         } else {
-            purchaseItemGood.setGoodNum(purchaseItemGood.getGoodNum());
+            purchaseItemGood.setGoodNum(request.getGoodNum());
             purchaseItemGood.setTotalPrice(good.getPrice().multiply(BigDecimal.valueOf(purchaseItemGood.getGoodNum())));
             purchaseItemGood.setMtime(currentTimeSeconds);
             groupPurchaseItemGoodExtMapper.updateById(purchaseItemGood);
