@@ -345,13 +345,11 @@ public class GroupPurchaseApplicationServiceImpl implements GroupPurchaseApplica
             purchaseItem.setCtime(currentTimeSeconds);
             purchaseItem.setSubscribeProgress(Boolean.TRUE);
             purchaseItem.setStatusChangeTime(currentTimeSeconds);
-            purchaseItem.setReceiverProvince(request.getReceiverProvince());
-            purchaseItem.setReceiverCity(request.getReceiverCity());
-            purchaseItem.setReceiverArea(request.getReceiverArea());
-            purchaseItem.setReceiverName(request.getReceiverName());
-            purchaseItem.setReceiverMobile(request.getReceiverMobile());
-            purchaseItem.setReceiverDetailAddress(request.getReceiverDetailAddress());
             groupPurchaseItemExtMapper.insert(purchaseItem);
+        } else {
+            if (!Objects.equals(GroupPurchaseItemJoinStatusEnum.WAIT_PAY.getValue(), purchaseItem.getJoinStatus())) {
+                throw new BusinessException(ExceptionCode.JOIN_ITEM_ORDER_NOT_ALLOW_MODIFY);
+            }
         }
 
         GroupPurchaseItemGood purchaseItemGood = groupPurchaseItemGoodRepository.selectUserGroupGood(
@@ -372,7 +370,7 @@ public class GroupPurchaseApplicationServiceImpl implements GroupPurchaseApplica
             purchaseItemGood.setMtime(currentTimeSeconds);
             groupPurchaseItemGoodExtMapper.insert(purchaseItemGood);
         } else {
-            purchaseItemGood.setGoodNum(purchaseItemGood.getGoodNum() + request.getGoodNum());
+            purchaseItemGood.setGoodNum(purchaseItemGood.getGoodNum());
             purchaseItemGood.setTotalPrice(good.getPrice().multiply(BigDecimal.valueOf(purchaseItemGood.getGoodNum())));
             purchaseItemGood.setMtime(currentTimeSeconds);
             groupPurchaseItemGoodExtMapper.updateById(purchaseItemGood);
