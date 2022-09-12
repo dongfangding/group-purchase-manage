@@ -405,6 +405,17 @@ public class GroupPurchaseApplicationServiceImpl implements GroupPurchaseApplica
         if (!Objects.equals(GroupPurchaseItemJoinStatusEnum.WAIT_PAY.getValue(), item.getJoinStatus())) {
             throw new BusinessException(ExceptionCode.GROUP_ITEM_ALLOW_PAY);
         }
+        final GroupPurchaseItemGood itemGood = groupPurchaseItemGoodRepository.selectUserGroupGood(
+                item.getGroupPurchaseId(), userId, request.getGoodId());
+        if (Objects.isNull(itemGood)) {
+            throw new BusinessException(ExceptionCode.ORDER_GOOD_NOT_EXIST);
+        }
+        // 允许重新修改商品数量信息
+        if (!Objects.equals(itemGood.getGoodNum(), request.getGoodNum())) {
+            itemGood.setGoodNum(request.getGoodNum());
+            itemGood.setTotalPrice(itemGood.getPrice().multiply(BigDecimal.valueOf(request.getGoodNum())));
+            groupPurchaseItemGoodExtMapper.updateById(itemGood);
+        }
         return groupPurchaseItemExtMapper.updatePaid(joinItemId, UserAddressConvert.INSTANCE.convert(request), request.getRemark()) > 0;
     }
 

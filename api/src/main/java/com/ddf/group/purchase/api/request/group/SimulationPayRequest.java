@@ -4,6 +4,7 @@ import java.io.Serializable;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import lombok.Data;
+import org.hibernate.validator.constraints.Range;
 
 /**
  * <p>假支付请求参数</p >
@@ -29,7 +30,20 @@ public class SimulationPayRequest implements Serializable {
     private String payType;
 
     /**
-     * 备注
+     * 商品记录id
+     */
+    @NotNull(message = "商品记录id不能为空")
+    private Long goodId;
+
+    /**
+     * 商品数量
+     */
+    @NotNull(message = "商品数量不能为空")
+    @Range(min = 1, max = 99999, message = "商品数量不合法")
+    private Integer goodNum;
+
+    /**
+     * 参团备注
      */
     private String remark;
 
