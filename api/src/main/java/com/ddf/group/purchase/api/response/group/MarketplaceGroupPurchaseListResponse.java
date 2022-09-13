@@ -4,8 +4,8 @@ import com.ddf.boot.common.core.util.DateUtils;
 import com.ddf.group.purchase.api.enume.GroupPurchaseStatusEnum;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.Data;
@@ -85,10 +85,14 @@ public class MarketplaceGroupPurchaseListResponse implements Serializable {
     private String picUrls;
 
     public List<String> getPicUrlList() {
-        if (StringUtils.isBlank(picUrls)) {
-            return Collections.emptyList();
+        List<String> imageList = new ArrayList<>();
+        if (StringUtils.isNotBlank(picUrls)) {
+            imageList.addAll(Arrays.stream(picUrls.split(",")).collect(Collectors.toList()));
         }
-        return Arrays.stream(picUrls.split(",")).collect(Collectors.toList());
+        if (StringUtils.isBlank(goodPic)) {
+            imageList.add(goodPic);
+        }
+        return imageList;
     }
 
     /**
