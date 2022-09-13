@@ -13,7 +13,7 @@ import lombok.Data;
 *
 * @author Snowball
 * @version 1.0
-* @date 2022/09/05 15:14
+* @date 2022/09/13 18:45
 */
 
 
@@ -73,6 +73,18 @@ public class GroupPurchaseGood implements Serializable {
      */
     @TableField(value = "good_pic")
     private String goodPic;
+
+    /**
+     * 规格json数组， 第一层数组是规格名称，如尺码、口味； 第二层是具体规格的数值， 如尺码里有S/M/L
+     */
+    @TableField(value = "specification")
+    private String specification;
+
+    /**
+     * 剩余商品库存
+     */
+    @TableField(value = "remaining_stock")
+    private Integer remainingStock;
 
     private static final long serialVersionUID = 1L;
 }

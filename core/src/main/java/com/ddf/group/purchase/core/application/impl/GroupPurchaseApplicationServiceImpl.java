@@ -1,12 +1,14 @@
 package com.ddf.group.purchase.core.application.impl;
 
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.collection.CollectionUtil;
 import com.ddf.boot.common.authentication.util.UserContextUtil;
 import com.ddf.boot.common.core.exception200.BusinessException;
 import com.ddf.boot.common.core.model.PageResult;
 import com.ddf.boot.common.core.util.BeanUtil;
 import com.ddf.boot.common.core.util.DateUtils;
 import com.ddf.boot.common.core.util.PageUtil;
+import com.ddf.boot.common.core.util.PatternUtil;
 import com.ddf.boot.common.core.util.PreconditionUtil;
 import com.ddf.group.purchase.api.enume.GroupPurchaseItemJoinStatusEnum;
 import com.ddf.group.purchase.api.enume.GroupPurchaseStatusEnum;
@@ -175,10 +177,18 @@ public class GroupPurchaseApplicationServiceImpl implements GroupPurchaseApplica
         groupPurchaseInfo.setCtime(currentTimeSeconds);
         groupPurchaseInfo.setMtime(currentTimeSeconds);
         groupPurchaseInfo.setServiceCommunityId(userInfo.getCommunityId().longValue());
+        if (StringUtils.isNotBlank(groupPurchaseInfo.getContent())) {
+            // 解析出图片链接
+            final Set<String> imgSrcUrl = PatternUtil.findImgSrcUrl(groupPurchaseInfo.getContent());
+            if (CollUtil.isNotEmpty(imgSrcUrl)) {
+                groupPurchaseInfo.setPicUrls(CollectionUtil.join(imgSrcUrl, ","));
+            }
+        }
         final boolean bool = groupPurchaseInfoRepository.insertGroupPurchaseInfo(groupPurchaseInfo);
         if (bool) {
             final GroupPurchaseGood good = GroupPurchaseInfoConvert.INSTANCE.convertGood(request);
             good.setGroupPurchaseId(groupPurchaseInfo.getId());
+            good.setRemainingStock(good.getStock());
             groupPurchaseGoodExtMapper.insert(good);
         }
     }
@@ -240,12 +250,6 @@ public class GroupPurchaseApplicationServiceImpl implements GroupPurchaseApplica
         return PageUtil.startPage(request, () -> {
             groupPurchaseInfoExtMapper.list(GroupPurchaseInfoConvert.INSTANCE.convert(request));
         }, GroupPurchaseInfo.class, GroupPurchaseListResponse.class);
-//        return PageUtil.startPage(request, () -> {
-//            groupPurchaseInfoRepository.listGroupPurchaseInfo(request);
-//        }, list -> {
-//            // fixme 这里类型丢失了，变成了Object
-//            return GroupPurchaseInfoConvert.INSTANCE.convert( list);                                                                                                                                                                                                                                                                      ANCE.convert(list);
-//        });
     }
 
     @Override
@@ -346,7 +350,8 @@ public class GroupPurchaseApplicationServiceImpl implements GroupPurchaseApplica
             purchaseItem.setSubscribeProgress(Boolean.TRUE);
             purchaseItem.setStatusChangeTime(currentTimeSeconds);
             groupPurchaseItemExtMapper.insert(purchaseItem);
-        } else {
+        }
+        else {
             if (!Objects.equals(GroupPurchaseItemJoinStatusEnum.WAIT_PAY.getValue(), purchaseItem.getJoinStatus())) {
                 throw new BusinessException(ExceptionCode.JOIN_ITEM_ORDER_NOT_ALLOW_MODIFY);
             }
@@ -400,20 +405,27 @@ public class GroupPurchaseApplicationServiceImpl implements GroupPurchaseApplica
     public boolean simulationPay(SimulationPayRequest request) {
         Long userId = UserContextUtil.getLongUserId();
         final Long joinItemId = request.getJoinItemId();
+        final Long goodId = request.getGoodId();
+        final Integer goodNum = request.getGoodNum();
         final GroupPurchaseItem item = groupPurchaseItemExtMapper.selectById(joinItemId);
         PreconditionUtil.checkArgument(Objects.equals(userId, item.getJoinUid()), ExceptionCode.DATA_NOT_MATCH_USER);
         if (!Objects.equals(GroupPurchaseItemJoinStatusEnum.WAIT_PAY.getValue(), item.getJoinStatus())) {
-            throw new BusinessException(ExceptionCode.GROUP_ITEM_ALLOW_PAY);
+            throw new BusinessException(ExceptionCode.GROUP_ITEM_NOT_ALLOW_PAY);
         }
         final GroupPurchaseItemGood itemGood = groupPurchaseItemGoodRepository.selectUserGroupGood(
-                item.getGroupPurchaseId(), userId, request.getGoodId());
+                item.getGroupPurchaseId(), userId, goodId);
         if (Objects.isNull(itemGood)) {
             throw new BusinessException(ExceptionCode.ORDER_GOOD_NOT_EXIST);
         }
+        // 先执行库存扣减操作
+        final int reduceGoodStockResult = groupPurchaseGoodExtMapper.reduceGoodStock(goodId, goodNum);
+        if (reduceGoodStockResult < 1) {
+            throw new BusinessException(ExceptionCode.GROUP_ORDER_STOCK_NOT_ENOUGH);
+        }
         // 允许重新修改商品数量信息
-        if (!Objects.equals(itemGood.getGoodNum(), request.getGoodNum())) {
-            itemGood.setGoodNum(request.getGoodNum());
-            itemGood.setTotalPrice(itemGood.getPrice().multiply(BigDecimal.valueOf(request.getGoodNum())));
+        if (!Objects.equals(itemGood.getGoodNum(), goodNum)) {
+            itemGood.setGoodNum(goodNum);
+            itemGood.setTotalPrice(itemGood.getPrice().multiply(BigDecimal.valueOf(goodNum)));
             groupPurchaseItemGoodExtMapper.updateById(itemGood);
         }
         return groupPurchaseItemExtMapper.updatePaid(joinItemId, UserAddressConvert.INSTANCE.convert(request), request.getRemark()) > 0;

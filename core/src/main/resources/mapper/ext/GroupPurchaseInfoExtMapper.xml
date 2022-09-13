@@ -17,12 +17,13 @@
                master.start_time,
                master.end_time,
                master.service_community_id,
-               good.id       as goodId,
+               good.id              as goodId,
                good.good_name,
                good.good_description,
-               good.good_pic as goodPic,
+               good.good_pic        as goodPic,
                good.price,
                good.stock,
+               good.remaining_stock as remainingStock,
                good.limit_type,
                good.limit_value
         from group_purchase_info master

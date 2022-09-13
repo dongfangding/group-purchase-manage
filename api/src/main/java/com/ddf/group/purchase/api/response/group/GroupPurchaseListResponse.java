@@ -126,6 +126,11 @@ public class GroupPurchaseListResponse implements Serializable {
     private Integer stock;
 
     /**
+     * 剩余商品库存
+     */
+    private Integer remainingStock;
+
+    /**
      * 限制类型，默认不限购，如限购数量上限、起购数量
      */
     private String limitType;

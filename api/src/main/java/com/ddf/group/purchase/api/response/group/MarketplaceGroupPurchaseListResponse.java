@@ -4,7 +4,12 @@ import com.ddf.boot.common.core.util.DateUtils;
 import com.ddf.group.purchase.api.enume.GroupPurchaseStatusEnum;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.Data;
+import org.apache.commons.lang3.StringUtils;
 
 /**
 * <p>团购市场列表响应</p >
@@ -79,6 +84,13 @@ public class MarketplaceGroupPurchaseListResponse implements Serializable {
      */
     private String picUrls;
 
+    public List<String> getPicUrlList() {
+        if (StringUtils.isBlank(picUrls)) {
+            return Collections.emptyList();
+        }
+        return Arrays.stream(picUrls.split(",")).collect(Collectors.toList());
+    }
+
     /**
      * 视频附件地址
      */
@@ -129,6 +141,11 @@ public class MarketplaceGroupPurchaseListResponse implements Serializable {
      * 商品库存
      */
     private Integer stock;
+
+    /**
+     * 剩余商品库存
+     */
+    private Integer remainingStock;
 
     /**
      * 限制类型，默认不限购，如限购数量上限、起购数量
