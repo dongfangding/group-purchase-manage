@@ -98,6 +98,11 @@ public class MyJoinGroupPageResponse implements Serializable {
     private Integer joinStatus;
 
     /**
+     * 订单状态变更时间
+     */
+    private Long statusChangeTime;
+
+    /**
      * 参团备注
      */
     private String remark;

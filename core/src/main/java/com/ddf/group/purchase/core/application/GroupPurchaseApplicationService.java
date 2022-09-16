@@ -144,4 +144,12 @@ public interface GroupPurchaseApplicationService {
      * @param request
      */
     boolean simulationPay(SimulationPayRequest request);
+
+    /**
+     * 关闭未支付订单
+     *
+     * @param groupItemId
+     */
+    boolean closeOrder(Long groupItemId);
+
 }

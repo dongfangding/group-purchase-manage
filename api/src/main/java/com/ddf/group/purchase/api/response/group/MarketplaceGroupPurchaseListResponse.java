@@ -161,6 +161,11 @@ public class MarketplaceGroupPurchaseListResponse implements Serializable {
      */
     private Long limitValue;
 
+    /**
+     * 统计相关
+     */
+    private GroupStatisticsDTO statistics = GroupStatisticsDTO.init();
+
     public String getStatusName() {
         return GroupPurchaseStatusEnum.resolve(status).getDesc();
     }

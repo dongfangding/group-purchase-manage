@@ -16,6 +16,7 @@ server:
       max: 300
       min-spare: 20
     processor-cache: 300
+    basedir: /opt/data/
   servlet:
     context-path: /group-purchase-manage
 
@@ -26,6 +27,10 @@ spring:
     active: dev
   application:
     name: group-purchase-manage
+  mvc:
+    hiddenmethod:
+      filter:
+        enabled: true
   servlet:
     multipart:
       max-file-size: 50MB

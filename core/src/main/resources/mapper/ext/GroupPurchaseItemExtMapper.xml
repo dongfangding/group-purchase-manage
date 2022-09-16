@@ -52,6 +52,7 @@
                item.ctime                         as joinTime,
                item.subscribe_progress            as subscribeProgress,
                item.join_status                   as joinStatus,
+               item.status_change_time            as statusChangeTime,
                item.id                            as joinItemId,
                item.receiver_province             as receiverProvince,
                item.receiver_city                 as receiverCity,

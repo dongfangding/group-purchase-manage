@@ -30,6 +30,7 @@
         <ddf-common-xxl-executor.version>1.0.1-SNAPSHOT</ddf-common-xxl-executor.version>
         <ddf-common-nacos.version>1.0.1-SNAPSHOT</ddf-common-nacos.version>
         <ddf-common-vps.version>1.0.1-SNAPSHOT</ddf-common-vps.version>
+        <ddf-common-rocketmq.version>1.0.1-SNAPSHOT</ddf-common-rocketmq.version>
     </properties>
 
     <dependencies>
@@ -114,6 +115,12 @@
             <groupId>com.ddf.common</groupId>
             <artifactId>ddf-common-vps</artifactId>
             <version>${ddf-common-vps.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.ddf.common</groupId>
+            <artifactId>ddf-common-rocketmq</artifactId>
+            <version>${ddf-common-rocketmq.version}</version>
         </dependency>
 
         <dependency>

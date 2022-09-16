@@ -1,8 +1,9 @@
 package com.ddf.group.purchase.core.repository;
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.ddf.boot.common.core.util.DateUtils;
+import com.ddf.group.purchase.api.enume.GroupPurchaseItemJoinStatusEnum;
 import com.ddf.group.purchase.api.response.group.MyJoinGroupPageResponse;
 import com.ddf.group.purchase.core.mapper.ext.GroupPurchaseItemExtMapper;
 import com.ddf.group.purchase.core.model.cqrs.group.MyJoinGroupQuery;
@@ -26,21 +27,6 @@ import org.springframework.stereotype.Repository;
 public class GroupPurchaseItemRepository {
 
     private final GroupPurchaseItemExtMapper groupPurchaseItemExtMapper;
-
-
-    /**
-     * 查找用户指定团购的参团主表信息
-     *
-     * @param groupId
-     * @param userId
-     * @return
-     */
-    public GroupPurchaseItem selectUserGroupItem(Long groupId, Long userId) {
-        final LambdaQueryWrapper<GroupPurchaseItem> wrapper = Wrappers.lambdaQuery();
-        wrapper.eq(GroupPurchaseItem::getGroupPurchaseId, groupId)
-                .eq(GroupPurchaseItem::getJoinUid, userId);
-        return groupPurchaseItemExtMapper.selectOne(wrapper);
-    }
 
     /**
      * 批量插入用户参团记录
@@ -85,6 +71,21 @@ public class GroupPurchaseItemRepository {
         wrapper.eq(GroupPurchaseItem::getGroupPurchaseId, groupId)
                 .eq(GroupPurchaseItem::getJoinUid, joinUid);
         wrapper.set(GroupPurchaseItem::getSubscribeProgress, subscribeFlag);
+        return groupPurchaseItemExtMapper.update(null, wrapper) > 0;
+    }
+
+    /**
+     * 关闭订单
+     *
+     * @param id
+     * @return
+     */
+    public boolean closeOrder(Long id) {
+        final LambdaUpdateWrapper<GroupPurchaseItem> wrapper = Wrappers.lambdaUpdate();
+        wrapper.eq(GroupPurchaseItem::getId, id)
+                .eq(GroupPurchaseItem::getJoinStatus, GroupPurchaseItemJoinStatusEnum.WAIT_PAY.getValue());
+        wrapper.set(GroupPurchaseItem::getJoinStatus, GroupPurchaseItemJoinStatusEnum.CLOSED.getValue());
+        wrapper.set(GroupPurchaseItem::getStatusChangeTime, DateUtils.currentTimeSeconds());
         return groupPurchaseItemExtMapper.update(null, wrapper) > 0;
     }
 }

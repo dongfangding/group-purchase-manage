@@ -10,6 +10,9 @@ import com.ddf.boot.common.core.util.DateUtils;
 import com.ddf.boot.common.core.util.PageUtil;
 import com.ddf.boot.common.core.util.PatternUtil;
 import com.ddf.boot.common.core.util.PreconditionUtil;
+import com.ddf.boot.common.rocketmq.dto.MessageRequest;
+import com.ddf.boot.common.rocketmq.dto.RocketMQDelayLevelMapping;
+import com.ddf.boot.common.rocketmq.helper.RocketMQHelper;
 import com.ddf.group.purchase.api.enume.GroupPurchaseItemJoinStatusEnum;
 import com.ddf.group.purchase.api.enume.GroupPurchaseStatusEnum;
 import com.ddf.group.purchase.api.request.group.CreateFromWxJieLongRequest;
@@ -24,12 +27,15 @@ import com.ddf.group.purchase.api.request.group.SubscribeGroupRequest;
 import com.ddf.group.purchase.api.request.group.UpdateGroupStatusRequest;
 import com.ddf.group.purchase.api.response.group.GroupItemResponse;
 import com.ddf.group.purchase.api.response.group.GroupPurchaseListResponse;
+import com.ddf.group.purchase.api.response.group.GroupStatisticsDTO;
 import com.ddf.group.purchase.api.response.group.MarketplaceGroupPurchaseListResponse;
 import com.ddf.group.purchase.api.response.group.MyInitiatedGroupPageResponse;
 import com.ddf.group.purchase.api.response.group.MyJoinGroupPageResponse;
 import com.ddf.group.purchase.core.application.GroupPurchaseApplicationService;
+import com.ddf.group.purchase.core.assembler.GroupAssembler;
 import com.ddf.group.purchase.core.client.MailClient;
 import com.ddf.group.purchase.core.client.UserClient;
+import com.ddf.group.purchase.core.constants.RocketMQConst;
 import com.ddf.group.purchase.core.converter.GroupPurchaseInfoConvert;
 import com.ddf.group.purchase.core.converter.UserAddressConvert;
 import com.ddf.group.purchase.core.exception.ExceptionCode;
@@ -43,6 +49,8 @@ import com.ddf.group.purchase.core.model.entity.GroupPurchaseInfo;
 import com.ddf.group.purchase.core.model.entity.GroupPurchaseItem;
 import com.ddf.group.purchase.core.model.entity.GroupPurchaseItemGood;
 import com.ddf.group.purchase.core.model.entity.UserInfo;
+import com.ddf.group.purchase.core.pubsub.event.GroupPayEvent;
+import com.ddf.group.purchase.core.pubsub.event.GroupViewEvent;
 import com.ddf.group.purchase.core.repository.GroupPurchaseGoodRepository;
 import com.ddf.group.purchase.core.repository.GroupPurchaseInfoRepository;
 import com.ddf.group.purchase.core.repository.GroupPurchaseItemGoodRepository;
@@ -61,6 +69,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
@@ -88,11 +97,20 @@ public class GroupPurchaseApplicationServiceImpl implements GroupPurchaseApplica
     private final GroupPurchaseItemExtMapper groupPurchaseItemExtMapper;
     private final GroupPurchaseItemGoodExtMapper groupPurchaseItemGoodExtMapper;
     private final MailClient mailClient;
+    private final RocketMQHelper rocketMQHelper;
+    private final ApplicationEventPublisher applicationEventPublisher;
+    private final GroupAssembler groupAssembler;
 
     @Override
     public GroupPurchaseListResponse groupDetail(Long groupId) {
         final GroupPurchaseListResponse details = groupPurchaseInfoExtMapper.details(groupId);
         details.setJoinItems(joinInfo(groupId));
+        // 发布团购被预览事件
+        applicationEventPublisher.publishEvent(new GroupViewEvent(
+                this, GroupViewEvent.Body.builder()
+                .groupId(groupId)
+                .currentUserId(UserContextUtil.getLongUserId())
+                .build()));
         return details;
     }
 
@@ -176,7 +194,7 @@ public class GroupPurchaseApplicationServiceImpl implements GroupPurchaseApplica
         groupPurchaseInfo.setStatus(GroupPurchaseStatusEnum.CREATED.getValue());
         groupPurchaseInfo.setCtime(currentTimeSeconds);
         groupPurchaseInfo.setMtime(currentTimeSeconds);
-        groupPurchaseInfo.setServiceCommunityId(userInfo.getCommunityId().longValue());
+        groupPurchaseInfo.setServiceCommunityId(Objects.nonNull(userInfo.getCommunityId()) ? userInfo.getCommunityId().longValue() : 0);
         if (StringUtils.isNotBlank(groupPurchaseInfo.getContent())) {
             // 解析出图片链接
             final Set<String> imgSrcUrl = PatternUtil.findImgSrcUrl(groupPurchaseInfo.getContent());
@@ -311,12 +329,19 @@ public class GroupPurchaseApplicationServiceImpl implements GroupPurchaseApplica
                 .stream()
                 .map(GroupPurchaseListResponse::getGroupMasterUid)
                 .collect(Collectors.toSet());
+        final List<Long> groupIdList = result.getContent()
+                .stream()
+                .map(GroupPurchaseListResponse::getId)
+                .collect(Collectors.toList());
         final Map<Long, UserInfo> map = userInfoRepository.mapListUsers(uidList);
+        // 获取这批团购数据的统计信息
+        final Map<Long, GroupStatisticsDTO> statisticsDTOMap = groupAssembler.mapGroupStatistics(groupIdList);
         final List<MarketplaceGroupPurchaseListResponse> listResponses = result.getContent()
                 .stream()
                 .map(val -> {
                     final MarketplaceGroupPurchaseListResponse dto = BeanUtil.copy(
                             val, MarketplaceGroupPurchaseListResponse.class);
+                    dto.setStatistics(statisticsDTOMap.get(val.getId()));
                     if (map.containsKey(val.getGroupMasterUid())) {
                         dto.setGroupMasterName(map.get(val.getGroupMasterUid())
                                 .getNickname());
@@ -340,46 +365,38 @@ public class GroupPurchaseApplicationServiceImpl implements GroupPurchaseApplica
         PreconditionUtil.checkArgument(Objects.nonNull(good), ExceptionCode.GROUP_GOOD_NOT_EXIST);
 
         final Long currentTimeSeconds = DateUtils.currentTimeSeconds();
-        GroupPurchaseItem purchaseItem = groupPurchaseItemRepository.selectUserGroupItem(groupId, currentUserId);
-        if (Objects.isNull(purchaseItem)) {
-            purchaseItem = new GroupPurchaseItem();
-            purchaseItem.setGroupPurchaseId(groupId);
-            purchaseItem.setJoinUid(currentUserId);
-            purchaseItem.setJoinStatus(GroupPurchaseItemJoinStatusEnum.WAIT_PAY.getValue());
-            purchaseItem.setCtime(currentTimeSeconds);
-            purchaseItem.setSubscribeProgress(Boolean.TRUE);
-            purchaseItem.setStatusChangeTime(currentTimeSeconds);
-            groupPurchaseItemExtMapper.insert(purchaseItem);
-        }
-        else {
-            if (!Objects.equals(GroupPurchaseItemJoinStatusEnum.WAIT_PAY.getValue(), purchaseItem.getJoinStatus())) {
-                throw new BusinessException(ExceptionCode.JOIN_ITEM_ORDER_NOT_ALLOW_MODIFY);
-            }
-        }
+        GroupPurchaseItem purchaseItem = new GroupPurchaseItem();
+        purchaseItem.setGroupPurchaseId(groupId);
+        purchaseItem.setJoinUid(currentUserId);
+        purchaseItem.setJoinStatus(GroupPurchaseItemJoinStatusEnum.WAIT_PAY.getValue());
+        purchaseItem.setCtime(currentTimeSeconds);
+        purchaseItem.setSubscribeProgress(Boolean.TRUE);
+        purchaseItem.setStatusChangeTime(currentTimeSeconds);
+        groupPurchaseItemExtMapper.insert(purchaseItem);
 
-        GroupPurchaseItemGood purchaseItemGood = groupPurchaseItemGoodRepository.selectUserGroupGood(
-                groupId, currentUserId, goodId);
-        if (Objects.isNull(purchaseItemGood)) {
-            purchaseItemGood = new GroupPurchaseItemGood();
-            purchaseItemGood.setCtime(currentTimeSeconds);
-            purchaseItemGood.setGroupPurchaseId(groupId);
-            purchaseItemGood.setGroupPurchaseItemId(purchaseItem.getId());
-            purchaseItemGood.setGroupPurchaseGoodId(goodId);
-            purchaseItemGood.setGroupPurchaseGoodName(good.getGoodName());
-            purchaseItemGood.setGroupPurchaseGoodPic(good.getGoodPic());
-            purchaseItemGood.setPrice(good.getPrice());
-            purchaseItemGood.setGoodNum(request.getGoodNum());
-            purchaseItemGood.setTotalPrice(good.getPrice().multiply(BigDecimal.valueOf(request.getGoodNum())));
-            purchaseItemGood.setJoinUid(currentUserId);
-            purchaseItemGood.setCtime(currentTimeSeconds);
-            purchaseItemGood.setMtime(currentTimeSeconds);
-            groupPurchaseItemGoodExtMapper.insert(purchaseItemGood);
-        } else {
-            purchaseItemGood.setGoodNum(request.getGoodNum());
-            purchaseItemGood.setTotalPrice(good.getPrice().multiply(BigDecimal.valueOf(purchaseItemGood.getGoodNum())));
-            purchaseItemGood.setMtime(currentTimeSeconds);
-            groupPurchaseItemGoodExtMapper.updateById(purchaseItemGood);
-        }
+        GroupPurchaseItemGood purchaseItemGood = new GroupPurchaseItemGood();
+        purchaseItemGood.setCtime(currentTimeSeconds);
+        purchaseItemGood.setGroupPurchaseId(groupId);
+        purchaseItemGood.setGroupPurchaseItemId(purchaseItem.getId());
+        purchaseItemGood.setGroupPurchaseGoodId(goodId);
+        purchaseItemGood.setGroupPurchaseGoodName(good.getGoodName());
+        purchaseItemGood.setGroupPurchaseGoodPic(good.getGoodPic());
+        purchaseItemGood.setPrice(good.getPrice());
+        purchaseItemGood.setGoodNum(request.getGoodNum());
+        purchaseItemGood.setTotalPrice(good.getPrice().multiply(BigDecimal.valueOf(request.getGoodNum())));
+        purchaseItemGood.setJoinUid(currentUserId);
+        purchaseItemGood.setCtime(currentTimeSeconds);
+        purchaseItemGood.setMtime(currentTimeSeconds);
+        groupPurchaseItemGoodExtMapper.insert(purchaseItemGood);
+
+        final MessageRequest<Object> messageRequest = MessageRequest.builder()
+                .topic(RocketMQConst.Topic.DELAY_TOPIC)
+                .tag(RocketMQConst.GroupOrder.TAG)
+                .level(RocketMQDelayLevelMapping.LEVEL5)
+                .bizId(String.join("-", RocketMQConst.GroupOrder.TAG, purchaseItem.getId() + ""))
+                .body(purchaseItem.getId())
+                .build();
+        rocketMQHelper.syncSend(messageRequest);
     }
 
     @Override
@@ -412,8 +429,7 @@ public class GroupPurchaseApplicationServiceImpl implements GroupPurchaseApplica
         if (!Objects.equals(GroupPurchaseItemJoinStatusEnum.WAIT_PAY.getValue(), item.getJoinStatus())) {
             throw new BusinessException(ExceptionCode.GROUP_ITEM_NOT_ALLOW_PAY);
         }
-        final GroupPurchaseItemGood itemGood = groupPurchaseItemGoodRepository.selectUserGroupGood(
-                item.getGroupPurchaseId(), userId, goodId);
+        final GroupPurchaseItemGood itemGood = groupPurchaseItemGoodRepository.selectUserGroupGood(item.getId(), userId, goodId);
         if (Objects.isNull(itemGood)) {
             throw new BusinessException(ExceptionCode.ORDER_GOOD_NOT_EXIST);
         }
@@ -428,7 +444,22 @@ public class GroupPurchaseApplicationServiceImpl implements GroupPurchaseApplica
             itemGood.setTotalPrice(itemGood.getPrice().multiply(BigDecimal.valueOf(goodNum)));
             groupPurchaseItemGoodExtMapper.updateById(itemGood);
         }
+        // 发布参团事件
+        applicationEventPublisher.publishEvent(new GroupPayEvent(
+                this, GroupPayEvent.Body.builder()
+                .groupId(item.getGroupPurchaseId())
+                .currentUserId(UserContextUtil.getLongUserId())
+                .build()));
         return groupPurchaseItemExtMapper.updatePaid(joinItemId, UserAddressConvert.INSTANCE.convert(request), request.getRemark()) > 0;
+    }
+
+    @Override
+    public boolean closeOrder(Long groupItemId) {
+        final GroupPurchaseItem item = groupPurchaseItemExtMapper.selectById(groupItemId);
+        if (Objects.isNull(item) || !Objects.equals(GroupPurchaseItemJoinStatusEnum.WAIT_PAY.getValue(), item.getJoinStatus())) {
+            return false;
+        }
+        return groupPurchaseItemRepository.closeOrder(groupItemId);
     }
 
 

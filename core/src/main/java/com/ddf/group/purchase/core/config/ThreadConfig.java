@@ -25,4 +25,15 @@ public class ThreadConfig {
         return ThreadBuilderHelper.buildThreadExecutor("mail-thread-pool-", 3600,
                 1000, 4, 4, true);
     }
+
+    /**
+     * 团购事件监听线程池
+     *
+     * @return
+     */
+    @Bean
+    public ThreadPoolTaskExecutor groupEventThreadPool() {
+        return ThreadBuilderHelper.buildThreadExecutor("group-event-thread-pool-", 3600,
+                1000, Runtime.getRuntime().availableProcessors(), Runtime.getRuntime().availableProcessors() * 2, true);
+    }
 }

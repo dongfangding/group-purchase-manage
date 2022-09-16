@@ -8,6 +8,8 @@ import com.ddf.boot.common.limit.repeatable.validator.RedisRepeatableValidator;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 /**
  * <p>description</p >
@@ -19,6 +21,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 @MapperScan(basePackages = {"com.ddf.group.purchase.core.mapper"})
 @EnableAuthenticate
+@EnableAsync
+@EnableScheduling
 @EnableLogAspect(slowTime = 3000)
 @EnableRateLimit()
 @EnableRepeatable(globalValidator = RedisRepeatableValidator.BEAN_NAME)

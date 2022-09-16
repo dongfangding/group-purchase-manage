@@ -28,14 +28,14 @@ public class GroupPurchaseItemGoodRepository {
     /**
      * 查找用户指定团购和商品的参团信息
      *
-     * @param groupId
+     * @param groupItemId
      * @param userId
      * @param goodId
      * @return
      */
-    public GroupPurchaseItemGood selectUserGroupGood(Long groupId, Long userId, Long goodId) {
+    public GroupPurchaseItemGood selectUserGroupGood(Long groupItemId, Long userId, Long goodId) {
         final LambdaQueryWrapper<GroupPurchaseItemGood> wrapper = Wrappers.lambdaQuery();
-        wrapper.eq(GroupPurchaseItemGood::getGroupPurchaseId, groupId)
+        wrapper.eq(GroupPurchaseItemGood::getGroupPurchaseItemId, groupItemId)
                 .eq(GroupPurchaseItemGood::getJoinUid, userId)
                 .eq(GroupPurchaseItemGood::getGroupPurchaseGoodId, goodId);
         return groupPurchaseItemGoodExtMapper.selectOne(wrapper);
