@@ -30,6 +30,6 @@ public class GroupPayEventListener implements ApplicationListener<GroupPayEvent>
         final GroupPayEvent.Body body = event.getBody();
         // 增加查看人次，注意用户没去重
         groupStatisticsRepository.incrementStatisticsValue(body.getGroupId(), body.getCurrentUserId(),
-                GroupStatisticsTypeEnum.VIEW);
+                GroupStatisticsTypeEnum.PAY);
     }
 }
