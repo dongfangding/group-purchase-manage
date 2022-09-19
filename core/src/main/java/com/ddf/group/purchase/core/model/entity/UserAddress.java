@@ -12,7 +12,7 @@ import lombok.Data;
  *
  * @author Snowball
  * @version 1.0
- * @date 2022/09/06 19:46
+ * @date 2022/09/19 17:42
  */
 @Data
 @TableName(value = "user_address")
@@ -73,6 +73,12 @@ public class UserAddress implements Serializable {
      */
     @TableField(value = "room_no")
     private String roomNo;
+
+    /**
+     * 是否默认收货地址
+     */
+    @TableField(value = "default_flag")
+    private Boolean defaultFlag;
 
     private static final long serialVersionUID = 1L;
 }

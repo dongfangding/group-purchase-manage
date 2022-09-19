@@ -58,4 +58,9 @@ public class UserAddressResponse implements Serializable {
      */
     private String roomNo;
 
+    /**
+     * 是否默认收货地址
+     */
+    private Boolean defaultFlag;
+
 }

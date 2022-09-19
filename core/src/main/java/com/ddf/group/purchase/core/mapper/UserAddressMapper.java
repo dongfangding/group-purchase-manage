@@ -8,7 +8,7 @@ import com.ddf.group.purchase.core.model.entity.UserAddress;
  *
  * @author Snowball
  * @version 1.0
- * @date 2022/09/06 19:46
+ * @date 2022/09/19 17:42
  */
 public interface UserAddressMapper extends BaseMapper<UserAddress> {
 }

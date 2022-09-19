@@ -55,6 +55,7 @@ import com.ddf.group.purchase.core.repository.GroupPurchaseGoodRepository;
 import com.ddf.group.purchase.core.repository.GroupPurchaseInfoRepository;
 import com.ddf.group.purchase.core.repository.GroupPurchaseItemGoodRepository;
 import com.ddf.group.purchase.core.repository.GroupPurchaseItemRepository;
+import com.ddf.group.purchase.core.repository.GroupStatisticsRepository;
 import com.ddf.group.purchase.core.repository.UserInfoRepository;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -100,6 +101,7 @@ public class GroupPurchaseApplicationServiceImpl implements GroupPurchaseApplica
     private final RocketMQHelper rocketMQHelper;
     private final ApplicationEventPublisher applicationEventPublisher;
     private final GroupAssembler groupAssembler;
+    private final GroupStatisticsRepository groupStatisticsRepository;
 
     @Override
     public GroupPurchaseListResponse groupDetail(Long groupId) {
@@ -218,9 +220,17 @@ public class GroupPurchaseApplicationServiceImpl implements GroupPurchaseApplica
         PreconditionUtil.checkArgument(Objects.nonNull(groupPurchaseInfo), ExceptionCode.RECORD_NOT_EXIST);
         PreconditionUtil.checkArgument(Objects.equals(groupPurchaseInfo.getGroupMasterUid(), UserContextUtil.getLongUserId()),
                 ExceptionCode.RECORD_NOT_EXIST);
+        PreconditionUtil.checkArgument(!groupPurchaseInfo.getPublicFlag(), ExceptionCode.RECORD_STATUS_NOT_ALLOW_MODIFY);
         PreconditionUtil.checkArgument(Objects.equals(GroupPurchaseStatusEnum.CREATED.getValue(), groupPurchaseInfo.getStatus()),
                 ExceptionCode.RECORD_STATUS_NOT_ALLOW_MODIFY);
         BeanUtil.copy(request, groupPurchaseInfo);
+        if (StringUtils.isNotBlank(groupPurchaseInfo.getContent())) {
+            // 解析出图片链接
+            final Set<String> imgSrcUrl = PatternUtil.findImgSrcUrl(groupPurchaseInfo.getContent());
+            if (CollUtil.isNotEmpty(imgSrcUrl)) {
+                groupPurchaseInfo.setPicUrls(CollectionUtil.join(imgSrcUrl, ","));
+            }
+        }
         // 修改团购基本信息
         final int i = groupPurchaseInfoExtMapper.updateById(groupPurchaseInfo);
         final GroupPurchaseGood purchaseGood = groupPurchaseGoodRepository.getByGroupId(groupPurchaseInfo.getId());
@@ -249,7 +259,7 @@ public class GroupPurchaseApplicationServiceImpl implements GroupPurchaseApplica
                 break;
         }
         if (result) {
-            final List<Long> joinUids = groupPurchaseItemRepository.selectJoinUids(request.getId());
+            final List<Long> joinUids = groupPurchaseItemRepository.selectJoinPaidUids(request.getId());
             if (CollUtil.isNotEmpty(joinUids)) {
                 final GroupPurchaseInfo groupPurchaseInfo = groupPurchaseInfoRepository.selectGroupPurchaseInfoById(request.getId());
                 final Map<Long, UserInfo> userInfoMap = userInfoRepository.mapListUsers(new HashSet<>(joinUids));
@@ -303,6 +313,8 @@ public class GroupPurchaseApplicationServiceImpl implements GroupPurchaseApplica
     @Override
     public boolean publishGroup(PublishGroupRequest request) {
         final GroupPurchaseInfo purchaseInfo = groupPurchaseInfoRepository.selectGroupPurchaseInfoById(request.getId());
+        // 已有人支付，不可取消发布？或者不应该控制，万一订单本身有问题，比如价格有问题，要止损之类的不能阻止，只是不能影响已有订单。
+//        PreconditionUtil.checkArgument(groupStatisticsRepository.getStatisticsValue(purchaseInfo.getId(), GroupStatisticsTypeEnum.PAY) <= 0, ExceptionCode.RECORD_STATUS_NOT_ALLOW_UPDATE);
         // fixme 通知，只要没成团，可以任意修改状态
         PreconditionUtil.checkArgument(groupPurchaseInfoRepository.updatePublicFlag(request.getId(), UserContextUtil.getLongUserId(), request.isPublicFlag()), ExceptionCode.RECORD_STATUS_NOT_ALLOW_UPDATE);
         return true;

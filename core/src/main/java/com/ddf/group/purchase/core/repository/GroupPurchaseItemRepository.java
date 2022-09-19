@@ -49,13 +49,13 @@ public class GroupPurchaseItemRepository {
 
 
     /**
-     * 查询团购下的参团用户id集合
+     * 查询团购下的参团用户并且已支付id集合
      *
      * @param groupId
      * @return
      */
-    public List<Long> selectJoinUids(Long groupId) {
-        return groupPurchaseItemExtMapper.selectJoinUids(groupId);
+    public List<Long> selectJoinPaidUids(Long groupId) {
+        return groupPurchaseItemExtMapper.selectJoinPaidUids(groupId);
     }
 
     /**
@@ -85,6 +85,7 @@ public class GroupPurchaseItemRepository {
         wrapper.eq(GroupPurchaseItem::getId, id)
                 .eq(GroupPurchaseItem::getJoinStatus, GroupPurchaseItemJoinStatusEnum.WAIT_PAY.getValue());
         wrapper.set(GroupPurchaseItem::getJoinStatus, GroupPurchaseItemJoinStatusEnum.CLOSED.getValue());
+        wrapper.set(GroupPurchaseItem::getPaidFlag, Boolean.FALSE);
         wrapper.set(GroupPurchaseItem::getStatusChangeTime, DateUtils.currentTimeSeconds());
         return groupPurchaseItemExtMapper.update(null, wrapper) > 0;
     }

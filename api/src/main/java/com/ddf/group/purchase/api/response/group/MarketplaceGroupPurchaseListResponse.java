@@ -86,11 +86,11 @@ public class MarketplaceGroupPurchaseListResponse implements Serializable {
 
     public List<String> getPicUrlList() {
         List<String> imageList = new ArrayList<>();
+        if (StringUtils.isNotBlank(goodPic)) {
+            imageList.add(goodPic);
+        }
         if (StringUtils.isNotBlank(picUrls)) {
             imageList.addAll(Arrays.stream(picUrls.split(",")).collect(Collectors.toList()));
-        }
-        if (StringUtils.isBlank(goodPic)) {
-            imageList.add(goodPic);
         }
         return imageList;
     }

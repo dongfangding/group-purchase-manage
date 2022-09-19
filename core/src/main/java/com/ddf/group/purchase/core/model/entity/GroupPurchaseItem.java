@@ -12,7 +12,7 @@ import lombok.Data;
 *
 * @author Snowball
 * @version 1.0
-* @date 2022/09/07 20:47
+* @date 2022/09/19 17:42
 */
 
 
@@ -102,6 +102,12 @@ public class GroupPurchaseItem implements Serializable {
      */
     @TableField(value = "remark")
     private String remark;
+
+    /**
+     * 是否已支付
+     */
+    @TableField(value = "paid_flag")
+    private Boolean paidFlag;
 
     private static final long serialVersionUID = 1L;
 }

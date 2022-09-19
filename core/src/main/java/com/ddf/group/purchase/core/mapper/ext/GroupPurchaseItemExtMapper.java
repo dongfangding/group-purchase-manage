@@ -46,7 +46,7 @@ public interface GroupPurchaseItemExtMapper extends BaseMapper<GroupPurchaseItem
      * @param groupId
      * @return
      */
-    List<Long> selectJoinUids(@Param("groupId") Long groupId);
+    List<Long> selectJoinPaidUids(@Param("groupId") Long groupId);
 
     /**
      * 更新状态为已支付

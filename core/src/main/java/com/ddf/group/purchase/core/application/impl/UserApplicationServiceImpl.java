@@ -34,6 +34,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * <p>用户业务层实现</p >
@@ -137,10 +138,14 @@ public class UserApplicationServiceImpl implements UserApplicationService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void addressCommand(UserAddressRequest request) {
         final UserAddress userAddress = UserAddressConvert.INSTANCE.convert(request);
+        final Long userId = UserContextUtil.getLongUserId();
+        // 取消其它数据的默认收货设置
+        userAddressRepository.cancelUserDefaultAddress(userId);
         if (Objects.isNull(userAddress.getId())) {
-            userAddress.setUid(UserContextUtil.getLongUserId());
+            userAddress.setUid(userId);
             userAddressMapper.insert(userAddress);
         } else {
             userAddressMapper.updateById(userAddress);

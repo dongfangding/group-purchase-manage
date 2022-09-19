@@ -14,10 +14,11 @@
     <result column="receiver_name" jdbcType="VARCHAR" property="receiverName" />
     <result column="building_no" jdbcType="VARCHAR" property="buildingNo" />
     <result column="room_no" jdbcType="VARCHAR" property="roomNo" />
+    <result column="default_flag" jdbcType="BIT" property="defaultFlag" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--@mbg.generated-->
     id, `uid`, province, city, area, detail_address, mobile, receiver_name, building_no, 
-    room_no
+    room_no, default_flag
   </sql>
 </mapper>

@@ -9,7 +9,9 @@ import com.ddf.group.purchase.api.response.user.PersonalInfoResponse;
 import com.ddf.group.purchase.api.response.user.UserAddressResponse;
 import com.ddf.group.purchase.core.application.UserApplicationService;
 import com.ddf.group.purchase.core.client.MailClient;
+import com.ddf.group.purchase.core.converter.UserAddressConvert;
 import com.ddf.group.purchase.core.helper.CommonHelper;
+import com.ddf.group.purchase.core.repository.UserAddressRepository;
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -38,6 +40,7 @@ public class UserInfoController {
     private final UserApplicationService userApplicationService;
     private final CommonHelper commonHelper;
     private final MailClient mailClient;
+    private final UserAddressRepository userAddressRepository;
 
     /**
      * 完善用户信息
@@ -103,6 +106,16 @@ public class UserInfoController {
     @GetMapping("address/all")
     public List<UserAddressResponse> listUserAddress() {
         return userApplicationService.listUserAddress(UserContextUtil.getLongUserId());
+    }
+
+    /**
+     * 查询用户的默认收货地址
+     *
+     * @return
+     */
+    @GetMapping("address/default")
+    public UserAddressResponse getUserDefaultAddress() {
+        return UserAddressConvert.INSTANCE.convert(userAddressRepository.getUserDefaultAddress(UserContextUtil.getLongUserId()));
     }
 
     /**
