@@ -14,6 +14,7 @@ import com.ddf.group.purchase.api.response.user.UserAddressResponse;
 import com.ddf.group.purchase.core.application.UserApplicationService;
 import com.ddf.group.purchase.core.client.MailClient;
 import com.ddf.group.purchase.core.client.UserClient;
+import com.ddf.group.purchase.core.config.properties.ApplicationProperties;
 import com.ddf.group.purchase.core.converter.UserAddressConvert;
 import com.ddf.group.purchase.core.converter.UserConvert;
 import com.ddf.group.purchase.core.exception.ExceptionCode;
@@ -58,6 +59,7 @@ public class UserApplicationServiceImpl implements UserApplicationService {
     private final MailClient mailClient;
     private final UserAddressMapper userAddressMapper;
     private final UserAddressRepository userAddressRepository;
+    private final ApplicationProperties applicationProperties;
 
     /**
      * 注册
@@ -75,7 +77,8 @@ public class UserApplicationServiceImpl implements UserApplicationService {
                 .uuid(request.getUuid())
                 .build();
         commonHelper.verifySmsCode(verifyRequest);
-        userInfoService.registerUserInfo(request.getMobile(), bCryptPasswordEncoder.encode(request.getPassword()));
+        userInfoService.registerUserInfo(request.getMobile(), bCryptPasswordEncoder.encode(request.getPassword()),
+                applicationProperties.getDefaultAvatarUrl());
     }
 
     @Override

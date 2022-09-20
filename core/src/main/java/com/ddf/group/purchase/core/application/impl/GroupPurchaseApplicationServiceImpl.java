@@ -11,7 +11,7 @@ import com.ddf.boot.common.core.util.PageUtil;
 import com.ddf.boot.common.core.util.PatternUtil;
 import com.ddf.boot.common.core.util.PreconditionUtil;
 import com.ddf.boot.common.rocketmq.dto.MessageRequest;
-import com.ddf.boot.common.rocketmq.dto.RocketMQDelayLevelMapping;
+import com.ddf.boot.common.rocketmq.dto.RocketMQDelayTimeMapping;
 import com.ddf.boot.common.rocketmq.helper.RocketMQHelper;
 import com.ddf.group.purchase.api.enume.GroupPurchaseItemJoinStatusEnum;
 import com.ddf.group.purchase.api.enume.GroupPurchaseStatusEnum;
@@ -220,7 +220,7 @@ public class GroupPurchaseApplicationServiceImpl implements GroupPurchaseApplica
         PreconditionUtil.checkArgument(Objects.nonNull(groupPurchaseInfo), ExceptionCode.RECORD_NOT_EXIST);
         PreconditionUtil.checkArgument(Objects.equals(groupPurchaseInfo.getGroupMasterUid(), UserContextUtil.getLongUserId()),
                 ExceptionCode.RECORD_NOT_EXIST);
-        PreconditionUtil.checkArgument(!groupPurchaseInfo.getPublicFlag(), ExceptionCode.RECORD_STATUS_NOT_ALLOW_MODIFY);
+//        PreconditionUtil.checkArgument(!groupPurchaseInfo.getPublicFlag(), ExceptionCode.RECORD_STATUS_NOT_ALLOW_MODIFY);
         PreconditionUtil.checkArgument(Objects.equals(GroupPurchaseStatusEnum.CREATED.getValue(), groupPurchaseInfo.getStatus()),
                 ExceptionCode.RECORD_STATUS_NOT_ALLOW_MODIFY);
         BeanUtil.copy(request, groupPurchaseInfo);
@@ -235,7 +235,7 @@ public class GroupPurchaseApplicationServiceImpl implements GroupPurchaseApplica
         final int i = groupPurchaseInfoExtMapper.updateById(groupPurchaseInfo);
         final GroupPurchaseGood purchaseGood = groupPurchaseGoodRepository.getByGroupId(groupPurchaseInfo.getId());
         if (Objects.nonNull(purchaseGood)) {
-            BeanUtil.copy(purchaseGood, request);
+            BeanUtil.copy(request, purchaseGood);
             groupPurchaseGoodExtMapper.updateById(purchaseGood);
         }
     }
@@ -302,6 +302,7 @@ public class GroupPurchaseApplicationServiceImpl implements GroupPurchaseApplica
             UserInfo tempUser = userInfoMap.get(group.getGroupMasterUid());
             if (Objects.nonNull(tempUser)) {
                 group.setGroupMasterName(tempUser.getNickname());
+                group.setGroupMasterAvatarUrl(tempUser.getAvatarUrl());
                 group.setGroupMasterCommunityId(tempUser.getCommunityId());
                 group.setGroupMasterBuildingNo(tempUser.getBuildingNo());
                 group.setGroupMasterRoomNo(tempUser.getRoomNo());
@@ -372,9 +373,13 @@ public class GroupPurchaseApplicationServiceImpl implements GroupPurchaseApplica
         final Long groupId = request.getGroupId();
         final Long goodId = request.getGoodId();
         final Long currentUserId = UserContextUtil.getLongUserId();
+        // 团购校验
         checkGroupUserCanOperate(groupId);
         final GroupPurchaseGood good = groupPurchaseGoodExtMapper.selectById(goodId);
         PreconditionUtil.checkArgument(Objects.nonNull(good), ExceptionCode.GROUP_GOOD_NOT_EXIST);
+
+        // 剩余支付之间
+        final RocketMQDelayTimeMapping delayTimeMapping = RocketMQDelayTimeMapping.M2;
 
         final Long currentTimeSeconds = DateUtils.currentTimeSeconds();
         GroupPurchaseItem purchaseItem = new GroupPurchaseItem();
@@ -384,6 +389,7 @@ public class GroupPurchaseApplicationServiceImpl implements GroupPurchaseApplica
         purchaseItem.setCtime(currentTimeSeconds);
         purchaseItem.setSubscribeProgress(Boolean.TRUE);
         purchaseItem.setStatusChangeTime(currentTimeSeconds);
+        purchaseItem.setPayCountDownSeconds(delayTimeMapping.getSeconds().intValue());
         groupPurchaseItemExtMapper.insert(purchaseItem);
 
         GroupPurchaseItemGood purchaseItemGood = new GroupPurchaseItemGood();
@@ -396,6 +402,7 @@ public class GroupPurchaseApplicationServiceImpl implements GroupPurchaseApplica
         purchaseItemGood.setPrice(good.getPrice());
         purchaseItemGood.setGoodNum(request.getGoodNum());
         purchaseItemGood.setTotalPrice(good.getPrice().multiply(BigDecimal.valueOf(request.getGoodNum())));
+        purchaseItemGood.setGoodDescription(good.getGoodDescription());
         purchaseItemGood.setJoinUid(currentUserId);
         purchaseItemGood.setCtime(currentTimeSeconds);
         purchaseItemGood.setMtime(currentTimeSeconds);
@@ -404,7 +411,7 @@ public class GroupPurchaseApplicationServiceImpl implements GroupPurchaseApplica
         final MessageRequest<Object> messageRequest = MessageRequest.builder()
                 .topic(RocketMQConst.Topic.DELAY_TOPIC)
                 .tag(RocketMQConst.GroupOrder.TAG)
-                .level(RocketMQDelayLevelMapping.LEVEL5)
+                .level(delayTimeMapping.getLevel())
                 .bizId(String.join("-", RocketMQConst.GroupOrder.TAG, purchaseItem.getId() + ""))
                 .body(purchaseItem.getId())
                 .build();

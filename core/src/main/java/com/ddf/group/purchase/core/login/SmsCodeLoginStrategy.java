@@ -1,8 +1,10 @@
 package com.ddf.group.purchase.core.login;
 
+import cn.hutool.core.util.RandomUtil;
 import com.ddf.group.purchase.api.enume.LoginTypeEnum;
 import com.ddf.group.purchase.api.request.common.SmsCodeVerifyRequest;
 import com.ddf.group.purchase.api.request.user.LoginRequest;
+import com.ddf.group.purchase.core.config.properties.ApplicationProperties;
 import com.ddf.group.purchase.core.helper.CommonHelper;
 import com.ddf.group.purchase.core.model.entity.UserInfo;
 import com.ddf.group.purchase.core.repository.UserInfoRepository;
@@ -27,6 +29,7 @@ public class SmsCodeLoginStrategy implements LoginStrategy {
     private final UserInfoRepository userInfoRepository;
     private final CommonHelper commonHelper;
     private final UserInfoService userInfoService;
+    private final ApplicationProperties applicationProperties;
 
     /**
      * 登录类型
@@ -58,7 +61,8 @@ public class SmsCodeLoginStrategy implements LoginStrategy {
         commonHelper.verifySmsCode(verifyRequest);
         // 用户不存在，则执行简单注册
         if (Objects.isNull(userInfo)) {
-            userInfo = userInfoService.registerUserInfo(mobile, null);
+            // 这里设置什么无所谓，反正不是加密的密码，验证密码时又需要加密，所以永远也匹配不上
+            userInfo = userInfoService.registerUserInfo(mobile, RandomUtil.randomString(32), applicationProperties.getDefaultAvatarUrl());
         }
         return userInfo;
     }

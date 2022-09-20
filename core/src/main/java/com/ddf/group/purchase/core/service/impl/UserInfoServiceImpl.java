@@ -1,6 +1,5 @@
 package com.ddf.group.purchase.core.service.impl;
 
-import cn.hutool.core.util.RandomUtil;
 import com.ddf.boot.common.core.util.DateUtils;
 import com.ddf.group.purchase.core.mapper.ext.UserInfoExtMapper;
 import com.ddf.group.purchase.core.model.entity.UserInfo;
@@ -24,11 +23,12 @@ public class UserInfoServiceImpl implements UserInfoService {
 
     private final UserInfoExtMapper userInfoExtMapper;
     @Override
-    public UserInfo registerUserInfo(String mobile, String password) {
+    public UserInfo registerUserInfo(String mobile, String password, String avatarUrl) {
         final UserInfo userInfo = new UserInfo();
         userInfo.setMobile(mobile);
-        userInfo.setNickname(RandomUtil.randomString(12));
+        userInfo.setNickname(mobile);
         userInfo.setPassword(password);
+        userInfo.setAvatarUrl(avatarUrl);
         userInfo.setCtime(DateUtils.currentTimeSeconds());
         userInfoExtMapper.insert(userInfo);
         return userInfo;

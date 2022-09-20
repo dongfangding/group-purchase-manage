@@ -34,6 +34,11 @@ public class MyJoinGroupPageResponse implements Serializable {
     private String groupMasterName;
 
     /**
+     * 团长头像
+     */
+    private String groupMasterAvatarUrl;
+
+    /**
      * 团长所在小区id
      */
     private Integer groupMasterCommunityId;
@@ -91,6 +96,11 @@ public class MyJoinGroupPageResponse implements Serializable {
      * 是否订阅团购最新信息
      */
     private Boolean subscribeProgress;
+
+    /**
+     * 支付倒计时秒
+     */
+    private Integer payCountDownSeconds;
 
     /**
      * 参团状态

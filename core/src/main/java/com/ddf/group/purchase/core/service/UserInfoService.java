@@ -16,7 +16,8 @@ public interface UserInfoService {
      *
      * @param mobile
      * @param password
+     * @param avatarUrl 默认头像地址
      * @return
      */
-    UserInfo registerUserInfo(String mobile, String password);
+    UserInfo registerUserInfo(String mobile, String password, String avatarUrl);
 }

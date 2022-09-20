@@ -30,4 +30,9 @@ public class ApplicationProperties {
      */
     private Integer smsDailyLimit = 10;
 
+    /**
+     * 默认用户头像地址
+     */
+    private String defaultAvatarUrl = "https://www.snowball.fans/group1/M00/00/01/ag8Kh2MpIrmARypcAAA0fj3w3lU69.jpeg";
+
 }

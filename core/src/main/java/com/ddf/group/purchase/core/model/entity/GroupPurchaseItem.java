@@ -12,7 +12,7 @@ import lombok.Data;
 *
 * @author Snowball
 * @version 1.0
-* @date 2022/09/19 17:42
+* @date 2022/09/20 17:07
 */
 
 
@@ -108,6 +108,12 @@ public class GroupPurchaseItem implements Serializable {
      */
     @TableField(value = "paid_flag")
     private Boolean paidFlag;
+
+    /**
+     * 支付倒计时秒
+     */
+    @TableField(value = "pay_count_down_seconds")
+    private Integer payCountDownSeconds;
 
     private static final long serialVersionUID = 1L;
 }

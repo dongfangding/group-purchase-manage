@@ -50,6 +50,7 @@
     <select id="myJoinGroup" resultType="com.ddf.group.purchase.api.response.group.MyJoinGroupPageResponse">
         select item.group_purchase_id             as groupId,
                item.ctime                         as joinTime,
+               item.pay_count_down_seconds        as payCountDownSeconds,
                item.subscribe_progress            as subscribeProgress,
                item.join_status                   as joinStatus,
                item.status_change_time            as statusChangeTime,
