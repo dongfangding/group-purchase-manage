@@ -10,6 +10,7 @@ import com.ddf.boot.common.core.util.DateUtils;
 import com.ddf.boot.common.core.util.PageUtil;
 import com.ddf.boot.common.core.util.PatternUtil;
 import com.ddf.boot.common.core.util.PreconditionUtil;
+import com.ddf.boot.common.core.util.RandomExtUtil;
 import com.ddf.boot.common.rocketmq.dto.MessageRequest;
 import com.ddf.boot.common.rocketmq.dto.RocketMQDelayTimeMapping;
 import com.ddf.boot.common.rocketmq.helper.RocketMQHelper;
@@ -31,12 +32,14 @@ import com.ddf.group.purchase.api.response.group.GroupStatisticsDTO;
 import com.ddf.group.purchase.api.response.group.MarketplaceGroupPurchaseListResponse;
 import com.ddf.group.purchase.api.response.group.MyInitiatedGroupPageResponse;
 import com.ddf.group.purchase.api.response.group.MyJoinGroupPageResponse;
+import com.ddf.group.purchase.api.response.group.OrderDetailResponse;
 import com.ddf.group.purchase.core.application.GroupPurchaseApplicationService;
 import com.ddf.group.purchase.core.assembler.GroupAssembler;
 import com.ddf.group.purchase.core.client.MailClient;
 import com.ddf.group.purchase.core.client.UserClient;
 import com.ddf.group.purchase.core.constants.RocketMQConst;
 import com.ddf.group.purchase.core.converter.GroupPurchaseInfoConvert;
+import com.ddf.group.purchase.core.converter.GroupPurchaseItemGoodConverter;
 import com.ddf.group.purchase.core.converter.UserAddressConvert;
 import com.ddf.group.purchase.core.exception.ExceptionCode;
 import com.ddf.group.purchase.core.mapper.ext.GroupPurchaseGoodExtMapper;
@@ -57,6 +60,7 @@ import com.ddf.group.purchase.core.repository.GroupPurchaseItemGoodRepository;
 import com.ddf.group.purchase.core.repository.GroupPurchaseItemRepository;
 import com.ddf.group.purchase.core.repository.GroupStatisticsRepository;
 import com.ddf.group.purchase.core.repository.UserInfoRepository;
+import com.google.common.collect.Sets;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -383,6 +387,7 @@ public class GroupPurchaseApplicationServiceImpl implements GroupPurchaseApplica
 
         final Long currentTimeSeconds = DateUtils.currentTimeSeconds();
         GroupPurchaseItem purchaseItem = new GroupPurchaseItem();
+        purchaseItem.setOrderNo(RandomExtUtil.randomOrderNo(32));
         purchaseItem.setGroupPurchaseId(groupId);
         purchaseItem.setJoinUid(currentUserId);
         purchaseItem.setJoinStatus(GroupPurchaseItemJoinStatusEnum.WAIT_PAY.getValue());
@@ -481,5 +486,30 @@ public class GroupPurchaseApplicationServiceImpl implements GroupPurchaseApplica
         return groupPurchaseItemRepository.closeOrder(groupItemId);
     }
 
+    @Override
+    public OrderDetailResponse orderDetail(Long id) {
+        final OrderDetailResponse response = groupPurchaseItemExtMapper.selectOrderDetail(id);
+        if (Objects.isNull(response)) {
+            return null;
+        }
+        final Map<Long, UserInfo> userMap = userInfoRepository.mapListUsers(
+                Sets.newHashSet(response.getJoinUid(), response.getGroupMasterUid()));
+        if (CollUtil.isNotEmpty(userMap)) {
+            if (userMap.containsKey(response.getGroupMasterUid())) {
+                response.setGroupMasterNickname(userMap.get(response.getGroupMasterUid()).getNickname());
+                response.setGroupMasterAvatarUrl(userMap.get(response.getGroupMasterUid()).getAvatarUrl());
+            }
+            if (userMap.containsKey(response.getJoinUid())) {
+                response.setJoinNickname(userMap.get(response.getGroupMasterUid()).getNickname());
+                response.setJoinAvatarUrl(userMap.get(response.getGroupMasterUid()).getAvatarUrl());
+            }
+        }
+        final Long userId = UserContextUtil.getLongUserId();
+        final List<GroupPurchaseItemGood> itemGoods = groupPurchaseItemGoodRepository.listUserGroupGood(response.getGroupPurchaseId(), userId);
+        if (CollUtil.isNotEmpty(itemGoods)) {
+            response.setOrderGood(GroupPurchaseItemGoodConverter.INSTANCE.convert(itemGoods.get(0)));
+        }
+        return response;
+    }
 
 }

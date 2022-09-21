@@ -5,6 +5,7 @@
     <!--@mbg.generated-->
     <!--@Table group_purchase_item-->
     <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="order_no" jdbcType="VARCHAR" property="orderNo" />
     <result column="group_purchase_id" jdbcType="BIGINT" property="groupPurchaseId" />
     <result column="join_uid" jdbcType="BIGINT" property="joinUid" />
     <result column="ctime" jdbcType="BIGINT" property="ctime" />
@@ -20,11 +21,12 @@
     <result column="remark" jdbcType="VARCHAR" property="remark" />
     <result column="paid_flag" jdbcType="BIT" property="paidFlag" />
     <result column="pay_count_down_seconds" jdbcType="INTEGER" property="payCountDownSeconds" />
+    <result column="pay_time" jdbcType="BIGINT" property="payTime" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--@mbg.generated-->
-    id, group_purchase_id, join_uid, ctime, subscribe_progress, join_status, status_change_time, 
-    receiver_name, receiver_mobile, receiver_detail_address, receiver_province, receiver_city, 
-    receiver_area, remark, paid_flag, pay_count_down_seconds
+    id, order_no, group_purchase_id, join_uid, ctime, subscribe_progress, join_status, 
+    status_change_time, receiver_name, receiver_mobile, receiver_detail_address, receiver_province, 
+    receiver_city, receiver_area, remark, paid_flag, pay_count_down_seconds, pay_time
   </sql>
 </mapper>

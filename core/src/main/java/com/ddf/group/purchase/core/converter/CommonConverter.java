@@ -4,6 +4,7 @@ import com.ddf.group.purchase.api.response.common.SysDictResponse;
 import com.ddf.group.purchase.core.model.entity.SysDict;
 import java.util.List;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mappings;
 import org.mapstruct.factory.Mappers;
 
 /**
@@ -19,7 +20,11 @@ public interface CommonConverter {
     CommonConverter INSTANCE = Mappers.getMapper(CommonConverter.class);
 
 
+    @Mappings({
+    })
     SysDictResponse convert(SysDict sysDict);
 
+    @Mappings({
+    })
     List<SysDictResponse> convert(List<SysDict> sysDictList);
 }

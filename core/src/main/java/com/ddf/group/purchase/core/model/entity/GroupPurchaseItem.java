@@ -12,7 +12,7 @@ import lombok.Data;
 *
 * @author Snowball
 * @version 1.0
-* @date 2022/09/20 17:07
+* @date 2022/09/21 15:41
 */
 
 
@@ -24,6 +24,12 @@ import lombok.Data;
 public class GroupPurchaseItem implements Serializable {
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
+
+    /**
+     * 订单编号
+     */
+    @TableField(value = "order_no")
+    private String orderNo;
 
     /**
      * 团购主表记录id
@@ -114,6 +120,12 @@ public class GroupPurchaseItem implements Serializable {
      */
     @TableField(value = "pay_count_down_seconds")
     private Integer payCountDownSeconds;
+
+    /**
+     * 支付时间戳
+     */
+    @TableField(value = "pay_time")
+    private Long payTime;
 
     private static final long serialVersionUID = 1L;
 }

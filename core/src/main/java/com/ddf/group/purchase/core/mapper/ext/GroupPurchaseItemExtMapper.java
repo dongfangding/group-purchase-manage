@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.ddf.group.purchase.api.request.group.AddressDomain;
 import com.ddf.group.purchase.api.response.group.GroupItemResponse;
 import com.ddf.group.purchase.api.response.group.MyJoinGroupPageResponse;
+import com.ddf.group.purchase.api.response.group.OrderDetailResponse;
 import com.ddf.group.purchase.core.model.cqrs.group.MyJoinGroupQuery;
 import com.ddf.group.purchase.core.model.entity.GroupPurchaseItem;
 import java.util.List;
@@ -55,4 +56,12 @@ public interface GroupPurchaseItemExtMapper extends BaseMapper<GroupPurchaseItem
      * @return
      */
     int updatePaid(@Param("id") Long id, @Param("address") AddressDomain addressDomain, @Param("remark") String remark);
+
+    /**
+     * 查询订单详细
+     *
+     * @param id
+     * @return
+     */
+    OrderDetailResponse selectOrderDetail(@Param("id") Long id);
 }

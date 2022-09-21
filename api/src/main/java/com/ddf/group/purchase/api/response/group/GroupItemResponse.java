@@ -118,39 +118,4 @@ public class GroupItemResponse implements Serializable {
         return DateUtils.standardFormatSeconds(ctime);
     }
 
-
-    @Data
-    @Builder
-    @NoArgsConstructor
-    @AllArgsConstructor
-    public static class Good implements Serializable {
-
-        private static final long serialVersionUID = 4411968484448559822L;
-
-        /**
-         * 参团购买商品的记录id
-         */
-        private Long id;
-
-        /**
-         * 参团主表记录id
-         */
-        private Long goodItemId;
-
-        /**
-         * 商品id
-         */
-        private Long goodId;
-
-        /**
-         * 商品名称
-         */
-        private String goodName;
-
-        /**
-         * 商品数量
-         */
-        private Integer goodNum;
-
-    }
 }

@@ -16,6 +16,7 @@ import com.ddf.group.purchase.api.response.group.GroupPurchaseListResponse;
 import com.ddf.group.purchase.api.response.group.MarketplaceGroupPurchaseListResponse;
 import com.ddf.group.purchase.api.response.group.MyInitiatedGroupPageResponse;
 import com.ddf.group.purchase.api.response.group.MyJoinGroupPageResponse;
+import com.ddf.group.purchase.api.response.group.OrderDetailResponse;
 import com.ddf.group.purchase.core.model.entity.GroupPurchaseInfo;
 import java.util.List;
 
@@ -151,5 +152,13 @@ public interface GroupPurchaseApplicationService {
      * @param groupItemId
      */
     boolean closeOrder(Long groupItemId);
+
+    /**
+     * 查询订单详情
+     *
+     * @param id
+     * @return
+     */
+    OrderDetailResponse orderDetail(Long id);
 
 }

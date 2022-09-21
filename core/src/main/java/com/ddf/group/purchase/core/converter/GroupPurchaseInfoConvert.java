@@ -12,6 +12,7 @@ import com.ddf.group.purchase.core.model.entity.GroupPurchaseInfo;
 import java.util.List;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.Mappings;
 import org.mapstruct.factory.Mappers;
 
 /**
@@ -32,6 +33,8 @@ public interface GroupPurchaseInfoConvert {
      * @param request
      * @return
      */
+    @Mappings({
+    })
     GroupPurchaseInfo convertGroup(CustomizeCreateRequest request);
 
     /**
@@ -40,6 +43,8 @@ public interface GroupPurchaseInfoConvert {
      * @param request
      * @return
      */
+    @Mappings({
+    })
     GroupPurchaseGood convertGood(CustomizeCreateRequest request);
 
     /**
@@ -48,6 +53,7 @@ public interface GroupPurchaseInfoConvert {
      * @param groupPurchaseInfo
      * @return
      */
+
 //    GroupPurchaseInfoPageResponse convert(GroupPurchaseInfo groupPurchaseInfo);
 
     /**
@@ -56,6 +62,8 @@ public interface GroupPurchaseInfoConvert {
      * @param groupPurchaseInfo
      * @return
      */
+    @Mappings({
+    })
     List<MyInitiatedGroupPageResponse> convert(List<GroupPurchaseInfo> groupPurchaseInfo);
 
 
