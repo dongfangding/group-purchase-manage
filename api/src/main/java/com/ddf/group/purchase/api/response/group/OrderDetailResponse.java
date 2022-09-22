@@ -1,5 +1,6 @@
 package com.ddf.group.purchase.api.response.group;
 
+import com.ddf.group.purchase.api.enume.GroupPurchaseItemJoinStatusEnum;
 import java.io.Serializable;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -35,6 +36,11 @@ public class OrderDetailResponse implements Serializable {
      * 团购主表记录id
      */
     private Long groupPurchaseId;
+
+    /**
+     * 团购名称
+     */
+    private String groupName;
 
     /**
      * 团长uid
@@ -140,4 +146,8 @@ public class OrderDetailResponse implements Serializable {
      * 订单商品信息
      */
     private GroupPurchaseItemGoodResponse orderGood;
+
+    public String getJoinStatusName() {
+        return GroupPurchaseItemJoinStatusEnum.resolve(joinStatus).getDesc();
+    }
 }

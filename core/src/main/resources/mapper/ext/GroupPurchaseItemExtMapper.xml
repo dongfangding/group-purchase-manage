@@ -137,7 +137,8 @@
                item.paid_flag               as paidFlag,
                item.pay_count_down_seconds  as payCountDownSeconds,
                item.pay_time                as payTime,
-               gpi.group_master_uid         as groupMasterUid
+               gpi.group_master_uid         as groupMasterUid,
+               gpi.name                     as groupName
         from group_purchase_item item
                  inner join group_purchase_info gpi on item.group_purchase_id = gpi.id
         where item.id = #{id}
