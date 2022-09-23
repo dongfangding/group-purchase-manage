@@ -25,7 +25,7 @@ public interface GroupPurchaseItemExtMapper extends BaseMapper<GroupPurchaseItem
      * @param groupId
      * @return
      */
-    List<GroupItemResponse> listGroupItem(@Param("groupId") Long groupId);
+    List<GroupItemResponse> listGroupPaidItem(@Param("groupId") Long groupId);
 
     /**
      * 批量插入

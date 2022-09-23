@@ -13,6 +13,7 @@
     <result column="wx_id" jdbcType="VARCHAR" property="wxId" />
     <result column="wx_business_card_qrcode_url" jdbcType="VARCHAR" property="wxBusinessCardQrcodeUrl" />
     <result column="wx_collection_money_qrcode_url" jdbcType="VARCHAR" property="wxCollectionMoneyQrcodeUrl" />
+    <result column="temp_email" jdbcType="VARCHAR" property="tempEmail" />
     <result column="email" jdbcType="VARCHAR" property="email" />
     <result column="email_verified" jdbcType="BIT" property="emailVerified" />
     <result column="avatar_url" jdbcType="VARCHAR" property="avatarUrl" />
@@ -23,7 +24,7 @@
   <sql id="Base_Column_List">
     <!--@mbg.generated-->
     id, community_id, building_no, room_no, nickname, mobile, wx_id, wx_business_card_qrcode_url, 
-    wx_collection_money_qrcode_url, email, email_verified, avatar_url, avatar_thumb_url, 
+    wx_collection_money_qrcode_url, temp_email, email, email_verified, avatar_url, avatar_thumb_url, 
     `password`, ctime
   </sql>
 </mapper>

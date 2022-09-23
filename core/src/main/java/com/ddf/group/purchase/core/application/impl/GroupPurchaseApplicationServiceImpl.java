@@ -28,6 +28,7 @@ import com.ddf.group.purchase.api.request.group.SubscribeGroupRequest;
 import com.ddf.group.purchase.api.request.group.UpdateGroupStatusRequest;
 import com.ddf.group.purchase.api.response.group.GroupItemResponse;
 import com.ddf.group.purchase.api.response.group.GroupPurchaseListResponse;
+import com.ddf.group.purchase.api.response.group.GroupPurchaseTraceDTO;
 import com.ddf.group.purchase.api.response.group.GroupStatisticsDTO;
 import com.ddf.group.purchase.api.response.group.MarketplaceGroupPurchaseListResponse;
 import com.ddf.group.purchase.api.response.group.MyInitiatedGroupPageResponse;
@@ -252,6 +253,9 @@ public class GroupPurchaseApplicationServiceImpl implements GroupPurchaseApplica
             case ARRIVED:
                 result = groupPurchaseInfoRepository.updateStatusToArrived(request.getId());
                 break;
+            case GROUPED:
+                result = groupPurchaseInfoRepository.updateStatusToGrouped(request.getId());
+                break;
             case COMPLETED:
                 result = groupPurchaseInfoRepository.updateStatusToCompleted(request.getId());
                 break;
@@ -262,7 +266,7 @@ public class GroupPurchaseApplicationServiceImpl implements GroupPurchaseApplica
                 result = false;
                 break;
         }
-        if (result) {
+        if (result && request.isNotifyFlag()) {
             final List<Long> joinUids = groupPurchaseItemRepository.selectJoinPaidUids(request.getId());
             if (CollUtil.isNotEmpty(joinUids)) {
                 final GroupPurchaseInfo groupPurchaseInfo = groupPurchaseInfoRepository.selectGroupPurchaseInfoById(request.getId());
@@ -425,7 +429,7 @@ public class GroupPurchaseApplicationServiceImpl implements GroupPurchaseApplica
 
     @Override
     public List<GroupItemResponse> joinInfo(Long groupId) {
-        final List<GroupItemResponse> responses = groupPurchaseItemExtMapper.listGroupItem(groupId);
+        final List<GroupItemResponse> responses = groupPurchaseItemExtMapper.listGroupPaidItem(groupId);
         if (CollectionUtils.isEmpty(responses)) {
             return Collections.emptyList();
         }
@@ -509,7 +513,13 @@ public class GroupPurchaseApplicationServiceImpl implements GroupPurchaseApplica
         if (CollUtil.isNotEmpty(itemGoods)) {
             response.setOrderGood(GroupPurchaseItemGoodConverter.INSTANCE.convert(itemGoods.get(0)));
         }
+        response.setGroupTraceList(GroupPurchaseInfoConvert.INSTANCE.convertTrace(groupPurchaseInfoRepository.listGroupTrace(response.getGroupPurchaseId())));
         return response;
+    }
+
+    @Override
+    public List<GroupPurchaseTraceDTO> listGroupTrace(Long groupId) {
+        return GroupPurchaseInfoConvert.INSTANCE.convertTrace(groupPurchaseInfoRepository.listGroupTrace(groupId));
     }
 
 }

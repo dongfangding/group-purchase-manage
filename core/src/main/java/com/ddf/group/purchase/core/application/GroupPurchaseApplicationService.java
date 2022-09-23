@@ -13,6 +13,7 @@ import com.ddf.group.purchase.api.request.group.SubscribeGroupRequest;
 import com.ddf.group.purchase.api.request.group.UpdateGroupStatusRequest;
 import com.ddf.group.purchase.api.response.group.GroupItemResponse;
 import com.ddf.group.purchase.api.response.group.GroupPurchaseListResponse;
+import com.ddf.group.purchase.api.response.group.GroupPurchaseTraceDTO;
 import com.ddf.group.purchase.api.response.group.MarketplaceGroupPurchaseListResponse;
 import com.ddf.group.purchase.api.response.group.MyInitiatedGroupPageResponse;
 import com.ddf.group.purchase.api.response.group.MyJoinGroupPageResponse;
@@ -160,5 +161,13 @@ public interface GroupPurchaseApplicationService {
      * @return
      */
     OrderDetailResponse orderDetail(Long id);
+
+    /**
+     * 团购状态跟踪查询
+     *
+     * @param groupId
+     * @return
+     */
+    List<GroupPurchaseTraceDTO> listGroupTrace(Long groupId);
 
 }

@@ -123,7 +123,8 @@ public class UserInfoRepository {
             wrapper.set(UserInfo::getRoomNo, command.getRoomNo());
         }
         if (Objects.nonNull(command.getEmail())) {
-            wrapper.set(UserInfo::getEmail, command.getEmail());
+            wrapper.set(UserInfo::getEmail, "");
+            wrapper.set(UserInfo::getTempEmail, command.getEmail());
         }
         if (Objects.nonNull(command.getNickname())) {
             wrapper.set(UserInfo::getNickname, command.getNickname());
@@ -151,9 +152,10 @@ public class UserInfoRepository {
     public int verifiedEmail(Long userId, String email) {
         final LambdaUpdateWrapper<UserInfo> wrapper = Wrappers.lambdaUpdate();
         wrapper.eq(UserInfo::getId, userId);
-        wrapper.eq(UserInfo::getEmail, email);
+        wrapper.eq(UserInfo::getTempEmail, email);
         wrapper.eq(UserInfo::getEmailVerified, Boolean.FALSE);
         wrapper.set(UserInfo::getEmailVerified, Boolean.TRUE);
+        wrapper.set(UserInfo::getEmail, email);
         return userInfoExtMapper.update(null, wrapper);
     }
 

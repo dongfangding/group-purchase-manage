@@ -58,8 +58,8 @@ public class MailClient {
     @Async("mailThreadPool")
     public void sendGroupLatestInfo(String email, String groupName, GroupPurchaseStatusEnum status) {
         String subject = "团购吧[" + groupName + "]信息变更提醒";
-        String content = "<p>您在团购吧参与的团购[" + groupName + "]最新状态变更为<font color='red'>" + status.getValue()
-                + "</fond>，请前往系统查询详情</p>"
+        String content = "<p>您在团购吧参与的团购[" + groupName + "]最新状态变更为<font color='red'>" + status.getDesc()
+                + "</fond>，您也可前往系统查询详情</p>"
                 + "(该邮件由系统自动发出，请勿回复)";
         mailUtil.sendMimeMail(new String[] {email}, subject, content);
     }

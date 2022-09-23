@@ -101,7 +101,7 @@ public class UserApplicationServiceImpl implements UserApplicationService {
                 (!Objects.equals(request.getEmail(), userInfo.getEmail()) || !userInfo.getEmailVerified())) {
             PreconditionUtil.checkArgument(Objects.isNull(userInfoRepository.getUserByVerifiedEmail(request.getEmail())),
                     ExceptionCode.EMAIL_HAD_BINDING_OTHERS);
-            userInfo.setEmail(request.getEmail());
+            userInfo.setTempEmail(request.getEmail());
             mailClient.sendEmailActive(userInfo.getId(), request.getEmail());
             // 如果是更改了邮件，则重新设置状态为未认证
             if (!Objects.equals(request.getEmail(), userInfo.getEmail())) {

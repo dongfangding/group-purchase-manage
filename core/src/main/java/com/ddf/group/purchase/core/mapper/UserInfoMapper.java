@@ -8,7 +8,7 @@ import com.ddf.group.purchase.core.model.entity.UserInfo;
  *
  * @author Snowball
  * @version 1.0
- * @date 2022/05/30 22:48
+ * @date 2022/09/23 10:41
  */
 public interface UserInfoMapper extends BaseMapper<UserInfo> {
 }

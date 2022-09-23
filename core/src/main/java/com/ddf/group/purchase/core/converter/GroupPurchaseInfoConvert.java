@@ -3,12 +3,14 @@ package com.ddf.group.purchase.core.converter;
 import com.ddf.group.purchase.api.request.group.CustomizeCreateRequest;
 import com.ddf.group.purchase.api.request.group.MyInitiatedGroupPageRequest;
 import com.ddf.group.purchase.api.request.group.MyJoinGroupPageRequest;
+import com.ddf.group.purchase.api.response.group.GroupPurchaseTraceDTO;
 import com.ddf.group.purchase.api.response.group.MyInitiatedGroupPageResponse;
 import com.ddf.group.purchase.core.model.cqrs.group.GroupListQuery;
 import com.ddf.group.purchase.core.model.cqrs.group.MyInitiatedGroupQuery;
 import com.ddf.group.purchase.core.model.cqrs.group.MyJoinGroupQuery;
 import com.ddf.group.purchase.core.model.entity.GroupPurchaseGood;
 import com.ddf.group.purchase.core.model.entity.GroupPurchaseInfo;
+import com.ddf.group.purchase.core.model.entity.GroupPurchaseTrace;
 import java.util.List;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -88,4 +90,11 @@ public interface GroupPurchaseInfoConvert {
     @Mapping(target = "joinUid", expression = "java(com.ddf.boot.common.authentication.util.UserContextUtil.getLongUserId())")
     MyJoinGroupQuery convert(MyJoinGroupPageRequest request);
 
+    @Mappings({
+    })
+    GroupPurchaseTraceDTO convertTrace(GroupPurchaseTrace trace);
+
+    @Mappings({
+    })
+    List<GroupPurchaseTraceDTO> convertTrace(List<GroupPurchaseTrace> trace);
 }

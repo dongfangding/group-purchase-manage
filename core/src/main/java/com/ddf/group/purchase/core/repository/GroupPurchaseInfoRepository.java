@@ -100,6 +100,29 @@ public class GroupPurchaseInfoRepository {
     }
 
     /**
+     * 修改团购状态为已成团
+     *
+     * @param id
+     * @return
+     */
+    public boolean updateStatusToGrouped(Long id) {
+        final LambdaUpdateWrapper<GroupPurchaseInfo> wrapper = Wrappers.lambdaUpdate();
+        wrapper.eq(GroupPurchaseInfo::getId, id);
+        wrapper.eq(GroupPurchaseInfo::getStatus, GroupPurchaseStatusEnum.CREATED.getValue());
+        wrapper.set(GroupPurchaseInfo::getStatus, GroupPurchaseStatusEnum.GROUPED.getValue());
+        wrapper.set(GroupPurchaseInfo::getMtime, DateUtils.currentTimeSeconds());
+        final boolean result = groupPurchaseInfoMapper.update(null, wrapper) > 0;
+        if (result) {
+            final GroupPurchaseTrace trace = new GroupPurchaseTrace();
+            trace.setGroupPurchaseId(id);
+            trace.setStatus(GroupPurchaseStatusEnum.GROUPED.getValue());
+            trace.setCtime(DateUtils.currentTimeSeconds());
+            insertTrace(trace);
+        }
+        return result;
+    }
+
+    /**
      * 修改团购状态为已到货
      *
      * @param id
@@ -108,7 +131,7 @@ public class GroupPurchaseInfoRepository {
     public boolean updateStatusToArrived(Long id) {
         final LambdaUpdateWrapper<GroupPurchaseInfo> wrapper = Wrappers.lambdaUpdate();
         wrapper.eq(GroupPurchaseInfo::getId, id);
-        wrapper.eq(GroupPurchaseInfo::getStatus, GroupPurchaseStatusEnum.CREATED.getValue());
+        wrapper.eq(GroupPurchaseInfo::getStatus, GroupPurchaseStatusEnum.GROUPED.getValue());
         wrapper.set(GroupPurchaseInfo::getStatus, GroupPurchaseStatusEnum.ARRIVED.getValue());
         wrapper.set(GroupPurchaseInfo::getMtime, DateUtils.currentTimeSeconds());
         final boolean result = groupPurchaseInfoMapper.update(null, wrapper) > 0;
@@ -146,7 +169,7 @@ public class GroupPurchaseInfoRepository {
     }
 
     /**
-     * 修改团购状态为已完成
+     * 修改团购状态为已取消
      *
      * @param id
      * @return
@@ -175,6 +198,19 @@ public class GroupPurchaseInfoRepository {
      */
     public boolean insertTrace(GroupPurchaseTrace groupPurchaseTrace) {
         return groupPurchaseTraceMapper.insert(groupPurchaseTrace) > 0;
+    }
+
+    /**
+     * 查询团购状态跟踪
+     *
+     * @param groupId
+     * @return
+     */
+    public List<GroupPurchaseTrace> listGroupTrace(Long groupId) {
+        final LambdaQueryWrapper<GroupPurchaseTrace> wrapper = Wrappers.lambdaQuery();
+        wrapper.eq(GroupPurchaseTrace::getGroupPurchaseId, groupId)
+                .orderByAsc(GroupPurchaseTrace::getCtime);
+        return groupPurchaseTraceMapper.selectList(wrapper);
     }
 
 

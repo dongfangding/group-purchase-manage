@@ -17,7 +17,7 @@
                              subscribe_progress
     </sql>
 
-    <select id="listGroupItem" resultType="com.ddf.group.purchase.api.response.group.GroupItemResponse">
+    <select id="listGroupPaidItem" resultType="com.ddf.group.purchase.api.response.group.GroupItemResponse">
         select item.group_purchase_id,
                item.id                       as groupItemId,
                item.ctime,
@@ -37,7 +37,7 @@
         from group_purchase_item item
                  left join group_purchase_item_good good
                            on item.id = good.group_purchase_item_id
-        where item.group_purchase_id = #{groupId}
+        where item.group_purchase_id = #{groupId} and item.paid_flag = 1
     </select>
 
     <insert id="batchInsert">
