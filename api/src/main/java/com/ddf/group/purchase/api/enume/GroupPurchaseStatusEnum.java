@@ -1,6 +1,9 @@
 package com.ddf.group.purchase.api.enume;
 
+import com.ddf.group.purchase.api.response.group.GroupPurchaseTraceDTO;
+import com.google.common.collect.Lists;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -20,18 +23,23 @@ public enum GroupPurchaseStatusEnum {
      *      * 3. 已完成
      *      * 4. 已取消
      */
-    UNKNOWN(0, "未知"),
-    CREATED(1, "已创建"),
-    GROUPED(2, "已成团"),
-    ARRIVED(3, "已到货"),
-    COMPLETED(4, "已完成"),
-    CANCELED(5, "已取消"),
+    UNKNOWN(0, "未知", 0),
+    CREATED(1, "已创建", 1),
+    GROUPED(2, "已成团", 2),
+    ARRIVED(3, "已到货", 3),
+    COMPLETED(4, "已完成", 4),
+    CANCELED(5, "已取消", 5),
     ;
 
     @Getter
     private final Integer value;
     @Getter
     private final String desc;
+    /**
+     * 跟踪步骤，由于状态后续可能会加，这个字段用来定义定义状态的相连步骤关联关系
+     */
+    @Getter
+    private final Integer step;
 
     private static final Map<Integer, GroupPurchaseStatusEnum> MAPPINGS;
 
@@ -40,9 +48,10 @@ public enum GroupPurchaseStatusEnum {
                 Function.identity()));
     }
 
-    GroupPurchaseStatusEnum(Integer value, String desc) {
+    GroupPurchaseStatusEnum(Integer value, String desc, Integer step) {
         this.value = value;
         this.desc = desc;
+        this.step = step;
     }
 
     /**
@@ -53,5 +62,12 @@ public enum GroupPurchaseStatusEnum {
      */
     public static GroupPurchaseStatusEnum resolve(Integer value) {
         return MAPPINGS.getOrDefault(value, GroupPurchaseStatusEnum.UNKNOWN);
+    }
+
+    public static List<GroupPurchaseTraceDTO> listNormalStep() {
+        return Lists.newArrayList(GroupPurchaseTraceDTO.of(CREATED.getValue(), null),
+                GroupPurchaseTraceDTO.of(GROUPED.getValue(), null),
+                GroupPurchaseTraceDTO.of(ARRIVED.getValue(), null),
+                GroupPurchaseTraceDTO.of(COMPLETED.getValue(), null));
     }
 }

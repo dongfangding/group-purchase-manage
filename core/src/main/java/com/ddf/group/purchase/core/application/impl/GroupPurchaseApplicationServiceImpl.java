@@ -513,7 +513,10 @@ public class GroupPurchaseApplicationServiceImpl implements GroupPurchaseApplica
         if (CollUtil.isNotEmpty(itemGoods)) {
             response.setOrderGood(GroupPurchaseItemGoodConverter.INSTANCE.convert(itemGoods.get(0)));
         }
-        response.setGroupTraceList(GroupPurchaseInfoConvert.INSTANCE.convertTrace(groupPurchaseInfoRepository.listGroupTrace(response.getGroupPurchaseId())));
+
+        // 状态跟踪
+        response.setTrace(groupAssembler.traceAssembler(groupPurchaseInfoRepository.listGroupTrace(
+                response.getGroupPurchaseId())));
         return response;
     }
 

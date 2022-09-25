@@ -2,7 +2,10 @@ package com.ddf.group.purchase.api.response.group;
 
 import com.ddf.group.purchase.api.enume.GroupPurchaseStatusEnum;
 import java.io.Serializable;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
 * <p>团购状态跟踪</p >
@@ -12,14 +15,10 @@ import lombok.Data;
 * @date 2022/07/14 18:13
 */
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor(staticName = "of")
 public class GroupPurchaseTraceDTO implements Serializable {
-
-    private Long id;
-
-    /**
-     * 团购记录id
-     */
-    private Long groupPurchaseId;
 
     /**
      * 状态
@@ -31,7 +30,7 @@ public class GroupPurchaseTraceDTO implements Serializable {
      */
     private Long ctime;
 
-    private String getStatusName () {
+    public String getStatusName () {
         return GroupPurchaseStatusEnum.resolve(status).getDesc();
     }
 

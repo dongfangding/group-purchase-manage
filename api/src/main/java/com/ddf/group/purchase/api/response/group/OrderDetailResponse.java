@@ -2,7 +2,6 @@ package com.ddf.group.purchase.api.response.group;
 
 import com.ddf.group.purchase.api.enume.GroupPurchaseItemJoinStatusEnum;
 import java.io.Serializable;
-import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -151,7 +150,7 @@ public class OrderDetailResponse implements Serializable {
     /**
      * 团购状态跟踪数据
      */
-    private List<GroupPurchaseTraceDTO> groupTraceList;
+    private GroupTraceStepRes trace;
 
     public String getJoinStatusName() {
         return GroupPurchaseItemJoinStatusEnum.resolve(joinStatus).getDesc();
