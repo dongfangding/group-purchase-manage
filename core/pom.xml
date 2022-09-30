@@ -31,6 +31,7 @@
         <ddf-common-nacos.version>1.0.1-SNAPSHOT</ddf-common-nacos.version>
         <ddf-common-vps.version>1.0.1-SNAPSHOT</ddf-common-vps.version>
         <ddf-common-rocketmq.version>1.0.1-SNAPSHOT</ddf-common-rocketmq.version>
+        <ddf-common-mqtt.version>1.0.1-SNAPSHOT</ddf-common-mqtt.version>
     </properties>
 
     <dependencies>
@@ -122,6 +123,13 @@
             <artifactId>ddf-common-rocketmq</artifactId>
             <version>${ddf-common-rocketmq.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>com.ddf.common</groupId>
+            <artifactId>ddf-common-mqtt</artifactId>
+            <version>${ddf-common-mqtt.version}</version>
+        </dependency>
+
 
         <dependency>
             <groupId>org.projectlombok</groupId>

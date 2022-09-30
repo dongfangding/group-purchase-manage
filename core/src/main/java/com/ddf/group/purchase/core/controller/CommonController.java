@@ -1,5 +1,7 @@
 package com.ddf.group.purchase.core.controller;
 
+import com.ddf.boot.common.core.resolver.MultiArgumentResolver;
+import com.ddf.boot.common.redis.helper.RedisTemplateHelper;
 import com.ddf.common.captcha.model.request.CaptchaRequest;
 import com.ddf.common.captcha.model.response.ApplicationCaptchaResult;
 import com.ddf.group.purchase.api.request.common.CaptchaVerifyRequest;
@@ -39,6 +41,7 @@ public class CommonController {
     private final CommonHelper commonHelper;
     private final VpsClient vpsClient;
     private final SysDictRepository sysDictRepository;
+    private final RedisTemplateHelper redisTemplateHelper;
 
 
     @GetMapping("listDict")
@@ -53,7 +56,7 @@ public class CommonController {
      * @return
      */
     @PostMapping("generateCaptcha")
-    public ApplicationCaptchaResult generateCaptcha(@RequestBody @Validated CaptchaRequest request) {
+    public ApplicationCaptchaResult generateCaptcha(@MultiArgumentResolver @Validated CaptchaRequest request) {
         return commonHelper.generateCaptcha(request);
     }
 

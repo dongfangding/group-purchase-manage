@@ -9,7 +9,7 @@ nacos:
     data-ids: property-source
     ext-config:
       - namespace: common
-        dataIds: common-server,common-datasource,common-global-properties,common-mybatis-plus,common-redis,common-mail,common-rocketmq,common-xxl-job,common-ids,common-fdfs,common-ext-sms
+        dataIds: common-server,common-datasource,common-global-properties,common-mybatis-plus,common-redis,common-mail,common-rocketmq,common-xxl-job,common-ids,common-fdfs,common-ext-sms,common-emq
         group: DEFAULT_GROUP
         type: yaml
         auto-refresh: true

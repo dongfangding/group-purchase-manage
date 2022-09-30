@@ -16,7 +16,6 @@ server:
       max: 300
       min-spare: 20
     processor-cache: 300
-    basedir: /opt/data/
   servlet:
     context-path: /group-purchase-manage
 
