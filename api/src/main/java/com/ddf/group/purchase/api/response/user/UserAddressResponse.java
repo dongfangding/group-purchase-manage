@@ -1,6 +1,5 @@
 package com.ddf.group.purchase.api.response.user;
 
-import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
 import lombok.Data;
 
@@ -12,7 +11,6 @@ import lombok.Data;
 * @date 2022/09/06 19:44
 */
 @Data
-@TableName(value = "user_address")
 public class UserAddressResponse implements Serializable {
     private static final long serialVersionUID = 3549293556114272457L;
 

@@ -3,7 +3,6 @@ package com.ddf.group.purchase.api.request.group;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.NumberUtil;
 import cn.hutool.core.util.StrUtil;
-import com.ddf.boot.common.core.util.JsonUtil;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -184,7 +183,7 @@ public class CreateFromWxJieLongRequest implements Serializable {
                 "大家快点接龙，三点结束";
         final CreateFromWxJieLongRequest request = new CreateFromWxJieLongRequest();
         request.setText(text);
-        System.out.println(JsonUtil.asString(request.parseData()));
+        System.out.println(request.parseData());
 
         text = "#接龙\n" +
             "接龙，这次不填写接龙格式，也不填写补充信息\n" +
@@ -192,10 +191,10 @@ public class CreateFromWxJieLongRequest implements Serializable {
             "1.尘 消毒液两瓶\n" +
             "2.295-909 消毒药三瓶";
         request.setText(text);
-        System.out.println(JsonUtil.asString(request.parseData()));
+        System.out.println(request.parseData());
 
         Map<String, Object> map = new HashMap<>();
         map.put("request", request);
-        System.out.println(JsonUtil.toJson(map));
+        System.out.println(map);
     }
 }

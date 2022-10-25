@@ -1,6 +1,6 @@
 package com.ddf.group.purchase.core.service.impl;
 
-import com.ddf.boot.common.core.util.DateUtils;
+import com.ddf.boot.common.api.util.DateUtils;
 import com.ddf.group.purchase.core.mapper.ext.UserInfoExtMapper;
 import com.ddf.group.purchase.core.model.entity.UserInfo;
 import com.ddf.group.purchase.core.service.UserInfoService;

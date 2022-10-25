@@ -75,8 +75,8 @@ Content-Type: application/json
 
 {
   "loginType": "PASSWORD",
-  "loginIdentity": "123456789",
-  "credential": "123456789"
+  "loginIdentity": "18621600201",
+  "credential": "123456"
 }
 
 ### 获取当前用户认证信息
@@ -97,4 +97,22 @@ Content-Type: application/json
   "credential": "000000",
   "uuid": "tsr339yxaj3hipeq"
 }
+
+### 获取当前用户认证信息
+POST http://localhost:8083/group-purchase-manage/common/generateCaptcha
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer $2a$10$BFqpAePm.pNqpc/K00WgPegFpzh/zsWPqm79jxWFCXB4toteCBLDq<=>e4579f5b67b5028e9c488ece8cef153edef287c8003b23998b8c1b00048ba985eb887025ef33c0a3ddd199247b6d1b9748ee86811c3bd506203ea42ac63d67d99a01600e8229679679f15f695d436837a4e78cf07d5e3e787a228a0ae212b2b0732751e97494bd4eddedbbb8c41d6f603f3933599f0f14a8b2d148475748546e8c5632f0e3430582662a2f18f2ef8b2ffa09a7ae72f8bf080f65431a846d57e0ff1e6acca77fb20d579e83fcd4375070
+
+{
+  "captchaType": "TEXT"
+}
+
+###
+POST http://localhost:8083/group-purchase-manage/common/generateCaptcha1
+Accept: application/json
+Content-Type: application/x-www-form-urlencoded
+Authorization: Bearer $2a$10$BFqpAePm.pNqpc/K00WgPegFpzh/zsWPqm79jxWFCXB4toteCBLDq<=>e4579f5b67b5028e9c488ece8cef153edef287c8003b23998b8c1b00048ba985eb887025ef33c0a3ddd199247b6d1b9748ee86811c3bd506203ea42ac63d67d99a01600e8229679679f15f695d436837a4e78cf07d5e3e787a228a0ae212b2b0732751e97494bd4eddedbbb8c41d6f603f3933599f0f14a8b2d148475748546e8c5632f0e3430582662a2f18f2ef8b2ffa09a7ae72f8bf080f65431a846d57e0ff1e6acca77fb20d579e83fcd4375070
+
+captchaType=TEXT
 

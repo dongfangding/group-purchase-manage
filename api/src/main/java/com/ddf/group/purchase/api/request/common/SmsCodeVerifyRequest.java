@@ -1,6 +1,6 @@
 package com.ddf.group.purchase.api.request.common;
 
-import com.ddf.boot.common.core.validator.constraint.Mobile;
+import com.ddf.boot.common.api.validator.constraint.Mobile;
 import java.io.Serializable;
 import javax.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;

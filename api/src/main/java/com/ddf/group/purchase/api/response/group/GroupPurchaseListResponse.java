@@ -1,6 +1,6 @@
 package com.ddf.group.purchase.api.response.group;
 
-import com.ddf.boot.common.core.util.DateUtils;
+import com.ddf.boot.common.api.util.DateUtils;
 import com.ddf.group.purchase.api.enume.GroupPurchaseStatusEnum;
 import java.io.Serializable;
 import java.math.BigDecimal;

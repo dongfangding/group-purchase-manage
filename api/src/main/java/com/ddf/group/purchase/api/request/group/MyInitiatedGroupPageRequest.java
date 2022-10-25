@@ -1,6 +1,6 @@
 package com.ddf.group.purchase.api.request.group;
 
-import com.ddf.boot.common.core.model.PageRequest;
+import com.ddf.boot.common.api.model.common.PageRequest;
 import com.ddf.group.purchase.api.enume.GroupPurchaseStatusEnum;
 import java.io.Serializable;
 import javax.validation.constraints.NotNull;

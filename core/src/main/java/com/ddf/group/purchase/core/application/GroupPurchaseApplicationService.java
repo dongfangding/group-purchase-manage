@@ -1,6 +1,6 @@
 package com.ddf.group.purchase.core.application;
 
-import com.ddf.boot.common.core.model.PageResult;
+import com.ddf.boot.common.api.model.common.PageResult;
 import com.ddf.group.purchase.api.request.group.CreateFromWxJieLongRequest;
 import com.ddf.group.purchase.api.request.group.CustomizeCreateRequest;
 import com.ddf.group.purchase.api.request.group.JoinGroupRequest;

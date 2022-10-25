@@ -1,6 +1,7 @@
 package com.ddf.group.purchase.api.request.common;
 
-import com.ddf.boot.common.core.validator.constraint.Mobile;
+import com.ddf.boot.common.api.model.captcha.request.CaptchaCheckRequest;
+import com.ddf.boot.common.api.validator.constraint.Mobile;
 import java.io.Serializable;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
@@ -28,6 +29,6 @@ public class SendSmsCodeRequest implements Serializable {
 
     @NotNull(message = "验证码对象不能为空")
     @Valid
-    private CaptchaVerifyRequest captchaVerifyRequest;
+    private CaptchaCheckRequest captchaVerifyRequest;
 
 }

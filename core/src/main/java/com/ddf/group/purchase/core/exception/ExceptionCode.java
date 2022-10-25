@@ -1,6 +1,7 @@
 package com.ddf.group.purchase.core.exception;
 
-import com.ddf.boot.common.core.exception200.BaseCallbackCode;
+
+import com.ddf.boot.common.api.exception.BaseCallbackCode;
 
 /**
  * <p>异常状态码</p >

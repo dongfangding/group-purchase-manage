@@ -2,7 +2,7 @@ package com.ddf.group.purchase.core.repository;
 
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.ddf.boot.common.core.util.DateUtils;
+import com.ddf.boot.common.api.util.DateUtils;
 import com.ddf.group.purchase.api.enume.GroupPurchaseItemJoinStatusEnum;
 import com.ddf.group.purchase.api.response.group.MyJoinGroupPageResponse;
 import com.ddf.group.purchase.core.mapper.ext.GroupPurchaseItemExtMapper;

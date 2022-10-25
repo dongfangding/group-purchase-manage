@@ -1,10 +1,10 @@
 package com.ddf.group.purchase.core.controller;
 
+import com.ddf.boot.common.api.model.captcha.request.CaptchaCheckRequest;
+import com.ddf.boot.common.api.model.captcha.request.CaptchaRequest;
+import com.ddf.boot.common.api.model.captcha.response.ApplicationCaptchaResult;
 import com.ddf.boot.common.core.resolver.MultiArgumentResolver;
 import com.ddf.boot.common.redis.helper.RedisTemplateHelper;
-import com.ddf.common.captcha.model.request.CaptchaRequest;
-import com.ddf.common.captcha.model.response.ApplicationCaptchaResult;
-import com.ddf.group.purchase.api.request.common.CaptchaVerifyRequest;
 import com.ddf.group.purchase.api.request.common.SendSmsCodeRequest;
 import com.ddf.group.purchase.api.response.common.ApplicationSmsSendResponse;
 import com.ddf.group.purchase.api.response.common.SysDictResponse;
@@ -66,7 +66,7 @@ public class CommonController {
      * @param request
      */
     @PostMapping("checkCaptcha")
-    public void checkCaptcha(@RequestBody @Validated CaptchaVerifyRequest request) {
+    public void checkCaptcha(@RequestBody @Validated CaptchaCheckRequest request) {
         commonHelper.verifyCaptcha(request);
     }
 

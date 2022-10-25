@@ -16,22 +16,21 @@
         <maven.compiler.target>8</maven.compiler.target>
         <disruptor.version>3.4.4</disruptor.version>
         <log4j2.version>2.17.1</log4j2.version>
-        <ddf-common.version>1.0.1-SNAPSHOT</ddf-common.version>
-        <ddf-commom-ids-service.version>1.0.1-SNAPSHOT</ddf-commom-ids-service.version>
-        <ddf-common-core.version>1.0.1-SNAPSHOT</ddf-common-core.version>
-        <ddf-commom-ids-service.version>1.0.1-SNAPSHOT</ddf-commom-ids-service.version>
-        <ddf-common-authentication.version>1.0.1-SNAPSHOT</ddf-common-authentication.version>
-        <ddf-common-third-party.version>1.0.1-SNAPSHOT</ddf-common-third-party.version>
-        <ddf-common-mybatis-plus.version>1.0.1-SNAPSHOT</ddf-common-mybatis-plus.version>
-        <ddf-common-captcha.version>1.0.1-SNAPSHOT</ddf-common-captcha.version>
-        <ddf-common-model.version>1.0.1-SNAPSHOT</ddf-common-model.version>
-        <ddf-common-limit.version>1.0.1-SNAPSHOT</ddf-common-limit.version>
-        <ddf-common-redis.version>1.0.1-SNAPSHOT</ddf-common-redis.version>
-        <ddf-common-xxl-executor.version>1.0.1-SNAPSHOT</ddf-common-xxl-executor.version>
-        <ddf-common-nacos.version>1.0.1-SNAPSHOT</ddf-common-nacos.version>
-        <ddf-common-vps.version>1.0.1-SNAPSHOT</ddf-common-vps.version>
-        <ddf-common-rocketmq.version>1.0.1-SNAPSHOT</ddf-common-rocketmq.version>
-        <ddf-common-mqtt.version>1.0.1-SNAPSHOT</ddf-common-mqtt.version>
+        <ddf-common.version>1.0.2-SNAPSHOT</ddf-common.version>
+        <ddf-commom-ids-service.version>1.0.2-SNAPSHOT</ddf-commom-ids-service.version>
+        <ddf-common-core.version>1.0.2-SNAPSHOT</ddf-common-core.version>
+        <ddf-common-ids-service.version>1.0.2-SNAPSHOT</ddf-common-ids-service.version>
+        <ddf-common-authentication.version>1.0.2-SNAPSHOT</ddf-common-authentication.version>
+        <ddf-common-third-party.version>1.0.2-SNAPSHOT</ddf-common-third-party.version>
+        <ddf-common-mybatis-plus.version>1.0.2-SNAPSHOT</ddf-common-mybatis-plus.version>
+        <ddf-common-captcha.version>1.0.2-SNAPSHOT</ddf-common-captcha.version>
+        <ddf-common-limit.version>1.0.2-SNAPSHOT</ddf-common-limit.version>
+        <ddf-common-redis.version>1.0.2-SNAPSHOT</ddf-common-redis.version>
+        <ddf-common-xxl-executor.version>1.0.2-SNAPSHOT</ddf-common-xxl-executor.version>
+        <ddf-common-nacos.version>1.0.2-SNAPSHOT</ddf-common-nacos.version>
+        <ddf-common-vps.version>1.0.2-SNAPSHOT</ddf-common-vps.version>
+        <ddf-common-rocketmq.version>1.0.2-SNAPSHOT</ddf-common-rocketmq.version>
+        <ddf-common-mqtt.version>1.0.2-SNAPSHOT</ddf-common-mqtt.version>
     </properties>
 
     <dependencies>
@@ -42,8 +41,8 @@
         </dependency>
         <dependency>
             <groupId>com.ddf.common</groupId>
-            <artifactId>ddf-commom-ids-service</artifactId>
-            <version>${ddf-commom-ids-service.version}</version>
+            <artifactId>ddf-common-ids-service</artifactId>
+            <version>${ddf-common-ids-service.version}</version>
             <exclusions>
                 <exclusion>
                     <artifactId>log4j</artifactId>
@@ -80,12 +79,6 @@
             <groupId>com.ddf.common</groupId>
             <artifactId>ddf-common-captcha</artifactId>
             <version>${ddf-common-captcha.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.ddf.common</groupId>
-            <artifactId>ddf-common-model</artifactId>
-            <version>${ddf-common-model.version}</version>
         </dependency>
 
         <dependency>

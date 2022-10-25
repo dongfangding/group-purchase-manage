@@ -1,7 +1,7 @@
 package com.ddf.group.purchase.core.repository;
 
 import cn.hutool.core.util.StrUtil;
-import com.ddf.boot.common.core.util.JsonUtil;
+import com.ddf.boot.common.api.util.JsonUtil;
 import com.ddf.group.purchase.core.constants.RedisKeyEnum;
 import com.ddf.group.purchase.core.constants.RedisKeys;
 import com.ddf.group.purchase.core.model.dto.user.EmailToken;
