@@ -93,11 +93,11 @@
             <version>${ddf-common-redis.version}</version>
         </dependency>
 
-        <dependency>
-            <groupId>com.ddf.common</groupId>
-            <artifactId>ddf-common-xxl-executor</artifactId>
-            <version>${ddf-common-xxl-executor.version}</version>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>com.ddf.common</groupId>-->
+<!--            <artifactId>ddf-common-xxl-executor</artifactId>-->
+<!--            <version>${ddf-common-xxl-executor.version}</version>-->
+<!--        </dependency>-->
 
         <dependency>
             <groupId>com.ddf.common</groupId>

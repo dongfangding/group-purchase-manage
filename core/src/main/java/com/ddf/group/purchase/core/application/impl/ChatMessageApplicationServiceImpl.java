@@ -34,9 +34,8 @@ public class ChatMessageApplicationServiceImpl implements ChatMessageApplication
         final UserInfo currentUserInfo = userClient.currentUserInfo();
 
         // 消息接收对象
-        final Im2PointMqttTopic mqttTopic = Im2PointMqttTopic.builder()
-                .identityId(request.getToUserId() + "")
-                .build();
+        final Im2PointMqttTopic mqttTopic = new Im2PointMqttTopic();
+        mqttTopic.setIdentityId(request.getToUserId() + "");
 
         // 消息头对象
         final MqttHeader header = new MqttHeader();
