@@ -87,6 +87,16 @@ public class GroupItemResponse implements Serializable {
      */
     private String receiverArea;
 
+    /**
+     * 收货人楼栋号
+     */
+    private String receiverBuildingNo;
+
+    /**
+     * 收货人房间号
+     */
+    private String receiverRoomNo;
+
 
     //    /**
 //     * 购买商品明细

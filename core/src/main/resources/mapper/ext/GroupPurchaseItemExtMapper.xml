@@ -29,6 +29,8 @@
                item.receiver_name            as receiverName,
                item.receiver_mobile          as receiverMobile,
                item.receiver_detail_address  as receiverDetailAddress,
+               item.receiver_building_no     as receiverBuildingNo,
+               item.receiver_room_no         as receiverRoomNo,
                item.remark,
                good.id                       as itemGoodId,
                good.group_purchase_good_id   as goodId,
