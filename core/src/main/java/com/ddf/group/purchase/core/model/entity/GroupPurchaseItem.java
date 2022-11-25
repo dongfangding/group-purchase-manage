@@ -12,7 +12,7 @@ import lombok.Data;
 *
 * @author Snowball
 * @version 1.0
-* @date 2022/09/21 15:41
+* @date 2022/11/25 11:44
 */
 
 
@@ -102,6 +102,18 @@ public class GroupPurchaseItem implements Serializable {
      */
     @TableField(value = "receiver_area")
     private String receiverArea;
+
+    /**
+     * 收货人楼栋号
+     */
+    @TableField(value = "receiver_building_no")
+    private String receiverBuildingNo;
+
+    /**
+     * 收货人房间号
+     */
+    @TableField(value = "receiver_room_no")
+    private String receiverRoomNo;
 
     /**
      * 备注

@@ -18,6 +18,8 @@
     <result column="receiver_province" jdbcType="VARCHAR" property="receiverProvince" />
     <result column="receiver_city" jdbcType="VARCHAR" property="receiverCity" />
     <result column="receiver_area" jdbcType="VARCHAR" property="receiverArea" />
+    <result column="receiver_building_no" jdbcType="VARCHAR" property="receiverBuildingNo" />
+    <result column="receiver_room_no" jdbcType="VARCHAR" property="receiverRoomNo" />
     <result column="remark" jdbcType="VARCHAR" property="remark" />
     <result column="paid_flag" jdbcType="BIT" property="paidFlag" />
     <result column="pay_count_down_seconds" jdbcType="INTEGER" property="payCountDownSeconds" />
@@ -27,6 +29,7 @@
     <!--@mbg.generated-->
     id, order_no, group_purchase_id, join_uid, ctime, subscribe_progress, join_status, 
     status_change_time, receiver_name, receiver_mobile, receiver_detail_address, receiver_province, 
-    receiver_city, receiver_area, remark, paid_flag, pay_count_down_seconds, pay_time
+    receiver_city, receiver_area, receiver_building_no, receiver_room_no, remark, paid_flag, 
+    pay_count_down_seconds, pay_time
   </sql>
 </mapper>

@@ -37,7 +37,8 @@
         from group_purchase_item item
                  left join group_purchase_item_good good
                            on item.id = good.group_purchase_item_id
-        where item.group_purchase_id = #{groupId} and item.paid_flag = 1
+        where item.group_purchase_id = #{groupId}
+          and item.paid_flag = 1
     </select>
 
     <insert id="batchInsert">
@@ -112,7 +113,9 @@
             receiver_area           = #{address.receiverArea},
             receiver_name           = #{address.receiverName},
             receiver_mobile         = #{address.receiverMobile},
-            receiver_detail_address = #{address.receiverDetailAddress}
+            receiver_detail_address = #{address.receiverDetailAddress},
+            receiver_building_no    = #{address.receiverBuildingNo},
+            receiver_room_no        = #{address.receiverRoomNo}
         where id = #{id}
           and join_status = ${@com.ddf.group.purchase.api.enume.GroupPurchaseItemJoinStatusEnum@WAIT_PAY.getValue()}
     </update>
@@ -133,6 +136,8 @@
                item.receiver_name           as receiverName,
                item.receiver_mobile         as receiverMobile,
                item.receiver_detail_address as receiverDetailAddress,
+               item.receiver_building_no    as receiverBuildingNo,
+               item.receiver_room_no        as receiverRoomNo,
                item.remark,
                item.paid_flag               as paidFlag,
                item.pay_count_down_seconds  as payCountDownSeconds,

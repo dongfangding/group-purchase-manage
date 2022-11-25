@@ -79,4 +79,14 @@ public class SimulationPayRequest implements Serializable {
      * 收货人区
      */
     private String receiverArea;
+
+    /**
+     * 收货人楼栋号
+     */
+    private String receiverBuildingNo;
+
+    /**
+     * 收货人房间号
+     */
+    private String receiverRoomNo;
 }
