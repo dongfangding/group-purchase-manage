@@ -35,4 +35,9 @@ public class ApplicationProperties {
      */
     private String defaultAvatarUrl = "https://www.snowball.fans/group1/M00/00/01/ag8Kh2MpIrmARypcAAA0fj3w3lU69.jpeg";
 
+    /**
+     * 短信功能Mock是否开启， 如果开启的话，不会真实发送短信，通过控制台查看短信验证码来进行调试
+     */
+    private boolean smsCodeMockEnabled;
+
 }

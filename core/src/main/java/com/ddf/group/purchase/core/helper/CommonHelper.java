@@ -11,7 +11,6 @@ import com.ddf.boot.common.authentication.config.AuthenticationProperties;
 import com.ddf.boot.common.authentication.util.UserContextUtil;
 import com.ddf.boot.common.core.util.PreconditionUtil;
 import com.ddf.boot.common.core.util.WebUtil;
-import com.ddf.boot.common.ext.sms.SmsApi;
 import com.ddf.boot.common.ext.sms.model.SmsSendRequest;
 import com.ddf.boot.common.ext.sms.model.SmsSendResponse;
 import com.ddf.boot.common.redis.helper.RedisTemplateHelper;
@@ -19,6 +18,7 @@ import com.ddf.common.captcha.helper.CaptchaHelper;
 import com.ddf.group.purchase.api.request.common.SendSmsCodeRequest;
 import com.ddf.group.purchase.api.request.common.SmsCodeVerifyRequest;
 import com.ddf.group.purchase.api.response.common.ApplicationSmsSendResponse;
+import com.ddf.group.purchase.core.client.SmsClient;
 import com.ddf.group.purchase.core.config.properties.ApplicationProperties;
 import com.ddf.group.purchase.core.constants.RedisKeys;
 import com.ddf.group.purchase.core.exception.ExceptionCode;
@@ -44,13 +44,14 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor(onConstructor_={@Autowired})
 public class CommonHelper {
 
-    private final SmsApi aliYunSmsApiImpl;
+
     private final CaptchaHelper captchaHelper;
     private final AuthenticationProperties authenticationProperties;
     private final RedisTemplateHelper redisTemplateHelper;
     private final UserInfoRepository userInfoRepository;
     private final CommonRepository commonRepository;
     private final ApplicationProperties applicationProperties;
+    private final SmsClient smsClient;
 
     /**
      * 生成验证码
@@ -86,7 +87,7 @@ public class CommonHelper {
         PreconditionUtil.requiredParamCheck(sendSmsCodeRequest);
         final SmsSendRequest request = new SmsSendRequest();
         request.setPhoneNumbers(sendSmsCodeRequest.getMobile());
-        return aliYunSmsApiImpl.send(request);
+        return smsClient.send(request);
     }
 
     /**
