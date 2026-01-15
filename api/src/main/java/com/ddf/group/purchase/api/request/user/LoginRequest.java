@@ -2,8 +2,8 @@ package com.ddf.group.purchase.api.request.user;
 
 import com.ddf.group.purchase.api.enume.LoginTypeEnum;
 import java.io.Serializable;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 /**

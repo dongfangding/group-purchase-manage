@@ -2,8 +2,6 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ddf.group.purchase.core.mapper.GroupPurchaseInfoMapper">
   <resultMap id="BaseResultMap" type="com.ddf.group.purchase.core.model.entity.GroupPurchaseInfo">
-    <!--@mbg.generated-->
-    <!--@Table group_purchase_info-->
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="group_master_uid" jdbcType="BIGINT" property="groupMasterUid" />
@@ -20,8 +18,49 @@
     <result column="service_community_id" jdbcType="BIGINT" property="serviceCommunityId" />
   </resultMap>
   <sql id="Base_Column_List">
-    <!--@mbg.generated-->
-    id, `name`, group_master_uid, `status`, content, ctime, mtime, public_flag, wx_id_card_url, 
+    id, `name`, group_master_uid, `status`, content, ctime, mtime, public_flag, wx_id_card_url,
     pic_urls, video_url, start_time, end_time, service_community_id
   </sql>
+
+  <select id="selectById" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List" />
+    from group_purchase_info
+    where id = #{id}
+  </select>
+
+  <select id="selectList" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List" />
+    from group_purchase_info
+  </select>
+
+  <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+    insert into group_purchase_info (`name`, group_master_uid, `status`, content, ctime, mtime,
+      public_flag, wx_id_card_url, pic_urls, video_url, start_time, end_time, service_community_id)
+    values (#{name}, #{groupMasterUid}, #{status}, #{content}, #{ctime}, #{mtime},
+      #{publicFlag}, #{wxIdCardUrl}, #{picUrls}, #{videoUrl}, #{startTime}, #{endTime}, #{serviceCommunityId})
+  </insert>
+
+  <update id="updateById">
+    update group_purchase_info
+    <set>
+      <if test="name != null">`name` = #{name},</if>
+      <if test="groupMasterUid != null">group_master_uid = #{groupMasterUid},</if>
+      <if test="status != null">`status` = #{status},</if>
+      <if test="content != null">content = #{content},</if>
+      <if test="ctime != null">ctime = #{ctime},</if>
+      <if test="mtime != null">mtime = #{mtime},</if>
+      <if test="publicFlag != null">public_flag = #{publicFlag},</if>
+      <if test="wxIdCardUrl != null">wx_id_card_url = #{wxIdCardUrl},</if>
+      <if test="picUrls != null">pic_urls = #{picUrls},</if>
+      <if test="videoUrl != null">video_url = #{videoUrl},</if>
+      <if test="startTime != null">start_time = #{startTime},</if>
+      <if test="endTime != null">end_time = #{endTime},</if>
+      <if test="serviceCommunityId != null">service_community_id = #{serviceCommunityId}</if>
+    </set>
+    where id = #{id}
+  </update>
+
+  <delete id="deleteById">
+    delete from group_purchase_info where id = #{id}
+  </delete>
 </mapper>

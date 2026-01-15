@@ -1,8 +1,8 @@
 package com.ddf.group.purchase.api.request.group;
 
 import java.io.Serializable;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import org.hibernate.validator.constraints.Range;
 

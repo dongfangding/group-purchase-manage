@@ -1,7 +1,5 @@
 package com.ddf.group.purchase.core.repository;
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.ddf.group.purchase.core.mapper.ext.GroupPurchaseItemGoodExtMapper;
 import com.ddf.group.purchase.core.model.entity.GroupPurchaseItemGood;
 import java.util.List;
@@ -24,34 +22,22 @@ public class GroupPurchaseItemGoodRepository {
 
     private final GroupPurchaseItemGoodExtMapper groupPurchaseItemGoodExtMapper;
 
-
     /**
-     * 查找用户指定团购和商品的参团信息
+     * 根据参团记录ID查询商品列表
      *
      * @param groupItemId
-     * @param userId
-     * @param goodId
      * @return
      */
-    public GroupPurchaseItemGood selectUserGroupGood(Long groupItemId, Long userId, Long goodId) {
-        final LambdaQueryWrapper<GroupPurchaseItemGood> wrapper = Wrappers.lambdaQuery();
-        wrapper.eq(GroupPurchaseItemGood::getGroupPurchaseItemId, groupItemId)
-                .eq(GroupPurchaseItemGood::getJoinUid, userId)
-                .eq(GroupPurchaseItemGood::getGroupPurchaseGoodId, goodId);
-        return groupPurchaseItemGoodExtMapper.selectOne(wrapper);
+    public List<GroupPurchaseItemGood> selectByGroupPurchaseItemId(Long groupItemId) {
+        return groupPurchaseItemGoodExtMapper.selectByGroupPurchaseItemId(groupItemId);
     }
 
     /**
-     * 查找指定用户指定团购的购买商品列表
+     * 批量插入
      *
-     * @param groupId
-     * @param userId
-     * @return
+     * @param list
      */
-    public List<GroupPurchaseItemGood> listUserGroupGood(Long groupId, Long userId) {
-        final LambdaQueryWrapper<GroupPurchaseItemGood> wrapper = Wrappers.lambdaQuery();
-        wrapper.eq(GroupPurchaseItemGood::getGroupPurchaseId, groupId)
-                .eq(GroupPurchaseItemGood::getJoinUid, userId);
-        return groupPurchaseItemGoodExtMapper.selectList(wrapper);
+    public void batchInsert(List<GroupPurchaseItemGood> list) {
+        groupPurchaseItemGoodExtMapper.batchInsert(list);
     }
 }

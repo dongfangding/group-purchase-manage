@@ -1,9 +1,8 @@
 package com.ddf.group.purchase.core.repository;
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.ddf.group.purchase.core.mapper.ext.GroupPurchaseGoodExtMapper;
 import com.ddf.group.purchase.core.model.entity.GroupPurchaseGood;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,9 +28,38 @@ public class GroupPurchaseGoodRepository {
      * @param groupId
      * @return
      */
-    public GroupPurchaseGood getByGroupId(Long groupId) {
-        final LambdaQueryWrapper<GroupPurchaseGood> wrapper = Wrappers.lambdaQuery();
-        wrapper.eq(GroupPurchaseGood::getGroupPurchaseId, groupId);
-        return groupPurchaseGoodExtMapper.selectOne(wrapper);
+    public List<GroupPurchaseGood> getByGroupId(Long groupId) {
+        return groupPurchaseGoodExtMapper.selectByGroupPurchaseId(groupId);
+    }
+
+    /**
+     * 根据ID查询
+     *
+     * @param id
+     * @return
+     */
+    public GroupPurchaseGood getById(Long id) {
+        return groupPurchaseGoodExtMapper.selectById(id);
+    }
+
+    /**
+     * 插入
+     *
+     * @param groupPurchaseGood
+     * @return
+     */
+    public int insert(GroupPurchaseGood groupPurchaseGood) {
+        return groupPurchaseGoodExtMapper.insert(groupPurchaseGood);
+    }
+
+    /**
+     * 扣减库存
+     *
+     * @param id
+     * @param reduceStock
+     * @return
+     */
+    public int reduceGoodStock(Long id, Integer reduceStock) {
+        return groupPurchaseGoodExtMapper.reduceGoodStock(id, reduceStock);
     }
 }

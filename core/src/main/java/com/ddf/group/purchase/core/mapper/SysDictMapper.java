@@ -1,7 +1,8 @@
 package com.ddf.group.purchase.core.mapper;
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.ddf.group.purchase.core.model.entity.SysDict;
+import java.util.List;
+import org.apache.ibatis.annotations.Param;
 
 /**
 * <p>description</p >
@@ -10,5 +11,52 @@ import com.ddf.group.purchase.core.model.entity.SysDict;
 * @version 1.0
 * @date 2022/08/29 16:37
 */
-public interface SysDictMapper extends BaseMapper<SysDict> {
+public interface SysDictMapper {
+
+    /**
+     * 根据ID查询
+     *
+     * @param id
+     * @return
+     */
+    SysDict selectById(Long id);
+
+    /**
+     * 查询所有
+     *
+     * @return
+     */
+    List<SysDict> selectList();
+
+    /**
+     * 根据字典类型代码查询字典列表
+     *
+     * @param dictTypeCode
+     * @return
+     */
+    List<SysDict> selectListByDictTypeCode(@Param("dictTypeCode") String dictTypeCode);
+
+    /**
+     * 插入
+     *
+     * @param sysDict
+     * @return
+     */
+    int insert(SysDict sysDict);
+
+    /**
+     * 根据ID更新
+     *
+     * @param sysDict
+     * @return
+     */
+    int updateById(SysDict sysDict);
+
+    /**
+     * 根据ID删除
+     *
+     * @param id
+     * @return
+     */
+    int deleteById(Long id);
 }

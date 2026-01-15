@@ -5,7 +5,7 @@ import com.ddf.boot.common.authentication.model.UserClaim;
 import com.ddf.group.purchase.core.converter.UserConvert;
 import com.ddf.group.purchase.core.mapper.ext.UserInfoExtMapper;
 import com.ddf.group.purchase.core.model.entity.UserInfo;
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

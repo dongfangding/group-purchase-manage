@@ -1,7 +1,7 @@
 package com.ddf.group.purchase.api.request.user;
 
 import java.io.Serializable;
-import javax.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 /**

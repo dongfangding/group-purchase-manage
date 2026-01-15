@@ -2,6 +2,7 @@ package com.ddf.group.purchase.core.repository;
 
 import com.ddf.group.purchase.core.mapper.ext.CommunityBaseExtMapper;
 import com.ddf.group.purchase.core.model.entity.CommunityBase;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,5 +30,15 @@ public class CommunityBaseRepository {
      */
     public CommunityBase getById(Long id) {
         return communityBaseExtMapper.selectById(id);
+    }
+
+    /**
+     * 根据小区名称模糊查询
+     *
+     * @param communityName
+     * @return
+     */
+    public List<CommunityBase> selectByCommunityNameLike(String communityName) {
+        return communityBaseExtMapper.selectByCommunityNameLike(communityName);
     }
 }

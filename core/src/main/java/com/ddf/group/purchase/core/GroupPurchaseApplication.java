@@ -1,10 +1,10 @@
 package com.ddf.group.purchase.core;
 
 import com.ddf.boot.common.authentication.annotation.EnableAuthenticate;
-import com.ddf.boot.common.core.logaccess.EnableLogAspect;
 import com.ddf.boot.common.limit.ratelimit.annotation.EnableRateLimit;
 import com.ddf.boot.common.limit.repeatable.annotation.EnableRepeatable;
 import com.ddf.boot.common.limit.repeatable.validator.RedisRepeatableValidator;
+import com.ddf.boot.common.mvc.logaccess.EnableLogAspect;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

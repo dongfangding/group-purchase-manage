@@ -4,8 +4,8 @@ import com.ddf.boot.common.api.model.common.PageRequest;
 import com.ddf.group.purchase.api.enume.GroupPurchaseItemJoinStatusEnum;
 import com.ddf.group.purchase.api.enume.GroupPurchaseStatusEnum;
 import java.io.Serializable;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 /**

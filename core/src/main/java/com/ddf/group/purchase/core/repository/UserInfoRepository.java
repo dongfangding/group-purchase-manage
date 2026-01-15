@@ -1,15 +1,10 @@
 package com.ddf.group.purchase.core.repository;
 
-import cn.hutool.core.util.StrUtil;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.ddf.group.purchase.core.mapper.ext.UserInfoExtMapper;
 import com.ddf.group.purchase.core.model.cqrs.user.CompleteUserInfoCommand;
 import com.ddf.group.purchase.core.model.entity.UserInfo;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -49,9 +44,7 @@ public class UserInfoRepository {
      * @return
      */
     public UserInfo getByMobile(String mobile) {
-        final LambdaQueryWrapper<UserInfo> wrapper = Wrappers.lambdaQuery();
-        wrapper.eq(UserInfo::getMobile, mobile);
-        return userInfoExtMapper.selectOne(wrapper);
+        return userInfoExtMapper.selectByMobile(mobile);
     }
 
 
@@ -62,9 +55,7 @@ public class UserInfoRepository {
      * @return
      */
     public List<UserInfo> listUserByEmail(String email) {
-        final LambdaQueryWrapper<UserInfo> wrapper = Wrappers.lambdaQuery();
-        wrapper.eq(UserInfo::getEmail, email);
-        return userInfoExtMapper.selectList(wrapper);
+        return userInfoExtMapper.selectByEmail(email);
     }
 
     /**
@@ -74,10 +65,7 @@ public class UserInfoRepository {
      * @return
      */
     public UserInfo getUserByVerifiedEmail(String email) {
-        final LambdaQueryWrapper<UserInfo> wrapper = Wrappers.lambdaQuery();
-        wrapper.eq(UserInfo::getEmail, email)
-                .eq(UserInfo::getEmailVerified, true);
-        return userInfoExtMapper.selectOne(wrapper);
+        return userInfoExtMapper.selectByVerifiedEmail(email);
     }
 
     /**
@@ -87,9 +75,7 @@ public class UserInfoRepository {
      * @return
      */
     public boolean exitsByMobile(String mobile) {
-        final LambdaQueryWrapper<UserInfo> wrapper = Wrappers.lambdaQuery();
-        wrapper.eq(UserInfo::getMobile, mobile);
-        return userInfoExtMapper.selectCount(wrapper) > 0;
+        return userInfoExtMapper.existsByMobile(mobile) > 0;
     }
 
 
@@ -100,9 +86,7 @@ public class UserInfoRepository {
      * @return
      */
     public boolean exitsByEmail(String email) {
-        final LambdaQueryWrapper<UserInfo> wrapper = Wrappers.lambdaQuery();
-        wrapper.eq(UserInfo::getEmail, email);
-        return userInfoExtMapper.selectCount(wrapper) > 0;
+        return userInfoExtMapper.existsByEmail(email) > 0;
     }
 
     /**
@@ -112,34 +96,7 @@ public class UserInfoRepository {
      * @return
      */
     public int completeUserInfo(CompleteUserInfoCommand command) {
-        final LambdaUpdateWrapper<UserInfo> wrapper = Wrappers.lambdaUpdate();
-        if (Objects.nonNull(command.getCommunityId())) {
-            wrapper.set(UserInfo::getCommunityId, command.getCommunityId());
-        }
-        if (StrUtil.isNotBlank(command.getBuildingNo())) {
-            wrapper.set(UserInfo::getBuildingNo, command.getBuildingNo());
-        }
-        if (StrUtil.isNotBlank(command.getRoomNo())) {
-            wrapper.set(UserInfo::getRoomNo, command.getRoomNo());
-        }
-        if (Objects.nonNull(command.getEmail())) {
-            wrapper.set(UserInfo::getEmail, "");
-            wrapper.set(UserInfo::getTempEmail, command.getEmail());
-        }
-        if (Objects.nonNull(command.getNickname())) {
-            wrapper.set(UserInfo::getNickname, command.getNickname());
-        }
-        if (Objects.nonNull(command.getAvatarUrl())) {
-            wrapper.set(UserInfo::getAvatarUrl, command.getAvatarUrl());
-        }
-        if (Objects.nonNull(command.getAvatarThumbUrl())) {
-            wrapper.set(UserInfo::getAvatarThumbUrl, command.getAvatarThumbUrl());
-        }
-        if (Objects.nonNull(command.getEmailVerified())) {
-            wrapper.set(UserInfo::getEmailVerified, command.getEmailVerified());
-        }
-        wrapper.eq(UserInfo::getId, command.getId());
-        return userInfoExtMapper.update(null, wrapper);
+        return userInfoExtMapper.completeUserInfo(command);
     }
 
     /**
@@ -150,13 +107,7 @@ public class UserInfoRepository {
      * @return
      */
     public int verifiedEmail(Long userId, String email) {
-        final LambdaUpdateWrapper<UserInfo> wrapper = Wrappers.lambdaUpdate();
-        wrapper.eq(UserInfo::getId, userId);
-        wrapper.eq(UserInfo::getTempEmail, email);
-        wrapper.eq(UserInfo::getEmailVerified, Boolean.FALSE);
-        wrapper.set(UserInfo::getEmailVerified, Boolean.TRUE);
-        wrapper.set(UserInfo::getEmail, email);
-        return userInfoExtMapper.update(null, wrapper);
+        return userInfoExtMapper.verifiedEmail(userId, email);
     }
 
     /**
@@ -168,11 +119,7 @@ public class UserInfoRepository {
      * @return
      */
     public List<UserInfo> getByBuildingAndRoomNo(Integer communityId, String buildingNo, String roomNo) {
-        final LambdaQueryWrapper<UserInfo> wrapper = Wrappers.lambdaQuery();
-        wrapper.eq(UserInfo::getCommunityId, communityId)
-                .eq(UserInfo::getBuildingNo, buildingNo)
-                .eq(UserInfo::getRoomNo, roomNo);
-        return userInfoExtMapper.selectList(wrapper);
+        return userInfoExtMapper.selectByBuildingAndRoomNo(communityId, buildingNo, roomNo);
     }
 
     /**
@@ -182,9 +129,27 @@ public class UserInfoRepository {
      * @return
      */
     public Map<Long, UserInfo> mapListUsers(Set<Long> uidList) {
-        final LambdaQueryWrapper<UserInfo> wrapper = Wrappers.lambdaQuery();
-        wrapper.in(UserInfo::getId, uidList);
-        final List<UserInfo> users = userInfoExtMapper.selectList(wrapper);
+        final List<UserInfo> users = userInfoExtMapper.selectByIds(uidList);
         return users.stream().collect(Collectors.toMap(UserInfo::getId, Function.identity()));
+    }
+
+    /**
+     * 插入用户
+     *
+     * @param userInfo
+     * @return
+     */
+    public int insert(UserInfo userInfo) {
+        return userInfoExtMapper.insert(userInfo);
+    }
+
+    /**
+     * 更新用户
+     *
+     * @param userInfo
+     * @return
+     */
+    public int update(UserInfo userInfo) {
+        return userInfoExtMapper.updateById(userInfo);
     }
 }

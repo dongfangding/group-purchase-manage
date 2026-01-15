@@ -2,8 +2,6 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ddf.group.purchase.core.mapper.GroupPurchaseItemMapper">
   <resultMap id="BaseResultMap" type="com.ddf.group.purchase.core.model.entity.GroupPurchaseItem">
-    <!--@mbg.generated-->
-    <!--@Table group_purchase_item-->
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="order_no" jdbcType="VARCHAR" property="orderNo" />
     <result column="group_purchase_id" jdbcType="BIGINT" property="groupPurchaseId" />
@@ -26,10 +24,75 @@
     <result column="pay_time" jdbcType="BIGINT" property="payTime" />
   </resultMap>
   <sql id="Base_Column_List">
-    <!--@mbg.generated-->
-    id, order_no, group_purchase_id, join_uid, ctime, subscribe_progress, join_status, 
-    status_change_time, receiver_name, receiver_mobile, receiver_detail_address, receiver_province, 
-    receiver_city, receiver_area, receiver_building_no, receiver_room_no, remark, paid_flag, 
+    id, order_no, group_purchase_id, join_uid, ctime, subscribe_progress, join_status,
+    status_change_time, receiver_name, receiver_mobile, receiver_detail_address, receiver_province,
+    receiver_city, receiver_area, receiver_building_no, receiver_room_no, remark, paid_flag,
     pay_count_down_seconds, pay_time
   </sql>
+
+  <select id="selectById" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List" />
+    from group_purchase_item
+    where id = #{id}
+  </select>
+
+  <select id="selectList" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List" />
+    from group_purchase_item
+  </select>
+
+  <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+    insert into group_purchase_item (order_no, group_purchase_id, join_uid, ctime, subscribe_progress,
+      join_status, status_change_time, receiver_name, receiver_mobile, receiver_detail_address,
+      receiver_province, receiver_city, receiver_area, receiver_building_no, receiver_room_no, remark,
+      paid_flag, pay_count_down_seconds, pay_time)
+    values (#{orderNo}, #{groupPurchaseId}, #{joinUid}, #{ctime}, #{subscribeProgress}, #{joinStatus},
+      #{statusChangeTime}, #{receiverName}, #{receiverMobile}, #{receiverDetailAddress}, #{receiverProvince},
+      #{receiverCity}, #{receiverArea}, #{receiverBuildingNo}, #{receiverRoomNo}, #{remark}, #{paidFlag},
+      #{payCountDownSeconds}, #{payTime})
+  </insert>
+
+  <insert id="batchInsert">
+    insert into group_purchase_item (order_no, group_purchase_id, join_uid, ctime, subscribe_progress,
+      join_status, status_change_time, receiver_name, receiver_mobile, receiver_detail_address,
+      receiver_province, receiver_city, receiver_area, receiver_building_no, receiver_room_no, remark,
+      paid_flag, pay_count_down_seconds, pay_time) values
+    <foreach collection="list" item="item" separator=",">
+      (#{item.orderNo}, #{item.groupPurchaseId}, #{item.joinUid}, #{item.ctime}, #{item.subscribeProgress},
+      #{item.joinStatus}, #{item.statusChangeTime}, #{item.receiverName}, #{item.receiverMobile},
+      #{item.receiverDetailAddress}, #{item.receiverProvince}, #{item.receiverCity}, #{item.receiverArea},
+      #{item.receiverBuildingNo}, #{item.receiverRoomNo}, #{item.remark}, #{item.paidFlag},
+      #{item.payCountDownSeconds}, #{item.payTime})
+    </foreach>
+  </insert>
+
+  <update id="updateById">
+    update group_purchase_item
+    <set>
+      <if test="orderNo != null">order_no = #{orderNo},</if>
+      <if test="groupPurchaseId != null">group_purchase_id = #{groupPurchaseId},</if>
+      <if test="joinUid != null">join_uid = #{joinUid},</if>
+      <if test="ctime != null">ctime = #{ctime},</if>
+      <if test="subscribeProgress != null">subscribe_progress = #{subscribeProgress},</if>
+      <if test="joinStatus != null">join_status = #{joinStatus},</if>
+      <if test="statusChangeTime != null">status_change_time = #{statusChangeTime},</if>
+      <if test="receiverName != null">receiver_name = #{receiverName},</if>
+      <if test="receiverMobile != null">receiver_mobile = #{receiverMobile},</if>
+      <if test="receiverDetailAddress != null">receiver_detail_address = #{receiverDetailAddress},</if>
+      <if test="receiverProvince != null">receiver_province = #{receiverProvince},</if>
+      <if test="receiverCity != null">receiver_city = #{receiverCity},</if>
+      <if test="receiverArea != null">receiver_area = #{receiverArea},</if>
+      <if test="receiverBuildingNo != null">receiver_building_no = #{receiverBuildingNo},</if>
+      <if test="receiverRoomNo != null">receiver_room_no = #{receiverRoomNo},</if>
+      <if test="remark != null">remark = #{remark},</if>
+      <if test="paidFlag != null">paid_flag = #{paidFlag},</if>
+      <if test="payCountDownSeconds != null">pay_count_down_seconds = #{payCountDownSeconds},</if>
+      <if test="payTime != null">pay_time = #{payTime}</if>
+    </set>
+    where id = #{id}
+  </update>
+
+  <delete id="deleteById">
+    delete from group_purchase_item where id = #{id}
+  </delete>
 </mapper>

@@ -12,21 +12,16 @@
     <artifactId>group-purchase-manage-api</artifactId>
 
     <properties>
-        <maven.compiler.source>8</maven.compiler.source>
-        <maven.compiler.target>8</maven.compiler.target>
-        <ddf-common-api.version>1.0.2-SNAPSHOT</ddf-common-api.version>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+        <ddf-common-api.version>boot3.3-2025.1-SNAPSHOT</ddf-common-api.version>
     </properties>
 
     <dependencies>
-<!--        <dependency>-->
-<!--            <groupId>org.projectlombok</groupId>-->
-<!--            <artifactId>lombok</artifactId>-->
-<!--        </dependency>-->
         <dependency>
             <groupId>com.ddf.common</groupId>
             <artifactId>ddf-common-api</artifactId>
             <version>${ddf-common-api.version}</version>
-            <optional>true</optional>
         </dependency>
     </dependencies>
 

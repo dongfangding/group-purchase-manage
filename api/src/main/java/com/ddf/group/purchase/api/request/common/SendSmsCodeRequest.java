@@ -2,10 +2,10 @@ package com.ddf.group.purchase.api.request.common;
 
 import com.ddf.boot.common.api.model.captcha.request.CaptchaCheckRequest;
 import com.ddf.boot.common.api.validator.constraint.Mobile;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import java.io.Serializable;
-import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import lombok.Data;
 
 /**

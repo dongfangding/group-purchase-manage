@@ -2,8 +2,6 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ddf.group.purchase.core.mapper.UserInfoMapper">
   <resultMap id="BaseResultMap" type="com.ddf.group.purchase.core.model.entity.UserInfo">
-    <!--@mbg.generated-->
-    <!--@Table user_info-->
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="community_id" jdbcType="INTEGER" property="communityId" />
     <result column="building_no" jdbcType="VARCHAR" property="buildingNo" />
@@ -22,9 +20,107 @@
     <result column="ctime" jdbcType="BIGINT" property="ctime" />
   </resultMap>
   <sql id="Base_Column_List">
-    <!--@mbg.generated-->
-    id, community_id, building_no, room_no, nickname, mobile, wx_id, wx_business_card_qrcode_url, 
-    wx_collection_money_qrcode_url, temp_email, email, email_verified, avatar_url, avatar_thumb_url, 
+    id, community_id, building_no, room_no, nickname, mobile, wx_id, wx_business_card_qrcode_url,
+    wx_collection_money_qrcode_url, temp_email, email, email_verified, avatar_url, avatar_thumb_url,
     `password`, ctime
   </sql>
+
+  <select id="selectById" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List" />
+    from user_info
+    where id = #{id}
+  </select>
+
+  <select id="selectByMobile" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List" />
+    from user_info
+    where mobile = #{mobile}
+  </select>
+
+  <select id="selectByEmail" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List" />
+    from user_info
+    where email = #{email}
+  </select>
+
+  <select id="selectList" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List" />
+    from user_info
+  </select>
+
+  <select id="selectByIds" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List" />
+    from user_info
+    where id in
+    <foreach collection="ids" item="id" open="(" separator="," close=")">
+      #{id}
+    </foreach>
+  </select>
+
+  <select id="existsByMobile" resultType="int">
+    select count(1) from user_info where mobile = #{mobile}
+  </select>
+
+  <select id="existsByEmail" resultType="int">
+    select count(1) from user_info where email = #{email}
+  </select>
+
+  <update id="completeUserInfo">
+    update user_info
+    <set>
+      <if test="command.communityId != null">community_id = #{command.communityId},</if>
+      <if test="command.buildingNo != null">building_no = #{command.buildingNo},</if>
+      <if test="command.roomNo != null">room_no = #{command.roomNo},</if>
+      <if test="command.email != null">email = '', temp_email = #{command.email},</if>
+      <if test="command.nickname != null">nickname = #{command.nickname},</if>
+      <if test="command.avatarUrl != null">avatar_url = #{command.avatarUrl},</if>
+      <if test="command.avatarThumbUrl != null">avatar_thumb_url = #{command.avatarThumbUrl},</if>
+      <if test="command.emailVerified != null">email_verified = #{command.emailVerified}</if>
+    </set>
+    where id = #{command.id}
+  </update>
+
+  <update id="verifiedEmail">
+    update user_info
+    set email = #{email},
+        email_verified = true
+    where id = #{userId}
+      and temp_email = #{email}
+      and email_verified = false
+  </update>
+
+  <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+    insert into user_info (community_id, building_no, room_no, nickname, mobile, wx_id,
+      wx_business_card_qrcode_url, wx_collection_money_qrcode_url, temp_email, email, email_verified,
+      avatar_url, avatar_thumb_url, `password`, ctime)
+    values (#{communityId}, #{buildingNo}, #{roomNo}, #{nickname}, #{mobile}, #{wxId},
+      #{wxBusinessCardQrcodeUrl}, #{wxCollectionMoneyQrcodeUrl}, #{tempEmail}, #{email}, #{emailVerified},
+      #{avatarUrl}, #{avatarThumbUrl}, #{password}, #{ctime})
+  </insert>
+
+  <update id="updateById">
+    update user_info
+    <set>
+      <if test="communityId != null">community_id = #{communityId},</if>
+      <if test="buildingNo != null">building_no = #{buildingNo},</if>
+      <if test="roomNo != null">room_no = #{roomNo},</if>
+      <if test="nickname != null">nickname = #{nickname},</if>
+      <if test="mobile != null">mobile = #{mobile},</if>
+      <if test="wxId != null">wx_id = #{wxId},</if>
+      <if test="wxBusinessCardQrcodeUrl != null">wx_business_card_qrcode_url = #{wxBusinessCardQrcodeUrl},</if>
+      <if test="wxCollectionMoneyQrcodeUrl != null">wx_collection_money_qrcode_url = #{wxCollectionMoneyQrcodeUrl},</if>
+      <if test="tempEmail != null">temp_email = #{tempEmail},</if>
+      <if test="email != null">email = #{email},</if>
+      <if test="emailVerified != null">email_verified = #{emailVerified},</if>
+      <if test="avatarUrl != null">avatar_url = #{avatarUrl},</if>
+      <if test="avatarThumbUrl != null">avatar_thumb_url = #{avatarThumbUrl},</if>
+      <if test="password != null">`password` = #{password},</if>
+      <if test="ctime != null">ctime = #{ctime}</if>
+    </set>
+    where id = #{id}
+  </update>
+
+  <delete id="deleteById">
+    delete from user_info where id = #{id}
+  </delete>
 </mapper>

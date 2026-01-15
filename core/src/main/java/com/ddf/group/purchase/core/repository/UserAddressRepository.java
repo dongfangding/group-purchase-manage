@@ -1,8 +1,5 @@
 package com.ddf.group.purchase.core.repository;
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.ddf.group.purchase.core.mapper.UserAddressMapper;
 import com.ddf.group.purchase.core.model.entity.UserAddress;
 import java.util.List;
@@ -32,9 +29,7 @@ public class UserAddressRepository {
      * @return
      */
     public List<UserAddress> listUserAddress(Long userId) {
-        final LambdaQueryWrapper<UserAddress> wrapper = Wrappers.lambdaQuery();
-        wrapper.eq(UserAddress::getUid, userId);
-        return userAddressMapper.selectList(wrapper);
+        return userAddressMapper.selectByUid(userId);
     }
 
 
@@ -44,11 +39,7 @@ public class UserAddressRepository {
      * @param userId
      */
     public void cancelUserDefaultAddress(Long userId) {
-        final LambdaUpdateWrapper<UserAddress> wrapper = Wrappers.lambdaUpdate();
-        wrapper.eq(UserAddress::getUid, userId)
-                .eq(UserAddress::getDefaultFlag, Boolean.TRUE);
-        wrapper.set(UserAddress::getDefaultFlag, Boolean.FALSE);
-        userAddressMapper.update(null, wrapper);
+        userAddressMapper.cancelUserDefaultAddress(userId);
     }
 
     /**
@@ -58,11 +49,7 @@ public class UserAddressRepository {
      * @return
      */
     public UserAddress getUserDefaultAddress(Long userId) {
-        final LambdaQueryWrapper<UserAddress> wrapper = Wrappers.lambdaQuery();
-        wrapper.eq(UserAddress::getUid, userId)
-                .eq(UserAddress::getDefaultFlag, Boolean.TRUE)
-                .orderByDesc(UserAddress::getId);
-        return userAddressMapper.selectOne(wrapper);
+        return userAddressMapper.selectUserDefaultAddress(userId);
     }
 
     /**
@@ -73,9 +60,36 @@ public class UserAddressRepository {
      * @return
      */
     public int deleteUserAddress(Long id, Long userId) {
-        final LambdaUpdateWrapper<UserAddress> wrapper = Wrappers.lambdaUpdate();
-        wrapper.eq(UserAddress::getId, id)
-                .eq(UserAddress::getUid, userId);
-        return userAddressMapper.delete(wrapper);
+        return userAddressMapper.deleteByIdAndUid(id, userId);
+    }
+
+    /**
+     * 根据ID查询
+     *
+     * @param id
+     * @return
+     */
+    public UserAddress getById(Long id) {
+        return userAddressMapper.selectById(id);
+    }
+
+    /**
+     * 插入
+     *
+     * @param userAddress
+     * @return
+     */
+    public int insert(UserAddress userAddress) {
+        return userAddressMapper.insert(userAddress);
+    }
+
+    /**
+     * 更新
+     *
+     * @param userAddress
+     * @return
+     */
+    public int update(UserAddress userAddress) {
+        return userAddressMapper.updateById(userAddress);
     }
 }

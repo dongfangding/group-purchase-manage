@@ -1,6 +1,8 @@
 package com.ddf.group.purchase.core.mapper.ext;
 
 import com.ddf.group.purchase.core.mapper.GroupPurchaseGoodMapper;
+import com.ddf.group.purchase.core.model.entity.GroupPurchaseGood;
+import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 /**
@@ -20,4 +22,12 @@ public interface GroupPurchaseGoodExtMapper extends GroupPurchaseGoodMapper {
      * @return
      */
     int reduceGoodStock(@Param("id") Long id, @Param("reduceStock") Integer reduceStock);
+
+    /**
+     * 根据团购ID查询商品列表
+     *
+     * @param groupPurchaseId
+     * @return
+     */
+    List<GroupPurchaseGood> selectByGroupPurchaseId(@Param("groupPurchaseId") Long groupPurchaseId);
 }

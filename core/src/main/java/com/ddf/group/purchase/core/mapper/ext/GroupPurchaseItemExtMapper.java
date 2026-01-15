@@ -1,10 +1,10 @@
 package com.ddf.group.purchase.core.mapper.ext;
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.ddf.group.purchase.api.request.group.AddressDomain;
 import com.ddf.group.purchase.api.response.group.GroupItemResponse;
 import com.ddf.group.purchase.api.response.group.MyJoinGroupPageResponse;
 import com.ddf.group.purchase.api.response.group.OrderDetailResponse;
+import com.ddf.group.purchase.core.mapper.GroupPurchaseItemMapper;
 import com.ddf.group.purchase.core.model.cqrs.group.MyJoinGroupQuery;
 import com.ddf.group.purchase.core.model.entity.GroupPurchaseItem;
 import java.util.List;
@@ -17,7 +17,7 @@ import org.apache.ibatis.annotations.Param;
 * @version 1.0
 * @date 2022/08/28 15:04
 */
-public interface GroupPurchaseItemExtMapper extends BaseMapper<GroupPurchaseItem> {
+public interface GroupPurchaseItemExtMapper extends GroupPurchaseItemMapper {
 
     /**
      * 查询参团明细（商品和明细一对一）

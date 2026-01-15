@@ -28,7 +28,7 @@ import com.ddf.group.purchase.core.repository.CommonRepository;
 import com.ddf.group.purchase.core.repository.UserInfoRepository;
 import java.util.Date;
 import java.util.Objects;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

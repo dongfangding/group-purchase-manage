@@ -1,7 +1,5 @@
 package com.ddf.group.purchase.core.repository;
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.ddf.group.purchase.core.mapper.SysDictMapper;
 import com.ddf.group.purchase.core.model.entity.SysDict;
 import com.github.benmanes.caffeine.cache.Caffeine;
@@ -58,10 +56,6 @@ public class SysDictRepository {
      * @return
      */
     public List<SysDict> listDictByCode(String dictCode) {
-        final LambdaQueryWrapper<SysDict> wrapper = Wrappers.lambdaQuery();
-        wrapper.eq(SysDict::getDictTypeCode, dictCode)
-                .eq(SysDict::getActive, true)
-                .orderByAsc(SysDict::getSort);
-        return sysDictMapper.selectList(wrapper);
+        return sysDictMapper.selectListByDictTypeCode(dictCode);
     }
 }

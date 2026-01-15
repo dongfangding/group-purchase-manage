@@ -2,15 +2,42 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ddf.group.purchase.core.mapper.GroupPurchaseTraceMapper">
   <resultMap id="BaseResultMap" type="com.ddf.group.purchase.core.model.entity.GroupPurchaseTrace">
-    <!--@mbg.generated-->
-    <!--@Table group_purchase_trace-->
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="group_purchase_id" jdbcType="BIGINT" property="groupPurchaseId" />
     <result column="status" jdbcType="INTEGER" property="status" />
     <result column="ctime" jdbcType="BIGINT" property="ctime" />
   </resultMap>
   <sql id="Base_Column_List">
-    <!--@mbg.generated-->
     id, group_purchase_id, `status`, ctime
   </sql>
+
+  <select id="selectById" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List" />
+    from group_purchase_trace
+    where id = #{id}
+  </select>
+
+  <select id="selectList" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List" />
+    from group_purchase_trace
+  </select>
+
+  <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+    insert into group_purchase_trace (group_purchase_id, `status`, ctime)
+    values (#{groupPurchaseId}, #{status}, #{ctime})
+  </insert>
+
+  <update id="updateById">
+    update group_purchase_trace
+    <set>
+      <if test="groupPurchaseId != null">group_purchase_id = #{groupPurchaseId},</if>
+      <if test="status != null">`status` = #{status},</if>
+      <if test="ctime != null">ctime = #{ctime}</if>
+    </set>
+    where id = #{id}
+  </update>
+
+  <delete id="deleteById">
+    delete from group_purchase_trace where id = #{id}
+  </delete>
 </mapper>

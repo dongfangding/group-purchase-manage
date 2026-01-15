@@ -21,7 +21,7 @@ public interface GroupPurchaseInfoExtMapper extends GroupPurchaseInfoMapper {
      * @param groupListQuery
      * @return
      */
-    List<GroupPurchaseListResponse> list(GroupListQuery groupListQuery);
+    List<GroupPurchaseListResponse> list(@Param("query") GroupListQuery groupListQuery);
 
     /**
      * 明细
@@ -30,5 +30,4 @@ public interface GroupPurchaseInfoExtMapper extends GroupPurchaseInfoMapper {
      * @return
      */
     GroupPurchaseListResponse details(@Param("groupId") Long groupId);
-
 }

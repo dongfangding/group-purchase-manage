@@ -13,7 +13,7 @@ import com.ddf.group.purchase.core.converter.UserAddressConvert;
 import com.ddf.group.purchase.core.helper.CommonHelper;
 import com.ddf.group.purchase.core.repository.UserAddressRepository;
 import java.util.List;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;

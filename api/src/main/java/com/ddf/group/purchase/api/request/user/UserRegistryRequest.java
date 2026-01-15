@@ -2,7 +2,7 @@ package com.ddf.group.purchase.api.request.user;
 
 import com.ddf.boot.common.api.validator.constraint.Mobile;
 import java.io.Serializable;
-import javax.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 /**

@@ -14,7 +14,7 @@ import com.ddf.group.purchase.core.model.entity.UserInfo;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-import javax.annotation.PostConstruct;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;
