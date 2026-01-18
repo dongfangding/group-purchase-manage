@@ -1,0 +1,33 @@
+mysql_host: 10.88.1.177
+spring:
+  data:
+    redis:
+      host: 10.88.1.177
+      port: 6379
+      database: 1
+      password: Aa&123456
+nacos:
+  config:
+    auto-refresh: true
+    config-retry-time: 3000
+    namespace: group-purchase-manage
+    group: dev
+    enable-remote-sync-config: true
+    type: properties
+    data-ids: property-source
+    ext-config:
+      - namespace: common
+        dataIds: common-server,common-datasource,common-global-properties,common-mybatis-plus,common-redis,common-mail,common-rocketmq,common-xxl-job,common-ids,common-fdfs,common-ext-sms,common-emq
+        group: DEFAULT_GROUP
+        type: yaml
+        auto-refresh: true
+      - namespace: group-purchase-manage
+        dataId: authentication
+        group: dev
+        type: yaml
+        auto-refresh: true
+      - namespace: group-purchase-manage
+        dataId: application-properties
+        group: dev
+        type: yaml
+        auto-refresh: true

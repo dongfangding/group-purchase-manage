@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ddf.group.purchase.core.mapper.GroupPurchaseItemMapper">
+    <resultMap id="BaseResultMap" type="com.ddf.group.purchase.core.model.entity.GroupPurchaseItem">
+        <!--@mbg.generated--><!--@Table group_purchase_item-->
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="group_purchase_id" jdbcType="BIGINT" property="groupPurchaseId"/>
+        <result column="join_uid" jdbcType="BIGINT" property="joinUid"/>
+        <result column="ctime" jdbcType="BIGINT" property="ctime"/>
+        <result column="subscribe_progress" jdbcType="BIT" property="subscribeProgress"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        <!--@mbg.generated-->id,
+                             group_purchase_id,
+                             join_uid,
+                             ctime,
+                             subscribe_progress
+    </sql>
+
+    <select id="listGroupPaidItem" resultType="com.ddf.group.purchase.api.response.group.GroupItemResponse">
+        select item.group_purchase_id,
+               item.id                       as groupItemId,
+               item.ctime,
+               item.join_uid,
+               item.join_status              as joinStatus,
+               item.receiver_province        as receiverProvince,
+               item.receiver_city            as receiverCity,
+               item.receiver_area            as receiverArea,
+               item.receiver_name            as receiverName,
+               item.receiver_mobile          as receiverMobile,
+               item.receiver_detail_address  as receiverDetailAddress,
+               item.receiver_building_no     as receiverBuildingNo,
+               item.receiver_room_no         as receiverRoomNo,
+               item.remark,
+               good.id                       as itemGoodId,
+               good.group_purchase_good_id   as goodId,
+               good.group_purchase_good_name as goodName,
+               good.good_num                 as goodNum
+        from group_purchase_item item
+                 left join group_purchase_item_good good
+                           on item.id = good.group_purchase_item_id
+        where item.group_purchase_id = #{groupId}
+          and item.paid_flag = 1
+    </select>
+
+    <insert id="batchInsert">
+        insert into group_purchase_item(group_purchase_id, join_uid, ctime, subscribe_progress) values
+        <foreach collection="list" item="record" separator=",">
+            (#{record.groupPurchaseId}, #{record.joinUid}, #{record.ctime}, #{record.subscribeProgress})
+        </foreach>
+    </insert>
+
+    <select id="myJoinGroup" resultType="com.ddf.group.purchase.api.response.group.MyJoinGroupPageResponse">
+        select item.group_purchase_id             as groupId,
+               item.ctime                         as joinTime,
+               item.pay_count_down_seconds        as payCountDownSeconds,
+               item.subscribe_progress            as subscribeProgress,
+               item.join_status                   as joinStatus,
+               item.status_change_time            as statusChangeTime,
+               item.id                            as joinItemId,
+               item.receiver_province             as receiverProvince,
+               item.receiver_city                 as receiverCity,
+               item.receiver_area                 as receiverArea,
+               item.receiver_name                 as receiverName,
+               item.receiver_mobile               as receiverMobile,
+               item.receiver_detail_address       as receiverDetailAddress,
+               item.remark,
+               gp.name,
+               gp.status,
+               gp.group_master_uid                as groupMasterUid,
+               gp.content,
+               gp.ctime,
+               gp.mtime,
+               item_good.group_purchase_good_id   as goodId,
+               item_good.group_purchase_good_name as goodName,
+               item_good.good_num                 as goodNum,
+               item_good.good_description         as goodDescription,
+               item_good.group_purchase_good_pic  as goodPic,
+               item_good.price,
+               item_good.total_price              as totalPrice
+
+        from group_purchase_item item
+                 left join group_purchase_info gp on item.group_purchase_id = gp.id
+                 left join group_purchase_item_good item_good on item.id = item_good.group_purchase_item_id
+        where item.join_uid = #{query.joinUid}
+        <if test="query.joinStatus != null">
+            and item.join_status = #{query.joinStatus.value}
+        </if>
+        <if test="query.status != null">
+            and gp.status = #{query.status.value}
+        </if>
+        <if test="query.groupName != null and query.groupName != ''">
+            and gp.name like concat(#{query.groupName}, '%')
+        </if>
+        order by item.ctime desc
+    </select>
+
+    <select id="selectJoinPaidUids" resultType="java.lang.Long">
+        select join_uid
+        from group_purchase_item
+        where group_purchase_id = #{groupId}
+          and paid_flag = 1
+          and subscribe_progress = 1
+    </select>
+
+    <update id="updatePaid">
+        update group_purchase_item
+        set join_status             = ${@com.ddf.group.purchase.api.enume.GroupPurchaseItemJoinStatusEnum@PAID.getValue()},
+            paid_flag               = 1,
+            status_change_time      = UNIX_TIMESTAMP(),
+            pay_time                = UNIX_TIMESTAMP(),
+            remark                  = #{remark},
+            receiver_province       = #{address.receiverProvince},
+            receiver_city           = #{address.receiverCity},
+            receiver_area           = #{address.receiverArea},
+            receiver_name           = #{address.receiverName},
+            receiver_mobile         = #{address.receiverMobile},
+            receiver_detail_address = #{address.receiverDetailAddress},
+            receiver_building_no    = #{address.receiverBuildingNo},
+            receiver_room_no        = #{address.receiverRoomNo}
+        where id = #{id}
+          and join_status = ${@com.ddf.group.purchase.api.enume.GroupPurchaseItemJoinStatusEnum@WAIT_PAY.getValue()}
+    </update>
+
+    <select id="selectOrderDetail" resultType="com.ddf.group.purchase.api.response.group.OrderDetailResponse">
+        select item.group_purchase_id       as groupPurchaseId,
+               item.ctime                   as joinTime,
+               item.pay_count_down_seconds  as payCountDownSeconds,
+               item.subscribe_progress      as subscribeProgress,
+               item.join_status             as joinStatus,
+               item.join_uid                as joinUid,
+               item.status_change_time      as statusChangeTime,
+               item.id                      as joinItemId,
+               item.order_no                as orderNo,
+               item.receiver_province       as receiverProvince,
+               item.receiver_city           as receiverCity,
+               item.receiver_area           as receiverArea,
+               item.receiver_name           as receiverName,
+               item.receiver_mobile         as receiverMobile,
+               item.receiver_detail_address as receiverDetailAddress,
+               item.receiver_building_no    as receiverBuildingNo,
+               item.receiver_room_no        as receiverRoomNo,
+               item.remark,
+               item.paid_flag               as paidFlag,
+               item.pay_count_down_seconds  as payCountDownSeconds,
+               item.pay_time                as payTime,
+               gpi.group_master_uid         as groupMasterUid,
+               gpi.name                     as groupName
+        from group_purchase_item item
+                 inner join group_purchase_info gpi on item.group_purchase_id = gpi.id
+        where item.id = #{id}
+    </select>
+</mapper>

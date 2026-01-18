@@ -1,0 +1,22 @@
+# 完善个人信息
+POST http://localhost:8083/group-purchase-manage/userInfo/completeInfo
+Content-Type: application/json
+Authorization: Bearer $2a$10$R//tT3eOu3U3U8ohLxtfI.JseRvad0nMTLQga5.k148Twfx34aemW<=>a9948a6c682cdef5fd59c5a9c67c8d33770ca3d44d43ba48f249c85b2fff5040fd37807c6dd9d97b3b4388033e4ff5ce4755413c26d3e3ba145c8a26b95358fe413ef8f2afc13aeee167a4b2e1bf3e37c16485ac1af4a15369477cb4cffed5b98a1f95e25dc7e985d1e5f38417591c3f2f376d48d44d82000599b92f558097882c2f40a15b90f860395df217bf5e4e38d4e9497adea9e8d88cb776f3ebc2d99d44f3e950e309fa770c351d3c06a84210
+
+{
+  "nickname": "chen",
+  "avatarUrl": "group1/M00/00/00/ag8Kh2KR57iAL3_DAK7NSEbam4U718.png",
+  "avatarThumbUrl": "group1/M00/00/00/ag8Kh2KR57iAL3_DAK7NSEbam4U718_150x150.png",
+  "email": "111111@qq.com"
+}
+
+
+### 验证邮箱链接
+GET http://localhost:8083/group-purchase-manage/userInfo/verifyEmailActiveToken?token=
+Content-Type: application/json
+
+### 个人中心
+GET http://localhost:8083/group-purchase-manage/userInfo/personalInfo
+Content-Type: application/json
+Authorization: Bearer $2a$10$uFOiw5ZalSa.vx0.Zt9WdOgWUTqxtqmJJ4eIgHNGHT6iXcd.B6ZZi<=>a9948a6c682cdef5fd59c5a9c67c8d33770ca3d44d43ba48f249c85b2fff5040fd37807c6dd9d97b3b4388033e4ff5ce4755413c26d3e3ba145c8a26b95358fe413ef8f2afc13aeee167a4b2e1bf3e37de5624c710ffe837171b267a56a2465c8a1f95e25dc7e985d1e5f38417591c3f2f376d48d44d82000599b92f558097882c2f40a15b90f860395df217bf5e4e38d4e9497adea9e8d88cb776f3ebc2d99d44f3e950e309fa770c351d3c06a84210
+

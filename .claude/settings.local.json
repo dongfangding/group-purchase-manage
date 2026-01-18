@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__sequential-thinking__sequentialthinking",
+      "Bash(mvn clean compile:*)",
+      "Bash(cmd /c:*)",
+      "Bash(uvx mcp-feedback-enhanced@latest)",
+      "Bash(npx:*)",
+      "mcp__mcp-feedback-enhanced__interactive_feedback",
+      "Bash(mvn compile -DskipTests -q)"
+    ],
+    "additionalDirectories": [
+      "E:\\IdeaProjects\\self\\ddf-common"
+    ]
+  }
+}

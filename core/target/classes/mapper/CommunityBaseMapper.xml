@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ddf.group.purchase.core.mapper.CommunityBaseMapper">
+  <resultMap id="BaseResultMap" type="com.ddf.group.purchase.core.model.entity.CommunityBase">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="community_name" jdbcType="VARCHAR" property="communityName" />
+    <result column="community_address" jdbcType="VARCHAR" property="communityAddress" />
+    <result column="invalid_flag" jdbcType="BIT" property="invalidFlag" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, community_name, community_address, invalid_flag
+  </sql>
+
+  <select id="selectById" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List" />
+    from community_base
+    where id = #{id}
+  </select>
+
+  <select id="selectList" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List" />
+    from community_base
+  </select>
+
+  <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+    insert into community_base (community_name, community_address, invalid_flag)
+    values (#{communityName}, #{communityAddress}, #{invalidFlag})
+  </insert>
+
+  <update id="updateById">
+    update community_base
+    <set>
+      <if test="communityName != null">community_name = #{communityName},</if>
+      <if test="communityAddress != null">community_address = #{communityAddress},</if>
+      <if test="invalidFlag != null">invalid_flag = #{invalidFlag}</if>
+    </set>
+    where id = #{id}
+  </update>
+
+  <delete id="deleteById">
+    delete from community_base where id = #{id}
+  </delete>
+</mapper>

@@ -1,0 +1,93 @@
+server:
+  port: 8080
+  tomcat:
+    max-connections: 10000
+    threads:
+      max: 600
+      min-spare: 50
+    processor-cache: 300
+  # 服务优雅下线
+  shutdown: graceful
+  servlet:
+    context-path: /group-purchase-manage
+
+spring:
+  messages:
+    basename: i18n/messages,i18n/biz_messages
+    encoding: UTF-8
+  lifecycle:
+    timeout-per-shutdown-phase: 60s
+  profiles:
+    active: dev
+  application:
+    name: group-purchase-manage
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 10MB
+      max-request-size: 10MB
+  redis:
+    redisson:
+      file: classpath:redisson.yml
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      database: 1
+      password: Aa&123456
+  datasource:
+    druid:
+      username: root
+      password: Aa&123456
+      url: jdbc:mysql://${mysql_host}:3306/group-purchase-manage?useUnicode=true&characterEncoding=UTF-8&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Shanghai&zeroDateTimeBehavior=convertToNull&allowMultiQueries=true&tinyInt1isBit=false
+      initial-size: 10
+      asyncInit: true
+      max-active: 200
+      min-idle: 10
+      keep-alive: true
+      max-wait: 60000
+      use-unfair-lock: true
+      validation-query-timeout: 3000
+      time-between-eviction-runs-millis: 59000
+      min-evictable-idle-time-millis: 300000
+      validation-query: SELECT 1
+      test-while-idle: true
+      test-on-borrow: true
+      test-on-return: false
+      poolPreparedStatements: false
+      max-open-prepared-statements: 20
+      filter:
+        stat:
+          enabled: true
+          log-slow-sql: true
+          slow-sql-millis: 3000
+        wall:
+          enabled: true
+          db-type: mysql
+      stat-view-servlet:
+        enabled: true
+        url-pattern: /druid/*
+        reset-enable: true
+        login-username: admin
+        login-password: 123456
+        allow:
+
+logging:
+  level:
+    root: info
+    com.ddf.boot.common.log.AccessLogAspect: info
+
+customizer:
+  infra:
+    global-properties:
+      # worker Id can't be greater than 31 or less than 0
+      snowflakeWorkerId: 1
+      # dataCenterId Id can't be greater than 31 or less than 0
+      snowflakeDataCenterId: 1
+
+mybatis:
+  mapper-locations: classpath:/mapper/*.xml,classpath:/mapper/ext/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+    default-fetch-size: 100
+    default-statement-timeout: 30
