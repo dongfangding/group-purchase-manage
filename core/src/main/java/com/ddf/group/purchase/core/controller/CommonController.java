@@ -3,7 +3,7 @@ package com.ddf.group.purchase.core.controller;
 import com.ddf.boot.common.api.model.captcha.request.CaptchaCheckRequest;
 import com.ddf.boot.common.api.model.captcha.request.CaptchaRequest;
 import com.ddf.boot.common.api.model.captcha.response.ApplicationCaptchaResult;
-import com.ddf.boot.common.core.resolver.MultiArgumentResolver;
+import com.ddf.boot.common.mvc.resolver.MultiArgumentResolver;
 import com.ddf.boot.common.redis.helper.RedisTemplateHelper;
 import com.ddf.group.purchase.api.request.common.SendSmsCodeRequest;
 import com.ddf.group.purchase.api.response.common.ApplicationSmsSendResponse;

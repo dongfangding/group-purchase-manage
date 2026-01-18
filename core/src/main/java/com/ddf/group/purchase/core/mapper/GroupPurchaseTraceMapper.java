@@ -28,6 +28,14 @@ public interface GroupPurchaseTraceMapper {
     List<GroupPurchaseTrace> selectList();
 
     /**
+     * 根据团购ID查询状态跟踪列表
+     *
+     * @param groupPurchaseId
+     * @return
+     */
+    List<GroupPurchaseTrace> selectByGroupPurchaseId(Long groupPurchaseId);
+
+    /**
      * 插入
      *
      * @param groupPurchaseTrace

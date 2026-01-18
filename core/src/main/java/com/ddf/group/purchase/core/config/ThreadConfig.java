@@ -1,6 +1,8 @@
 package com.ddf.group.purchase.core.config;
 
 import com.ddf.boot.common.core.helper.ThreadBuilderHelper;
+import java.util.concurrent.RejectedExecutionHandler;
+import java.util.concurrent.ThreadPoolExecutor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
@@ -22,8 +24,7 @@ public class ThreadConfig {
      */
     @Bean
     public ThreadPoolTaskExecutor mailThreadPool() {
-        return ThreadBuilderHelper.buildThreadExecutor("mail-thread-pool-", 3600,
-                1000, 4, 4, true);
+        return ThreadBuilderHelper.buildThreadExecutor("mail-thread-pool-", 3600, 1000, 4, 4);
     }
 
     /**
@@ -33,7 +34,12 @@ public class ThreadConfig {
      */
     @Bean
     public ThreadPoolTaskExecutor groupEventThreadPool() {
-        return ThreadBuilderHelper.buildThreadExecutor("group-event-thread-pool-", 3600,
-                1000, Runtime.getRuntime().availableProcessors(), Runtime.getRuntime().availableProcessors() * 2, true);
+        return ThreadBuilderHelper.buildThreadExecutor(
+                "group-event-thread-pool-", 3600, 1000, Runtime
+                        .getRuntime()
+                        .availableProcessors(), Runtime
+                        .getRuntime()
+                        .availableProcessors() * 2, new ThreadPoolExecutor.CallerRunsPolicy(), true, true
+        );
     }
 }

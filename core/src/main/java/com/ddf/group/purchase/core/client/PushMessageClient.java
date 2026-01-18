@@ -1,7 +1,7 @@
 package com.ddf.group.purchase.core.client;
 
 import com.ddf.common.boot.mqtt.client.MqttPublishClient;
-import com.ddf.common.boot.mqtt.model.request.MqttMessageRequest;
+import com.ddf.common.boot.mqtt.model.request.InnerMqttMessageRequest;
 import com.ddf.common.boot.mqtt.model.support.body.MessageBody;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,7 +28,7 @@ public class PushMessageClient {
      * @param request
      * @param <T>
      */
-    public <T extends MessageBody> void publish(MqttMessageRequest<T> request) {
+    public <T extends MessageBody> void publish(InnerMqttMessageRequest request) {
         this.mqttPublishClient.publish(request);
     }
 }

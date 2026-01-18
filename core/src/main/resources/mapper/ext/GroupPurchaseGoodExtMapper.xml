@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.ddf.group.purchase.core.mapper.ext.GroupPurchaseGoodExtMapper">
+<mapper namespace="com.ddf.group.purchase.core.mapper.GroupPurchaseGoodMapper">
   <resultMap id="BaseResultMap" type="com.ddf.group.purchase.core.model.entity.GroupPurchaseGood">
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="group_purchase_id" jdbcType="BIGINT" property="groupPurchaseId" />
@@ -18,12 +18,6 @@
     id, group_purchase_id, good_name, good_description, price, stock, limit_type, limit_value,
     good_pic, specification, remaining_stock
   </sql>
-
-  <select id="selectByGroupPurchaseId" resultMap="BaseResultMap">
-    select <include refid="Base_Column_List" />
-    from group_purchase_good
-    where group_purchase_id = #{groupPurchaseId}
-  </select>
 
   <update id="reduceGoodStock">
     update group_purchase_good set remaining_stock = remaining_stock - #{reduceStock} where id = #{id} and remaining_stock >= 0

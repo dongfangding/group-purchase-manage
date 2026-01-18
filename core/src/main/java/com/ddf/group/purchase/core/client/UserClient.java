@@ -1,8 +1,8 @@
 package com.ddf.group.purchase.core.client;
 
-import com.ddf.boot.common.authentication.model.UserClaim;
+import com.ddf.boot.common.api.model.authentication.UserClaim;
 import com.ddf.boot.common.authentication.util.UserContextUtil;
-import com.ddf.group.purchase.core.mapper.ext.UserInfoExtMapper;
+import com.ddf.group.purchase.core.mapper.UserInfoMapper;
 import com.ddf.group.purchase.core.model.entity.UserInfo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,7 +21,7 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class UserClient {
 
-    private final UserInfoExtMapper userInfoExtMapper;
+    private final UserInfoMapper userInfoMapper;
 
     /**
      * 获取当前用户id
@@ -47,6 +47,6 @@ public class UserClient {
      * @return
      */
     public UserInfo currentUserInfo() {
-        return userInfoExtMapper.selectById(UserContextUtil.getUserId());
+        return userInfoMapper.selectById(UserContextUtil.getLongUserId());
     }
 }

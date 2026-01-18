@@ -1,7 +1,7 @@
 package com.ddf.group.purchase.core.service.impl;
 
 import com.ddf.boot.common.api.util.DateUtils;
-import com.ddf.group.purchase.core.mapper.ext.UserInfoExtMapper;
+import com.ddf.group.purchase.core.mapper.UserInfoMapper;
 import com.ddf.group.purchase.core.model.entity.UserInfo;
 import com.ddf.group.purchase.core.service.UserInfoService;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +21,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor(onConstructor_={@Autowired})
 public class UserInfoServiceImpl implements UserInfoService {
 
-    private final UserInfoExtMapper userInfoExtMapper;
+    private final UserInfoMapper userInfoMapper;
     @Override
     public UserInfo registerUserInfo(String mobile, String password, String avatarUrl) {
         final UserInfo userInfo = new UserInfo();
@@ -30,7 +30,7 @@ public class UserInfoServiceImpl implements UserInfoService {
         userInfo.setPassword(password);
         userInfo.setAvatarUrl(avatarUrl);
         userInfo.setCtime(DateUtils.currentTimeSeconds());
-        userInfoExtMapper.insert(userInfo);
+        userInfoMapper.insert(userInfo);
         return userInfo;
     }
 

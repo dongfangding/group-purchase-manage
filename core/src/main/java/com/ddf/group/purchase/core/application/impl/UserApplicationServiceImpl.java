@@ -20,7 +20,7 @@ import com.ddf.group.purchase.core.converter.UserConvert;
 import com.ddf.group.purchase.core.exception.ExceptionCode;
 import com.ddf.group.purchase.core.helper.CommonHelper;
 import com.ddf.group.purchase.core.mapper.UserAddressMapper;
-import com.ddf.group.purchase.core.mapper.ext.UserInfoExtMapper;
+import com.ddf.group.purchase.core.mapper.UserInfoMapper;
 import com.ddf.group.purchase.core.model.cqrs.user.CompleteUserInfoCommand;
 import com.ddf.group.purchase.core.model.entity.CommunityBase;
 import com.ddf.group.purchase.core.model.entity.UserAddress;
@@ -50,7 +50,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserApplicationServiceImpl implements UserApplicationService {
 
     private final UserInfoService userInfoService;
-    private final UserInfoExtMapper userInfoExtMapper;
+    private final UserInfoMapper userInfoMapper;
     private final CommunityBaseRepository communityBaseRepository;
     private final UserInfoRepository userInfoRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -137,7 +137,7 @@ public class UserApplicationServiceImpl implements UserApplicationService {
                 .build();
         commonHelper.verifySmsCode(verifyRequest);
         userInfo.setPassword(bCryptPasswordEncoder.encode(request.getNewPassword()));
-        userInfoExtMapper.updateById(userInfo);
+        userInfoMapper.updateById(userInfo);
     }
 
     @Override

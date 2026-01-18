@@ -1,6 +1,7 @@
 package com.ddf.group.purchase.api.request.group;
 
-import com.ddf.boot.common.api.model.common.PageRequest;
+import com.ddf.boot.common.api.model.common.request.PageRequest;
+import com.ddf.boot.common.api.model.common.response.PageResult;
 import com.ddf.group.purchase.api.enume.GroupPurchaseItemJoinStatusEnum;
 import com.ddf.group.purchase.api.enume.GroupPurchaseStatusEnum;
 import java.io.Serializable;

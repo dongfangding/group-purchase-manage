@@ -110,4 +110,25 @@ public interface UserInfoMapper {
      * @return
      */
     int deleteById(Long id);
+
+    /**
+     * 根据已认证的邮箱查询用户
+     *
+     * @param email
+     * @return
+     */
+    UserInfo selectByVerifiedEmail(@Param("email") String email);
+
+    /**
+     * 根据住址查询用户
+     *
+     * @param communityId
+     * @param buildingNo
+     * @param roomNo
+     * @return
+     */
+    List<UserInfo> selectByBuildingAndRoomNo(
+            @Param("communityId") Integer communityId,
+            @Param("buildingNo") String buildingNo,
+            @Param("roomNo") String roomNo);
 }

@@ -1,9 +1,9 @@
 package com.ddf.group.purchase.core.login;
 
 import cn.hutool.core.collection.CollUtil;
-import com.ddf.boot.common.authentication.model.AuthenticateToken;
-import com.ddf.boot.common.authentication.model.UserClaim;
-import com.ddf.boot.common.authentication.util.TokenUtil;
+import com.ddf.boot.common.api.model.authentication.AuthenticateToken;
+import com.ddf.boot.common.api.model.authentication.UserClaim;
+import com.ddf.boot.common.core.authentication.TokenUtil;
 import com.ddf.boot.common.core.util.PreconditionUtil;
 import com.ddf.group.purchase.api.enume.LoginTypeEnum;
 import com.ddf.group.purchase.api.request.user.LoginRequest;

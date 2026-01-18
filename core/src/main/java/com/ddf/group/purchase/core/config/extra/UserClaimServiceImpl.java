@@ -1,9 +1,9 @@
 package com.ddf.group.purchase.core.config.extra;
 
+import com.ddf.boot.common.api.model.authentication.UserClaim;
 import com.ddf.boot.common.authentication.interfaces.UserClaimService;
-import com.ddf.boot.common.authentication.model.UserClaim;
 import com.ddf.group.purchase.core.converter.UserConvert;
-import com.ddf.group.purchase.core.mapper.ext.UserInfoExtMapper;
+import com.ddf.group.purchase.core.mapper.UserInfoMapper;
 import com.ddf.group.purchase.core.model.entity.UserInfo;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +21,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor(onConstructor_={@Autowired})
 public class UserClaimServiceImpl implements UserClaimService {
 
-    private final UserInfoExtMapper userInfoExtMapper;
+    private final UserInfoMapper userInfoMapper;
 
     @Override
     public void storeRequest(HttpServletRequest request, String host) {
@@ -29,8 +29,8 @@ public class UserClaimServiceImpl implements UserClaimService {
     }
 
     @Override
-    public UserClaim getStoreUserInfo(UserClaim userClaim) {
-        final UserInfo userInfo = userInfoExtMapper.selectById(userClaim.getUserId());
+    public UserClaim getStoreUserInfo(HttpServletRequest request, UserClaim claim) {
+        final UserInfo userInfo = userInfoMapper.selectById(Long.parseLong(claim.getUserId()));
         return UserConvert.INSTANCE.convert(userInfo);
     }
 }

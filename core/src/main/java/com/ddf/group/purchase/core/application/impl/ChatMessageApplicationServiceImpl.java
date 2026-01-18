@@ -1,8 +1,9 @@
 package com.ddf.group.purchase.core.application.impl;
 
-import com.ddf.common.boot.mqtt.model.request.MqttMessageRequest;
+import com.ddf.boot.common.api.util.JsonUtil;
+import com.ddf.common.boot.mqtt.model.request.InnerMqttMessageRequest;
 import com.ddf.common.boot.mqtt.model.support.body.TextMessageBody;
-import com.ddf.common.boot.mqtt.model.support.header.MqttHeader;
+import com.ddf.common.boot.mqtt.model.support.header.MqttBaseHeader;
 import com.ddf.common.boot.mqtt.model.support.topic.Im2PointMqttTopic;
 import com.ddf.group.purchase.api.request.chat.PrivateMessageRequest;
 import com.ddf.group.purchase.core.application.ChatMessageApplicationService;
@@ -38,11 +39,11 @@ public class ChatMessageApplicationServiceImpl implements ChatMessageApplication
         mqttTopic.setIdentityId(request.getToUserId() + "");
 
         // 消息头对象
-        final MqttHeader header = new MqttHeader();
-        header.setSourceIdentityId(currentUserInfo.getId() + "");
-        header.setSourceIdentityName(currentUserInfo.getNickname());
+        final MqttBaseHeader header = new MqttBaseHeader();
+        header.setSenderId(currentUserInfo.getId() + "");
+        header.setSenderName(currentUserInfo.getNickname());
         header.setSourceTimestamp(System.currentTimeMillis());
-        header.setSourceIdentityAvatarUrl(currentUserInfo.getAvatarUrl());
+        header.setSenderAvatar(currentUserInfo.getAvatarUrl());
 
         // 消息体对象
         final TextMessageBody body = new TextMessageBody();
@@ -50,13 +51,12 @@ public class ChatMessageApplicationServiceImpl implements ChatMessageApplication
         body.setContentType("text");
 
         // 最终请求对象
-        final MqttMessageRequest<TextMessageBody> messageRequest = new MqttMessageRequest<>();
+        final InnerMqttMessageRequest messageRequest = new InnerMqttMessageRequest();
         messageRequest.setMessageCode("private_message");
         messageRequest.setDeserializeType("text");
-        messageRequest.setTopic(mqttTopic);
+        messageRequest.setTopic(mqttTopic.getFullTopic());
         messageRequest.setHeader(header);
-        messageRequest.setBody(body);
-
+        messageRequest.setBody(JsonUtil.toJson(body));
         // 发送数据
         pushMessageClient.publish(messageRequest);
     }

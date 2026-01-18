@@ -2,6 +2,7 @@ package com.ddf.group.purchase.core.mapper;
 
 import com.ddf.group.purchase.core.model.entity.GroupPurchaseGood;
 import java.util.List;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * <p>description</p >
@@ -33,7 +34,7 @@ public interface GroupPurchaseGoodMapper {
      * @param groupPurchaseId
      * @return
      */
-    List<GroupPurchaseGood> selectByGroupPurchaseId(Long groupPurchaseId);
+    GroupPurchaseGood selectByGroupPurchaseId(Long groupPurchaseId);
 
     /**
      * 插入
@@ -58,4 +59,13 @@ public interface GroupPurchaseGoodMapper {
      * @return
      */
     int deleteById(Long id);
+
+    /**
+     * 扣减商品库存
+     *
+     * @param id
+     * @param reduceStock
+     * @return
+     */
+    int reduceGoodStock(@Param("id") Long id, @Param("reduceStock") Integer reduceStock);
 }

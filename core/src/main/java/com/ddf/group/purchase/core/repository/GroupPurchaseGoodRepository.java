@@ -1,6 +1,6 @@
 package com.ddf.group.purchase.core.repository;
 
-import com.ddf.group.purchase.core.mapper.ext.GroupPurchaseGoodExtMapper;
+import com.ddf.group.purchase.core.mapper.GroupPurchaseGoodMapper;
 import com.ddf.group.purchase.core.model.entity.GroupPurchaseGood;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +20,7 @@ import org.springframework.stereotype.Repository;
 @Slf4j
 public class GroupPurchaseGoodRepository {
 
-    private final GroupPurchaseGoodExtMapper groupPurchaseGoodExtMapper;
+    private final GroupPurchaseGoodMapper groupPurchaseGoodMapper;
 
     /**
      * 根据团购主表获取团购商品信息
@@ -28,8 +28,8 @@ public class GroupPurchaseGoodRepository {
      * @param groupId
      * @return
      */
-    public List<GroupPurchaseGood> getByGroupId(Long groupId) {
-        return groupPurchaseGoodExtMapper.selectByGroupPurchaseId(groupId);
+    public GroupPurchaseGood getByGroupId(Long groupId) {
+        return groupPurchaseGoodMapper.selectByGroupPurchaseId(groupId);
     }
 
     /**
@@ -39,7 +39,7 @@ public class GroupPurchaseGoodRepository {
      * @return
      */
     public GroupPurchaseGood getById(Long id) {
-        return groupPurchaseGoodExtMapper.selectById(id);
+        return groupPurchaseGoodMapper.selectById(id);
     }
 
     /**
@@ -49,7 +49,7 @@ public class GroupPurchaseGoodRepository {
      * @return
      */
     public int insert(GroupPurchaseGood groupPurchaseGood) {
-        return groupPurchaseGoodExtMapper.insert(groupPurchaseGood);
+        return groupPurchaseGoodMapper.insert(groupPurchaseGood);
     }
 
     /**
@@ -60,6 +60,6 @@ public class GroupPurchaseGoodRepository {
      * @return
      */
     public int reduceGoodStock(Long id, Integer reduceStock) {
-        return groupPurchaseGoodExtMapper.reduceGoodStock(id, reduceStock);
+        return groupPurchaseGoodMapper.reduceGoodStock(id, reduceStock);
     }
 }

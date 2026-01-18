@@ -1,6 +1,6 @@
 package com.ddf.group.purchase.core.repository;
 
-import com.ddf.group.purchase.core.mapper.ext.GroupPurchaseItemGoodExtMapper;
+import com.ddf.group.purchase.core.mapper.GroupPurchaseItemGoodMapper;
 import com.ddf.group.purchase.core.model.entity.GroupPurchaseItemGood;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +20,7 @@ import org.springframework.stereotype.Repository;
 @Slf4j
 public class GroupPurchaseItemGoodRepository {
 
-    private final GroupPurchaseItemGoodExtMapper groupPurchaseItemGoodExtMapper;
+    private final GroupPurchaseItemGoodMapper groupPurchaseItemGoodMapper;
 
     /**
      * 根据参团记录ID查询商品列表
@@ -29,7 +29,7 @@ public class GroupPurchaseItemGoodRepository {
      * @return
      */
     public List<GroupPurchaseItemGood> selectByGroupPurchaseItemId(Long groupItemId) {
-        return groupPurchaseItemGoodExtMapper.selectByGroupPurchaseItemId(groupItemId);
+        return groupPurchaseItemGoodMapper.selectByGroupPurchaseItemId(groupItemId);
     }
 
     /**
@@ -38,6 +38,6 @@ public class GroupPurchaseItemGoodRepository {
      * @param list
      */
     public void batchInsert(List<GroupPurchaseItemGood> list) {
-        groupPurchaseItemGoodExtMapper.batchInsert(list);
+        groupPurchaseItemGoodMapper.batchInsert(list);
     }
 }

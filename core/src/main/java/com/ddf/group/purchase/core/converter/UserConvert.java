@@ -1,7 +1,7 @@
 package com.ddf.group.purchase.core.converter;
 
-import com.ddf.boot.common.authentication.model.UserClaim;
-import com.ddf.boot.common.core.util.WebUtil;
+import com.ddf.boot.common.api.model.authentication.UserClaim;
+import com.ddf.boot.common.mvc.util.WebUtil;
 import com.ddf.group.purchase.api.response.user.PersonalInfoResponse;
 import com.ddf.group.purchase.core.model.entity.CommunityBase;
 import com.ddf.group.purchase.core.model.entity.UserInfo;
@@ -33,7 +33,6 @@ public interface UserConvert {
                 .userId(userInfo.getId().toString())
                 .username(userInfo.getMobile())
                 .credit(WebUtil.getUserAgent())
-                .lastModifyPasswordTime(null)
                 .remarks(null)
                 .detail(null)
                 .build();

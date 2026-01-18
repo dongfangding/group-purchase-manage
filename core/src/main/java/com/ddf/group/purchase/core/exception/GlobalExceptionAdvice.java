@@ -1,7 +1,7 @@
 package com.ddf.group.purchase.core.exception;
 
-import com.ddf.boot.common.api.model.common.response.response.ResponseData;
-import com.ddf.boot.common.core.exception200.AbstractExceptionHandler;
+import com.ddf.boot.common.api.model.common.response.ResponseData;
+import com.ddf.boot.common.mvc.exception200.AbstractExceptionHandler;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.web.bind.annotation.ExceptionHandler;

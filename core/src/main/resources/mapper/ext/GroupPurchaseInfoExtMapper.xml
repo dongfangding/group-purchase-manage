@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.ddf.group.purchase.core.mapper.ext.GroupPurchaseInfoExtMapper">
+<mapper namespace="com.ddf.group.purchase.core.mapper.GroupPurchaseInfoMapper">
     <select id="list" resultType="com.ddf.group.purchase.api.response.group.GroupPurchaseListResponse"
             parameterType="com.ddf.group.purchase.core.model.cqrs.group.GroupListQuery">
         select master.id,

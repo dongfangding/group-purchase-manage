@@ -1,6 +1,6 @@
 package com.ddf.group.purchase.core.repository;
 
-import com.ddf.group.purchase.core.mapper.ext.UserInfoExtMapper;
+import com.ddf.group.purchase.core.mapper.UserInfoMapper;
 import com.ddf.group.purchase.core.model.cqrs.user.CompleteUserInfoCommand;
 import com.ddf.group.purchase.core.model.entity.UserInfo;
 import java.util.List;
@@ -25,7 +25,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor(onConstructor_={@Autowired})
 public class UserInfoRepository {
 
-    private final UserInfoExtMapper userInfoExtMapper;
+    private final UserInfoMapper userInfoMapper;
 
     /**
      * 根据userId获取用户信息
@@ -34,7 +34,7 @@ public class UserInfoRepository {
      * @return
      */
     public UserInfo getById(Long userId) {
-        return userInfoExtMapper.selectById(userId);
+        return userInfoMapper.selectById(userId);
     }
 
     /**
@@ -44,7 +44,7 @@ public class UserInfoRepository {
      * @return
      */
     public UserInfo getByMobile(String mobile) {
-        return userInfoExtMapper.selectByMobile(mobile);
+        return userInfoMapper.selectByMobile(mobile);
     }
 
 
@@ -55,7 +55,7 @@ public class UserInfoRepository {
      * @return
      */
     public List<UserInfo> listUserByEmail(String email) {
-        return userInfoExtMapper.selectByEmail(email);
+        return userInfoMapper.selectByEmail(email);
     }
 
     /**
@@ -65,7 +65,7 @@ public class UserInfoRepository {
      * @return
      */
     public UserInfo getUserByVerifiedEmail(String email) {
-        return userInfoExtMapper.selectByVerifiedEmail(email);
+        return userInfoMapper.selectByVerifiedEmail(email);
     }
 
     /**
@@ -75,7 +75,7 @@ public class UserInfoRepository {
      * @return
      */
     public boolean exitsByMobile(String mobile) {
-        return userInfoExtMapper.existsByMobile(mobile) > 0;
+        return userInfoMapper.existsByMobile(mobile) > 0;
     }
 
 
@@ -86,7 +86,7 @@ public class UserInfoRepository {
      * @return
      */
     public boolean exitsByEmail(String email) {
-        return userInfoExtMapper.existsByEmail(email) > 0;
+        return userInfoMapper.existsByEmail(email) > 0;
     }
 
     /**
@@ -96,7 +96,7 @@ public class UserInfoRepository {
      * @return
      */
     public int completeUserInfo(CompleteUserInfoCommand command) {
-        return userInfoExtMapper.completeUserInfo(command);
+        return userInfoMapper.completeUserInfo(command);
     }
 
     /**
@@ -107,7 +107,7 @@ public class UserInfoRepository {
      * @return
      */
     public int verifiedEmail(Long userId, String email) {
-        return userInfoExtMapper.verifiedEmail(userId, email);
+        return userInfoMapper.verifiedEmail(userId, email);
     }
 
     /**
@@ -119,7 +119,7 @@ public class UserInfoRepository {
      * @return
      */
     public List<UserInfo> getByBuildingAndRoomNo(Integer communityId, String buildingNo, String roomNo) {
-        return userInfoExtMapper.selectByBuildingAndRoomNo(communityId, buildingNo, roomNo);
+        return userInfoMapper.selectByBuildingAndRoomNo(communityId, buildingNo, roomNo);
     }
 
     /**
@@ -129,7 +129,7 @@ public class UserInfoRepository {
      * @return
      */
     public Map<Long, UserInfo> mapListUsers(Set<Long> uidList) {
-        final List<UserInfo> users = userInfoExtMapper.selectByIds(uidList);
+        final List<UserInfo> users = userInfoMapper.selectByIds(uidList);
         return users.stream().collect(Collectors.toMap(UserInfo::getId, Function.identity()));
     }
 
@@ -140,7 +140,7 @@ public class UserInfoRepository {
      * @return
      */
     public int insert(UserInfo userInfo) {
-        return userInfoExtMapper.insert(userInfo);
+        return userInfoMapper.insert(userInfo);
     }
 
     /**
@@ -150,6 +150,6 @@ public class UserInfoRepository {
      * @return
      */
     public int update(UserInfo userInfo) {
-        return userInfoExtMapper.updateById(userInfo);
+        return userInfoMapper.updateById(userInfo);
     }
 }

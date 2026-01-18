@@ -22,6 +22,13 @@
     from group_purchase_trace
   </select>
 
+  <select id="selectByGroupPurchaseId" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List" />
+    from group_purchase_trace
+    where group_purchase_id = #{groupPurchaseId}
+    order by ctime asc
+  </select>
+
   <insert id="insert" useGeneratedKeys="true" keyProperty="id">
     insert into group_purchase_trace (group_purchase_id, `status`, ctime)
     values (#{groupPurchaseId}, #{status}, #{ctime})

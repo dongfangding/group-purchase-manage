@@ -1,11 +1,9 @@
 package com.ddf.group.purchase.core.repository;
 
-import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.ddf.boot.common.api.util.DateUtils;
 import com.ddf.group.purchase.api.enume.GroupPurchaseItemJoinStatusEnum;
 import com.ddf.group.purchase.api.response.group.MyJoinGroupPageResponse;
-import com.ddf.group.purchase.core.mapper.ext.GroupPurchaseItemExtMapper;
+import com.ddf.group.purchase.core.mapper.GroupPurchaseItemMapper;
 import com.ddf.group.purchase.core.model.cqrs.group.MyJoinGroupQuery;
 import com.ddf.group.purchase.core.model.entity.GroupPurchaseItem;
 import java.util.List;
@@ -26,7 +24,7 @@ import org.springframework.stereotype.Repository;
 @Slf4j
 public class GroupPurchaseItemRepository {
 
-    private final GroupPurchaseItemExtMapper groupPurchaseItemExtMapper;
+    private final GroupPurchaseItemMapper groupPurchaseItemMapper;
 
     /**
      * 批量插入用户参团记录
@@ -34,7 +32,7 @@ public class GroupPurchaseItemRepository {
      * @param joins
      */
     public void batchInsertUserJoinGroup(List<GroupPurchaseItem> joins) {
-        groupPurchaseItemExtMapper.batchInsert(joins);
+        groupPurchaseItemMapper.batchInsert(joins);
     }
 
     /**
@@ -44,7 +42,7 @@ public class GroupPurchaseItemRepository {
      * @return
      */
     public List<MyJoinGroupPageResponse> myJoinGroup(MyJoinGroupQuery query) {
-        return groupPurchaseItemExtMapper.myJoinGroup(query);
+        return groupPurchaseItemMapper.myJoinGroup(query);
     }
 
 
@@ -55,7 +53,7 @@ public class GroupPurchaseItemRepository {
      * @return
      */
     public List<Long> selectJoinPaidUids(Long groupId) {
-        return groupPurchaseItemExtMapper.selectJoinPaidUids(groupId);
+        return groupPurchaseItemMapper.selectJoinPaidUids(groupId);
     }
 
     /**
@@ -67,11 +65,11 @@ public class GroupPurchaseItemRepository {
      * @return
      */
     public boolean subscribe(Long groupId, Long joinUid, boolean subscribeFlag) {
-        final LambdaUpdateWrapper<GroupPurchaseItem> wrapper = Wrappers.lambdaUpdate();
-        wrapper.eq(GroupPurchaseItem::getGroupPurchaseId, groupId)
-                .eq(GroupPurchaseItem::getJoinUid, joinUid);
-        wrapper.set(GroupPurchaseItem::getSubscribeProgress, subscribeFlag);
-        return groupPurchaseItemExtMapper.update(null, wrapper) > 0;
+        final GroupPurchaseItem item = new GroupPurchaseItem();
+        item.setSubscribeProgress(subscribeFlag);
+        item.setGroupPurchaseId(groupId);
+        item.setJoinUid(joinUid);
+        return groupPurchaseItemMapper.updateById(item) > 0;
     }
 
     /**
@@ -81,12 +79,11 @@ public class GroupPurchaseItemRepository {
      * @return
      */
     public boolean closeOrder(Long id) {
-        final LambdaUpdateWrapper<GroupPurchaseItem> wrapper = Wrappers.lambdaUpdate();
-        wrapper.eq(GroupPurchaseItem::getId, id)
-                .eq(GroupPurchaseItem::getJoinStatus, GroupPurchaseItemJoinStatusEnum.WAIT_PAY.getValue());
-        wrapper.set(GroupPurchaseItem::getJoinStatus, GroupPurchaseItemJoinStatusEnum.CLOSED.getValue());
-        wrapper.set(GroupPurchaseItem::getPaidFlag, Boolean.FALSE);
-        wrapper.set(GroupPurchaseItem::getStatusChangeTime, DateUtils.currentTimeSeconds());
-        return groupPurchaseItemExtMapper.update(null, wrapper) > 0;
+        final GroupPurchaseItem item = new GroupPurchaseItem();
+        item.setId(id);
+        item.setJoinStatus(GroupPurchaseItemJoinStatusEnum.CLOSED.getValue());
+        item.setPaidFlag(Boolean.FALSE);
+        item.setStatusChangeTime(DateUtils.currentTimeSeconds());
+        return groupPurchaseItemMapper.updateById(item) > 0;
     }
 }

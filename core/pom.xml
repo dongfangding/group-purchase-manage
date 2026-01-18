@@ -29,6 +29,7 @@
         <ddf-common-vps.version>boot3.3-2025.1-SNAPSHOT</ddf-common-vps.version>
         <ddf-common-rocketmq.version>boot3.3-2025.1-SNAPSHOT</ddf-common-rocketmq.version>
         <ddf-common-mqtt.version>boot3.3-2025.1-SNAPSHOT</ddf-common-mqtt.version>
+        <org.mapstruct.version>1.5.5.Final</org.mapstruct.version>
     </properties>
 
     <dependencies>
@@ -133,6 +134,13 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+
+        <!-- MapStruct 核心 API -->
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct</artifactId>
+            <version>${org.mapstruct.version}</version>
         </dependency>
 
     </dependencies>

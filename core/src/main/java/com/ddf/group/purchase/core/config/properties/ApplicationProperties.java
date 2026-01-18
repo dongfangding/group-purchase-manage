@@ -1,7 +1,5 @@
 package com.ddf.group.purchase.core.config.properties;
 
-import com.alibaba.nacos.api.config.ConfigType;
-import com.alibaba.nacos.api.config.annotation.NacosConfigurationProperties;
 import lombok.Data;
 import org.springframework.stereotype.Component;
 
@@ -15,7 +13,6 @@ import org.springframework.stereotype.Component;
 @Data
 //@NacosPropertySource(dataId = "application-properties", groupId = "dev", autoRefreshed = true, type = ConfigType.PROPERTIES)
 @Component
-@NacosConfigurationProperties(prefix = "app", dataId = "application-properties", groupId = "dev", type = ConfigType.YAML, autoRefreshed = true)
 public class ApplicationProperties {
 
     /**

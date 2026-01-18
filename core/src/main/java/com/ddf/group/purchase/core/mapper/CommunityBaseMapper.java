@@ -50,4 +50,12 @@ public interface CommunityBaseMapper {
      * @return
      */
     int deleteById(Long id);
+
+    /**
+     * 根据小区名称模糊查询
+     *
+     * @param communityName
+     * @return
+     */
+    List<CommunityBase> selectByCommunityNameLike(String communityName);
 }

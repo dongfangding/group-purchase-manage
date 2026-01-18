@@ -1,7 +1,7 @@
 package com.ddf.group.purchase.core.config.extra;
 
-import com.ddf.boot.common.authentication.model.AuthenticateCheckResult;
-import com.ddf.boot.common.authentication.util.TokenUtil;
+import com.ddf.boot.common.api.model.authentication.AuthenticateCheckResult;
+import com.ddf.boot.common.core.authentication.TokenUtil;
 import com.ddf.common.boot.mqtt.extra.EmqClientAuthenticate;
 import com.ddf.common.boot.mqtt.model.request.emq.EmqAuthenticateRequest;
 import com.ddf.common.boot.mqtt.model.response.emq.EmqClientAuthenticateResponse;

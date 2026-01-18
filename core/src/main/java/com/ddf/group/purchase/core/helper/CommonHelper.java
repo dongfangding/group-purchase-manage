@@ -10,9 +10,9 @@ import com.ddf.boot.common.api.util.DateUtils;
 import com.ddf.boot.common.authentication.config.AuthenticationProperties;
 import com.ddf.boot.common.authentication.util.UserContextUtil;
 import com.ddf.boot.common.core.util.PreconditionUtil;
-import com.ddf.boot.common.core.util.WebUtil;
 import com.ddf.boot.common.ext.sms.model.SmsSendRequest;
 import com.ddf.boot.common.ext.sms.model.SmsSendResponse;
+import com.ddf.boot.common.mvc.util.WebUtil;
 import com.ddf.boot.common.redis.helper.RedisTemplateHelper;
 import com.ddf.common.captcha.helper.CaptchaHelper;
 import com.ddf.group.purchase.api.request.common.SendSmsCodeRequest;
@@ -41,7 +41,7 @@ import org.springframework.stereotype.Component;
  * @date 2022/05/15 22:58
  */
 @Component
-@RequiredArgsConstructor(onConstructor_={@Autowired})
+@RequiredArgsConstructor(onConstructor_ = {@Autowired})
 public class CommonHelper {
 
 
@@ -69,7 +69,8 @@ public class CommonHelper {
      * @param request
      */
     public void verifyCaptcha(CaptchaCheckRequest request) {
-        captchaHelper.check(CaptchaCheckRequest.builder()
+        captchaHelper.check(CaptchaCheckRequest
+                .builder()
                 .uuid(request.getUuid())
                 .verification(request.isVerification())
                 .captchaVerification(request.getCaptchaVerification())
@@ -97,8 +98,10 @@ public class CommonHelper {
      * @return
      */
     public ApplicationSmsSendResponse sendAndLoadRegisterSmsCodeWithLimit(SendSmsCodeRequest sendSmsCodeRequest) {
-        PreconditionUtil.checkArgument(!userInfoRepository.exitsByMobile(sendSmsCodeRequest.getMobile()),
-                ExceptionCode.MOBILE_IS_USED);
+        PreconditionUtil.checkArgument(
+                !userInfoRepository.exitsByMobile(sendSmsCodeRequest.getMobile()),
+                ExceptionCode.MOBILE_IS_USED
+        );
         return sendAndLoadSmsCodeWithLimit(sendSmsCodeRequest);
     }
 
@@ -114,11 +117,13 @@ public class CommonHelper {
         captchaVerifyRequest.setVerification(true);
         verifyCaptcha(captchaVerifyRequest);
         final String uid = StrUtil.blankToDefault(UserContextUtil.getUserId(), WebUtil.getHost());
-        return redisTemplateHelper.sliderWindowAccessExpiredAtCheckException(
-                RedisKeys.getSmsRateLimitKey(uid),
-                applicationProperties.getSmsDailyLimit(), DateUtils.getEndOfDay(new Date()), () -> {
-            return sendAndLoadSmsCode(sendSmsCodeRequest);
-        }, ExceptionCode.SMS_CODE_LIMIT);
+        return redisTemplateHelper.sliderWindowAccessCheckException(
+                RedisKeys.getSmsRateLimitKey(uid), applicationProperties.getSmsDailyLimit(), DateUtils
+                        .getRemainingSecondsOfToday()
+                        .intValue(), () -> {
+                    return sendAndLoadSmsCode(sendSmsCodeRequest);
+                }, ExceptionCode.SMS_CODE_LIMIT
+        );
     }
 
     /**
@@ -132,7 +137,8 @@ public class CommonHelper {
         final SmsSendResponse tempResponse = sendSmsCode(sendSmsCodeRequest);
         final String uuid = RandomUtil.randomString(16);
         commonRepository.setSmsCode(mobile, uuid, tempResponse.getRandomCode());
-        return ApplicationSmsSendResponse.builder()
+        return ApplicationSmsSendResponse
+                .builder()
                 .uuid(uuid)
                 .build();
     }
@@ -147,13 +153,18 @@ public class CommonHelper {
         PreconditionUtil.requiredParamCheck(request);
         String mobile = request.getMobile();
         // 验证码白名单忽略处理
-        if (Objects.isNull(authenticationProperties) || CollectionUtil.isEmpty(authenticationProperties.getBiz().getWhiteLoginNameList())
-                || !authenticationProperties.getBiz().getWhiteLoginNameList().contains(request.getMobile())) {
-            // 校验验证码
-            String verifyCode = commonRepository.getSmsCode(mobile, request.getUuid());
-            PreconditionUtil.checkArgument(StrUtil.isNotBlank(verifyCode), ExceptionCode.VERIFY_CODE_EXPIRED);
-            PreconditionUtil.checkArgument(StrUtil.equals(verifyCode, request.getMobileCode()), ExceptionCode.VERIFY_CODE_NOT_MATCH);
-        }
+//        if (Objects.isNull(authenticationProperties) || CollectionUtil.isEmpty(authenticationProperties
+//                .getBiz()
+//                .getWhiteLoginNameList()) || !authenticationProperties
+//                .getBiz()
+//                .getWhiteLoginNameList()
+//                .contains(request.getMobile())) {
+//            // 校验验证码
+//            String verifyCode = commonRepository.getSmsCode(mobile, request.getUuid());
+//            PreconditionUtil.checkArgument(StrUtil.isNotBlank(verifyCode), ExceptionCode.VERIFY_CODE_EXPIRED);
+//            PreconditionUtil.checkArgument(
+//                    StrUtil.equals(verifyCode, request.getMobileCode()), ExceptionCode.VERIFY_CODE_NOT_MATCH);
+//        }
     }
 
     /**

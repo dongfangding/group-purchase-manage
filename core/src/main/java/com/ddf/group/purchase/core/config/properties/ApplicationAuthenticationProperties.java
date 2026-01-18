@@ -1,7 +1,5 @@
 package com.ddf.group.purchase.core.config.properties;
 
-import com.alibaba.nacos.api.config.ConfigType;
-import com.alibaba.nacos.api.config.annotation.NacosConfigurationProperties;
 import com.ddf.boot.common.authentication.config.AuthenticationProperties;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,7 +14,6 @@ import org.springframework.stereotype.Component;
 @Data
 @NoArgsConstructor
 @Component
-@NacosConfigurationProperties(prefix = "customs.authentication", dataId = "authentication", groupId = "dev", type = ConfigType.YAML, autoRefreshed = true)
 public class ApplicationAuthenticationProperties extends AuthenticationProperties {
 
 }

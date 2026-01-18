@@ -1,6 +1,6 @@
 package com.ddf.group.purchase.core.controller;
 
-import com.ddf.boot.common.authentication.model.UserClaim;
+import com.ddf.boot.common.api.model.authentication.UserClaim;
 import com.ddf.boot.common.authentication.util.UserContextUtil;
 import com.ddf.group.purchase.api.request.common.SendSmsCodeRequest;
 import com.ddf.group.purchase.api.request.user.LoginRequest;
