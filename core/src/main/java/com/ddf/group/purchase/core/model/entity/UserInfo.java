@@ -1,6 +1,5 @@
 package com.ddf.group.purchase.core.model.entity;
 
-import java.io.Serializable;
 import lombok.Data;
 
 /**
@@ -8,7 +7,7 @@ import lombok.Data;
 *
 * @author Snowball
 * @version 1.0
-* @date 2022/09/23 10:41
+* @date 2026/02/03 23:45
 */
 
 
@@ -16,7 +15,8 @@ import lombok.Data;
  * 注册用户信息
  */
 @Data
-public class UserInfo implements Serializable {
+public class UserInfo {
+    private static final long serialVersionUID = 1L;
     private Long id;
 
     /**
@@ -93,6 +93,4 @@ public class UserInfo implements Serializable {
      * 注册秒时间戳
      */
     private Long ctime;
-
-    private static final long serialVersionUID = 1L;
 }

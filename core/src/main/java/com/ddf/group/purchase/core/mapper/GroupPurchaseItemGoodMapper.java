@@ -2,15 +2,27 @@ package com.ddf.group.purchase.core.mapper;
 
 import com.ddf.group.purchase.core.model.entity.GroupPurchaseItemGood;
 import java.util.List;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * <p>description</p >
  *
  * @author Snowball
  * @version 1.0
- * @date 2022/09/05 19:17
+ * @date 2026/02/03 23:45
  */
 public interface GroupPurchaseItemGoodMapper {
+    int deleteByPrimaryKey(Long id);
+
+    int insert(GroupPurchaseItemGood record);
+
+    int insertSelective(GroupPurchaseItemGood record);
+
+    GroupPurchaseItemGood selectByPrimaryKey(Long id);
+
+    int updateByPrimaryKeySelective(GroupPurchaseItemGood record);
+
+    int updateByPrimaryKey(GroupPurchaseItemGood record);
 
     /**
      * 根据ID查询
@@ -44,14 +56,6 @@ public interface GroupPurchaseItemGoodMapper {
     int batchInsert(List<GroupPurchaseItemGood> list);
 
     /**
-     * 插入
-     *
-     * @param groupPurchaseItemGood
-     * @return
-     */
-    int insert(GroupPurchaseItemGood groupPurchaseItemGood);
-
-    /**
      * 根据ID更新
      *
      * @param groupPurchaseItemGood
@@ -66,4 +70,24 @@ public interface GroupPurchaseItemGoodMapper {
      * @return
      */
     int deleteById(Long id);
+
+    /**
+     * 查找用户指定团购和商品的参团信息
+     *
+     * @param groupId
+     * @param userId
+     * @param goodId
+     * @return
+     */
+    GroupPurchaseItemGood selectUserGroupGood(@Param("groupId") Long groupId, @Param("userId") Long userId,
+            @Param("goodId") Long goodId);
+
+    /**
+     * 查找指定用户指定团购的购买商品列表
+     *
+     * @param groupId
+     * @param userId
+     * @return
+     */
+    List<GroupPurchaseItemGood> listUserGroupGood(@Param("groupId") Long groupId, @Param("userId") Long userId);
 }

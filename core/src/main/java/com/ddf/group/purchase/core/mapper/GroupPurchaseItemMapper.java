@@ -4,6 +4,7 @@ import com.ddf.group.purchase.api.request.group.AddressDomain;
 import com.ddf.group.purchase.api.response.group.GroupItemResponse;
 import com.ddf.group.purchase.api.response.group.MyJoinGroupPageResponse;
 import com.ddf.group.purchase.api.response.group.OrderDetailResponse;
+import com.ddf.group.purchase.core.model.cqrs.group.MyJoinGroupQuery;
 import com.ddf.group.purchase.core.model.entity.GroupPurchaseItem;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
@@ -13,9 +14,20 @@ import org.apache.ibatis.annotations.Param;
  *
  * @author Snowball
  * @version 1.0
- * @date 2022/11/25 11:44
+ * @date 2026/02/03 23:47
  */
 public interface GroupPurchaseItemMapper {
+    int deleteByPrimaryKey(Long id);
+
+    int insert(GroupPurchaseItem record);
+
+    int insertSelective(GroupPurchaseItem record);
+
+    GroupPurchaseItem selectByPrimaryKey(Long id);
+
+    int updateByPrimaryKeySelective(GroupPurchaseItem record);
+
+    int updateByPrimaryKey(GroupPurchaseItem record);
 
     /**
      * 根据ID查询
@@ -78,7 +90,7 @@ public interface GroupPurchaseItemMapper {
      * @param query
      * @return
      */
-    List<MyJoinGroupPageResponse> myJoinGroup(@Param("query") com.ddf.group.purchase.core.model.cqrs.group.MyJoinGroupQuery query);
+    List<MyJoinGroupPageResponse> myJoinGroup(@Param("query") MyJoinGroupQuery query);
 
     /**
      * 更新状态为已支付

@@ -9,9 +9,20 @@ import org.apache.ibatis.annotations.Param;
  *
  * @author Snowball
  * @version 1.0
- * @date 2022/09/19 17:42
+ * @date 2026/02/03 23:45
  */
 public interface UserAddressMapper {
+    int deleteByPrimaryKey(Long id);
+
+    int insert(UserAddress record);
+
+    int insertSelective(UserAddress record);
+
+    UserAddress selectByPrimaryKey(Long id);
+
+    int updateByPrimaryKeySelective(UserAddress record);
+
+    int updateByPrimaryKey(UserAddress record);
 
     /**
      * 根据ID查询
@@ -60,14 +71,6 @@ public interface UserAddressMapper {
      * @return
      */
     int deleteByIdAndUid(@Param("id") Long id, @Param("uid") Long uid);
-
-    /**
-     * 插入
-     *
-     * @param userAddress
-     * @return
-     */
-    int insert(UserAddress userAddress);
 
     /**
      * 根据ID更新

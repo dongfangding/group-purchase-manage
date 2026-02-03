@@ -1,6 +1,5 @@
 package com.ddf.group.purchase.core.model.entity;
 
-import java.io.Serializable;
 import java.math.BigDecimal;
 import lombok.Data;
 
@@ -9,7 +8,7 @@ import lombok.Data;
 *
 * @author Snowball
 * @version 1.0
-* @date 2022/09/13 18:45
+* @date 2026/02/03 23:45
 */
 
 
@@ -17,7 +16,8 @@ import lombok.Data;
  * 团购商品表
  */
 @Data
-public class GroupPurchaseGood implements Serializable {
+public class GroupPurchaseGood {
+    private static final long serialVersionUID = 1L;
     private Long id;
 
     /**
@@ -69,6 +69,4 @@ public class GroupPurchaseGood implements Serializable {
      * 剩余商品库存
      */
     private Integer remainingStock;
-
-    private static final long serialVersionUID = 1L;
 }

@@ -11,9 +11,20 @@ import org.apache.ibatis.annotations.Param;
  *
  * @author Snowball
  * @version 1.0
- * @date 2022/09/23 10:41
+ * @date 2026/02/03 23:45
  */
 public interface UserInfoMapper {
+    int deleteByPrimaryKey(Long id);
+
+    int insert(UserInfo record);
+
+    int insertSelective(UserInfo record);
+
+    UserInfo selectByPrimaryKey(Long id);
+
+    int updateByPrimaryKeySelective(UserInfo record);
+
+    int updateByPrimaryKey(UserInfo record);
 
     /**
      * 根据ID查询
@@ -88,14 +99,6 @@ public interface UserInfoMapper {
     int verifiedEmail(@Param("userId") Long userId, @Param("email") String email);
 
     /**
-     * 插入
-     *
-     * @param userInfo
-     * @return
-     */
-    int insert(UserInfo userInfo);
-
-    /**
      * 根据ID更新
      *
      * @param userInfo
@@ -127,8 +130,6 @@ public interface UserInfoMapper {
      * @param roomNo
      * @return
      */
-    List<UserInfo> selectByBuildingAndRoomNo(
-            @Param("communityId") Integer communityId,
-            @Param("buildingNo") String buildingNo,
-            @Param("roomNo") String roomNo);
+    List<UserInfo> selectByBuildingAndRoomNo(@Param("communityId") Integer communityId,
+            @Param("buildingNo") String buildingNo, @Param("roomNo") String roomNo);
 }

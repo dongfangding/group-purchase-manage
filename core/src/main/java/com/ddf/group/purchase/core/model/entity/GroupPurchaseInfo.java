@@ -1,16 +1,13 @@
 package com.ddf.group.purchase.core.model.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 /**
 * <p>description</p >
 *
 * @author Snowball
 * @version 1.0
-* @date 2022/08/20 21:13
+* @date 2026/02/03 23:45
 */
 
 
@@ -18,9 +15,6 @@ import lombok.NoArgsConstructor;
  * 团购主表信息
  */
 @Data
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
 public class GroupPurchaseInfo {
     private static final long serialVersionUID = 1L;
     private Long id;

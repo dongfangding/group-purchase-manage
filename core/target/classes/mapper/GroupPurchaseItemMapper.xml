@@ -2,6 +2,253 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ddf.group.purchase.core.mapper.GroupPurchaseItemMapper">
   <resultMap id="BaseResultMap" type="com.ddf.group.purchase.core.model.entity.GroupPurchaseItem">
+    <!--@mbg.generated-->
+    <!--@Table group_purchase_item-->
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="order_no" jdbcType="VARCHAR" property="orderNo" />
+    <result column="group_purchase_id" jdbcType="BIGINT" property="groupPurchaseId" />
+    <result column="join_uid" jdbcType="BIGINT" property="joinUid" />
+    <result column="ctime" jdbcType="BIGINT" property="ctime" />
+    <result column="subscribe_progress" jdbcType="BIT" property="subscribeProgress" />
+    <result column="join_status" jdbcType="INTEGER" property="joinStatus" />
+    <result column="status_change_time" jdbcType="BIGINT" property="statusChangeTime" />
+    <result column="receiver_name" jdbcType="VARCHAR" property="receiverName" />
+    <result column="receiver_mobile" jdbcType="VARCHAR" property="receiverMobile" />
+    <result column="receiver_detail_address" jdbcType="VARCHAR" property="receiverDetailAddress" />
+    <result column="receiver_province" jdbcType="VARCHAR" property="receiverProvince" />
+    <result column="receiver_city" jdbcType="VARCHAR" property="receiverCity" />
+    <result column="receiver_area" jdbcType="VARCHAR" property="receiverArea" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="paid_flag" jdbcType="BIT" property="paidFlag" />
+    <result column="pay_count_down_seconds" jdbcType="INTEGER" property="payCountDownSeconds" />
+    <result column="pay_time" jdbcType="BIGINT" property="payTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    id, order_no, group_purchase_id, join_uid, ctime, subscribe_progress, join_status, 
+    status_change_time, receiver_name, receiver_mobile, receiver_detail_address, receiver_province, 
+    receiver_city, receiver_area, remark, paid_flag, pay_count_down_seconds, pay_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    <!--@mbg.generated-->
+    select 
+    <include refid="Base_Column_List" />
+    from group_purchase_item
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    <!--@mbg.generated-->
+    delete from group_purchase_item
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.ddf.group.purchase.core.model.entity.GroupPurchaseItem" useGeneratedKeys="true">
+    <!--@mbg.generated-->
+    insert into group_purchase_item (order_no, group_purchase_id, join_uid, 
+      ctime, subscribe_progress, join_status, 
+      status_change_time, receiver_name, receiver_mobile, 
+      receiver_detail_address, receiver_province, 
+      receiver_city, receiver_area, remark, 
+      paid_flag, pay_count_down_seconds, pay_time
+      )
+    values (#{orderNo,jdbcType=VARCHAR}, #{groupPurchaseId,jdbcType=BIGINT}, #{joinUid,jdbcType=BIGINT}, 
+      #{ctime,jdbcType=BIGINT}, #{subscribeProgress,jdbcType=BIT}, #{joinStatus,jdbcType=INTEGER}, 
+      #{statusChangeTime,jdbcType=BIGINT}, #{receiverName,jdbcType=VARCHAR}, #{receiverMobile,jdbcType=VARCHAR}, 
+      #{receiverDetailAddress,jdbcType=VARCHAR}, #{receiverProvince,jdbcType=VARCHAR}, 
+      #{receiverCity,jdbcType=VARCHAR}, #{receiverArea,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, 
+      #{paidFlag,jdbcType=BIT}, #{payCountDownSeconds,jdbcType=INTEGER}, #{payTime,jdbcType=BIGINT}
+      )
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.ddf.group.purchase.core.model.entity.GroupPurchaseItem" useGeneratedKeys="true">
+    <!--@mbg.generated-->
+    insert into group_purchase_item
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="orderNo != null">
+        order_no,
+      </if>
+      <if test="groupPurchaseId != null">
+        group_purchase_id,
+      </if>
+      <if test="joinUid != null">
+        join_uid,
+      </if>
+      <if test="ctime != null">
+        ctime,
+      </if>
+      <if test="subscribeProgress != null">
+        subscribe_progress,
+      </if>
+      <if test="joinStatus != null">
+        join_status,
+      </if>
+      <if test="statusChangeTime != null">
+        status_change_time,
+      </if>
+      <if test="receiverName != null">
+        receiver_name,
+      </if>
+      <if test="receiverMobile != null">
+        receiver_mobile,
+      </if>
+      <if test="receiverDetailAddress != null">
+        receiver_detail_address,
+      </if>
+      <if test="receiverProvince != null">
+        receiver_province,
+      </if>
+      <if test="receiverCity != null">
+        receiver_city,
+      </if>
+      <if test="receiverArea != null">
+        receiver_area,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+      <if test="paidFlag != null">
+        paid_flag,
+      </if>
+      <if test="payCountDownSeconds != null">
+        pay_count_down_seconds,
+      </if>
+      <if test="payTime != null">
+        pay_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="orderNo != null">
+        #{orderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="groupPurchaseId != null">
+        #{groupPurchaseId,jdbcType=BIGINT},
+      </if>
+      <if test="joinUid != null">
+        #{joinUid,jdbcType=BIGINT},
+      </if>
+      <if test="ctime != null">
+        #{ctime,jdbcType=BIGINT},
+      </if>
+      <if test="subscribeProgress != null">
+        #{subscribeProgress,jdbcType=BIT},
+      </if>
+      <if test="joinStatus != null">
+        #{joinStatus,jdbcType=INTEGER},
+      </if>
+      <if test="statusChangeTime != null">
+        #{statusChangeTime,jdbcType=BIGINT},
+      </if>
+      <if test="receiverName != null">
+        #{receiverName,jdbcType=VARCHAR},
+      </if>
+      <if test="receiverMobile != null">
+        #{receiverMobile,jdbcType=VARCHAR},
+      </if>
+      <if test="receiverDetailAddress != null">
+        #{receiverDetailAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="receiverProvince != null">
+        #{receiverProvince,jdbcType=VARCHAR},
+      </if>
+      <if test="receiverCity != null">
+        #{receiverCity,jdbcType=VARCHAR},
+      </if>
+      <if test="receiverArea != null">
+        #{receiverArea,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="paidFlag != null">
+        #{paidFlag,jdbcType=BIT},
+      </if>
+      <if test="payCountDownSeconds != null">
+        #{payCountDownSeconds,jdbcType=INTEGER},
+      </if>
+      <if test="payTime != null">
+        #{payTime,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ddf.group.purchase.core.model.entity.GroupPurchaseItem">
+    <!--@mbg.generated-->
+    update group_purchase_item
+    <set>
+      <if test="orderNo != null">
+        order_no = #{orderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="groupPurchaseId != null">
+        group_purchase_id = #{groupPurchaseId,jdbcType=BIGINT},
+      </if>
+      <if test="joinUid != null">
+        join_uid = #{joinUid,jdbcType=BIGINT},
+      </if>
+      <if test="ctime != null">
+        ctime = #{ctime,jdbcType=BIGINT},
+      </if>
+      <if test="subscribeProgress != null">
+        subscribe_progress = #{subscribeProgress,jdbcType=BIT},
+      </if>
+      <if test="joinStatus != null">
+        join_status = #{joinStatus,jdbcType=INTEGER},
+      </if>
+      <if test="statusChangeTime != null">
+        status_change_time = #{statusChangeTime,jdbcType=BIGINT},
+      </if>
+      <if test="receiverName != null">
+        receiver_name = #{receiverName,jdbcType=VARCHAR},
+      </if>
+      <if test="receiverMobile != null">
+        receiver_mobile = #{receiverMobile,jdbcType=VARCHAR},
+      </if>
+      <if test="receiverDetailAddress != null">
+        receiver_detail_address = #{receiverDetailAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="receiverProvince != null">
+        receiver_province = #{receiverProvince,jdbcType=VARCHAR},
+      </if>
+      <if test="receiverCity != null">
+        receiver_city = #{receiverCity,jdbcType=VARCHAR},
+      </if>
+      <if test="receiverArea != null">
+        receiver_area = #{receiverArea,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="paidFlag != null">
+        paid_flag = #{paidFlag,jdbcType=BIT},
+      </if>
+      <if test="payCountDownSeconds != null">
+        pay_count_down_seconds = #{payCountDownSeconds,jdbcType=INTEGER},
+      </if>
+      <if test="payTime != null">
+        pay_time = #{payTime,jdbcType=BIGINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ddf.group.purchase.core.model.entity.GroupPurchaseItem">
+    <!--@mbg.generated-->
+    update group_purchase_item
+    set order_no = #{orderNo,jdbcType=VARCHAR},
+      group_purchase_id = #{groupPurchaseId,jdbcType=BIGINT},
+      join_uid = #{joinUid,jdbcType=BIGINT},
+      ctime = #{ctime,jdbcType=BIGINT},
+      subscribe_progress = #{subscribeProgress,jdbcType=BIT},
+      join_status = #{joinStatus,jdbcType=INTEGER},
+      status_change_time = #{statusChangeTime,jdbcType=BIGINT},
+      receiver_name = #{receiverName,jdbcType=VARCHAR},
+      receiver_mobile = #{receiverMobile,jdbcType=VARCHAR},
+      receiver_detail_address = #{receiverDetailAddress,jdbcType=VARCHAR},
+      receiver_province = #{receiverProvince,jdbcType=VARCHAR},
+      receiver_city = #{receiverCity,jdbcType=VARCHAR},
+      receiver_area = #{receiverArea,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR},
+      paid_flag = #{paidFlag,jdbcType=BIT},
+      pay_count_down_seconds = #{payCountDownSeconds,jdbcType=INTEGER},
+      pay_time = #{payTime,jdbcType=BIGINT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <resultMap id="BaseResultMap" type="com.ddf.group.purchase.core.model.entity.GroupPurchaseItem">
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="order_no" jdbcType="VARCHAR" property="orderNo" />
     <result column="group_purchase_id" jdbcType="BIGINT" property="groupPurchaseId" />
@@ -41,7 +288,7 @@
     from group_purchase_item
   </select>
 
-  <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+  <insert id="insert" keyProperty="id" useGeneratedKeys="true">
     insert into group_purchase_item (order_no, group_purchase_id, join_uid, ctime, subscribe_progress,
       join_status, status_change_time, receiver_name, receiver_mobile, receiver_detail_address,
       receiver_province, receiver_city, receiver_area, receiver_building_no, receiver_room_no, remark,

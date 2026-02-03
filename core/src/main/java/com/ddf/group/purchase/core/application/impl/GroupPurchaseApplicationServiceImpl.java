@@ -398,7 +398,7 @@ public class GroupPurchaseApplicationServiceImpl implements GroupPurchaseApplica
         purchaseItem.setCtime(currentTimeSeconds);
         purchaseItem.setSubscribeProgress(Boolean.TRUE);
         purchaseItem.setStatusChangeTime(currentTimeSeconds);
-        purchaseItem.setPayCountDownSeconds(delayTimeMapping.getSeconds().intValue());
+//        purchaseItem.setPayCountDownSeconds(delayTimeMapping.getSeconds().intValue());
         groupPurchaseItemMapper.insert(purchaseItem);
 
         GroupPurchaseItemGood purchaseItemGood = new GroupPurchaseItemGood();

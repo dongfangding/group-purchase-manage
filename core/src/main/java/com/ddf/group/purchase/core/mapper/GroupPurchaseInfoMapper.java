@@ -12,9 +12,20 @@ import org.apache.ibatis.annotations.Param;
  *
  * @author Snowball
  * @version 1.0
- * @date 2022/08/20 21:13
+ * @date 2026/02/03 23:45
  */
 public interface GroupPurchaseInfoMapper {
+    int deleteByPrimaryKey(Long id);
+
+    int insert(GroupPurchaseInfo record);
+
+    int insertSelective(GroupPurchaseInfo record);
+
+    GroupPurchaseInfo selectByPrimaryKey(Long id);
+
+    int updateByPrimaryKeySelective(GroupPurchaseInfo record);
+
+    int updateByPrimaryKey(GroupPurchaseInfo record);
 
     /**
      * 根据ID查询
@@ -30,14 +41,6 @@ public interface GroupPurchaseInfoMapper {
      * @return
      */
     List<GroupPurchaseInfo> selectList();
-
-    /**
-     * 插入
-     *
-     * @param groupPurchaseInfo
-     * @return
-     */
-    int insert(GroupPurchaseInfo groupPurchaseInfo);
 
     /**
      * 根据ID更新

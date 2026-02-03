@@ -1,6 +1,5 @@
 package com.ddf.group.purchase.core.model.entity;
 
-import java.io.Serializable;
 import lombok.Data;
 
 /**
@@ -8,7 +7,7 @@ import lombok.Data;
 *
 * @author Snowball
 * @version 1.0
-* @date 2022/11/25 11:44
+* @date 2026/02/03 23:47
 */
 
 
@@ -16,7 +15,8 @@ import lombok.Data;
  * 用户参团记录
  */
 @Data
-public class GroupPurchaseItem implements Serializable {
+public class GroupPurchaseItem {
+    private static final long serialVersionUID = 1L;
     private Long id;
 
     /**
@@ -85,16 +85,6 @@ public class GroupPurchaseItem implements Serializable {
     private String receiverArea;
 
     /**
-     * 收货人楼栋号
-     */
-    private String receiverBuildingNo;
-
-    /**
-     * 收货人房间号
-     */
-    private String receiverRoomNo;
-
-    /**
      * 备注
      */
     private String remark;
@@ -113,6 +103,4 @@ public class GroupPurchaseItem implements Serializable {
      * 支付时间戳
      */
     private Long payTime;
-
-    private static final long serialVersionUID = 1L;
 }

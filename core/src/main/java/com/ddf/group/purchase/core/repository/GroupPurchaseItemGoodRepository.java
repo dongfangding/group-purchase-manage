@@ -32,6 +32,19 @@ public class GroupPurchaseItemGoodRepository {
         return groupPurchaseItemGoodMapper.selectByGroupPurchaseItemId(groupItemId);
     }
 
+
+    /**
+     * 查找用户指定团购和商品的参团信息
+     *
+     * @param groupId
+     * @param userId
+     * @param goodId
+     * @return
+     */
+    public GroupPurchaseItemGood selectUserGroupGood(Long groupId, Long userId, Long goodId) {
+        return groupPurchaseItemGoodMapper.selectUserGroupGood(groupId, userId, goodId);
+    }
+
     /**
      * 批量插入
      *
@@ -39,5 +52,16 @@ public class GroupPurchaseItemGoodRepository {
      */
     public void batchInsert(List<GroupPurchaseItemGood> list) {
         groupPurchaseItemGoodMapper.batchInsert(list);
+    }
+
+    /**
+     * 查找指定用户指定团购的购买商品列表
+     *
+     * @param groupId
+     * @param userId
+     * @return
+     */
+    public List<GroupPurchaseItemGood> listUserGroupGood(Long groupId, Long userId) {
+        return groupPurchaseItemGoodMapper.listUserGroupGood(groupId, userId);
     }
 }

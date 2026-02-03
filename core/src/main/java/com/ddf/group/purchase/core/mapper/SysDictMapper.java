@@ -5,13 +5,24 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 /**
-* <p>description</p >
-*
-* @author Snowball
-* @version 1.0
-* @date 2022/08/29 16:37
-*/
+ * <p>description</p >
+ *
+ * @author Snowball
+ * @version 1.0
+ * @date 2026/02/03 23:45
+ */
 public interface SysDictMapper {
+    int deleteByPrimaryKey(Long id);
+
+    int insert(SysDict record);
+
+    int insertSelective(SysDict record);
+
+    SysDict selectByPrimaryKey(Long id);
+
+    int updateByPrimaryKeySelective(SysDict record);
+
+    int updateByPrimaryKey(SysDict record);
 
     /**
      * 根据ID查询
@@ -35,14 +46,6 @@ public interface SysDictMapper {
      * @return
      */
     List<SysDict> selectListByDictTypeCode(@Param("dictTypeCode") String dictTypeCode);
-
-    /**
-     * 插入
-     *
-     * @param sysDict
-     * @return
-     */
-    int insert(SysDict sysDict);
 
     /**
      * 根据ID更新

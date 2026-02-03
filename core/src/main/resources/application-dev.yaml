@@ -1,33 +1,28 @@
-mysql_host: 10.88.1.177
+mysql_host: 192.168.10.11
 spring:
   data:
     redis:
-      host: 10.88.1.177
+      host: 192.168.10.11
       port: 6379
       database: 1
       password: Aa&123456
-nacos:
-  config:
-    auto-refresh: true
-    config-retry-time: 3000
-    namespace: group-purchase-manage
-    group: dev
-    enable-remote-sync-config: true
-    type: properties
-    data-ids: property-source
-    ext-config:
-      - namespace: common
-        dataIds: common-server,common-datasource,common-global-properties,common-mybatis-plus,common-redis,common-mail,common-rocketmq,common-xxl-job,common-ids,common-fdfs,common-ext-sms,common-emq
-        group: DEFAULT_GROUP
-        type: yaml
-        auto-refresh: true
-      - namespace: group-purchase-manage
-        dataId: authentication
-        group: dev
-        type: yaml
-        auto-refresh: true
-      - namespace: group-purchase-manage
-        dataId: application-properties
-        group: dev
-        type: yaml
-        auto-refresh: true
+rocketmq:
+  name-server: 192.168.10.11:9876
+  producer:
+    group: boot-quick-producer-group
+    access-key: xxxxxxx
+    secret-key: xxxxxxx
+    enableMsgTrace: true
+    send-message-timeout: 7000
+  consumer:
+    group: boot-quick-consumer-group
+    access-key: xxxxxxx
+    secret-key: xxxxxxx
+    enableMsgTrace: true
+
+customizer:
+  infra:
+    mqtt:
+      connectionUrls:
+        - protocol: mqtt_tcp
+          url: tcp://192.168.10.11:21883

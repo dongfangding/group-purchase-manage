@@ -8,9 +8,20 @@ import java.util.List;
  *
  * @author Snowball
  * @version 1.0
- * @date 2022/08/20 20:25
+ * @date 2026/02/03 23:45
  */
 public interface CommunityBaseMapper {
+    int deleteByPrimaryKey(Long id);
+
+    int insert(CommunityBase record);
+
+    int insertSelective(CommunityBase record);
+
+    CommunityBase selectByPrimaryKey(Long id);
+
+    int updateByPrimaryKeySelective(CommunityBase record);
+
+    int updateByPrimaryKey(CommunityBase record);
 
     /**
      * 根据ID查询
@@ -26,14 +37,6 @@ public interface CommunityBaseMapper {
      * @return
      */
     List<CommunityBase> selectList();
-
-    /**
-     * 插入
-     *
-     * @param communityBase
-     * @return
-     */
-    int insert(CommunityBase communityBase);
 
     /**
      * 根据ID更新

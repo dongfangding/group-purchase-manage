@@ -9,9 +9,20 @@ import org.apache.ibatis.annotations.Param;
  *
  * @author Snowball
  * @version 1.0
- * @date 2022/09/13 18:45
+ * @date 2026/02/03 23:45
  */
 public interface GroupPurchaseGoodMapper {
+    int deleteByPrimaryKey(Long id);
+
+    int insert(GroupPurchaseGood record);
+
+    int insertSelective(GroupPurchaseGood record);
+
+    GroupPurchaseGood selectByPrimaryKey(Long id);
+
+    int updateByPrimaryKeySelective(GroupPurchaseGood record);
+
+    int updateByPrimaryKey(GroupPurchaseGood record);
 
     /**
      * 根据ID查询
@@ -35,14 +46,6 @@ public interface GroupPurchaseGoodMapper {
      * @return
      */
     GroupPurchaseGood selectByGroupPurchaseId(Long groupPurchaseId);
-
-    /**
-     * 插入
-     *
-     * @param groupPurchaseGood
-     * @return
-     */
-    int insert(GroupPurchaseGood groupPurchaseGood);
 
     /**
      * 根据ID更新

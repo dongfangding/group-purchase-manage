@@ -1,6 +1,5 @@
 package com.ddf.group.purchase.core.model.entity;
 
-import java.io.Serializable;
 import lombok.Data;
 
 /**
@@ -8,13 +7,16 @@ import lombok.Data;
 *
 * @author Snowball
 * @version 1.0
-* @date 2022/08/29 16:37
+* @date 2026/02/03 23:45
 */
+
+
 /**
-    * 字典表
-    */
+ * 字典表
+ */
 @Data
-public class SysDict implements Serializable {
+public class SysDict {
+    private static final long serialVersionUID = 1L;
     private Long id;
 
     /**
@@ -51,6 +53,4 @@ public class SysDict implements Serializable {
      * 是否有效
      */
     private Boolean active;
-
-    private static final long serialVersionUID = 1L;
 }
