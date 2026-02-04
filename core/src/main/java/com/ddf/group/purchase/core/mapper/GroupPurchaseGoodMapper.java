@@ -9,7 +9,7 @@ import org.apache.ibatis.annotations.Param;
  *
  * @author Snowball
  * @version 1.0
- * @date 2026/02/03 23:45
+ * @date 2026/02/04 19:16
  */
 public interface GroupPurchaseGoodMapper {
     int deleteByPrimaryKey(Long id);
@@ -25,21 +25,6 @@ public interface GroupPurchaseGoodMapper {
     int updateByPrimaryKey(GroupPurchaseGood record);
 
     /**
-     * 根据ID查询
-     *
-     * @param id
-     * @return
-     */
-    GroupPurchaseGood selectById(Long id);
-
-    /**
-     * 查询所有
-     *
-     * @return
-     */
-    List<GroupPurchaseGood> selectList();
-
-    /**
      * 根据团购ID查询商品列表
      *
      * @param groupPurchaseId
@@ -47,21 +32,6 @@ public interface GroupPurchaseGoodMapper {
      */
     GroupPurchaseGood selectByGroupPurchaseId(Long groupPurchaseId);
 
-    /**
-     * 根据ID更新
-     *
-     * @param groupPurchaseGood
-     * @return
-     */
-    int updateById(GroupPurchaseGood groupPurchaseGood);
-
-    /**
-     * 根据ID删除
-     *
-     * @param id
-     * @return
-     */
-    int deleteById(Long id);
 
     /**
      * 扣减商品库存

@@ -39,7 +39,7 @@ public class GroupPurchaseGoodRepository {
      * @return
      */
     public GroupPurchaseGood getById(Long id) {
-        return groupPurchaseGoodMapper.selectById(id);
+        return groupPurchaseGoodMapper.selectByPrimaryKey(id);
     }
 
     /**

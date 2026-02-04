@@ -30,7 +30,7 @@ public class UserClaimServiceImpl implements UserClaimService {
 
     @Override
     public UserClaim getStoreUserInfo(HttpServletRequest request, UserClaim claim) {
-        final UserInfo userInfo = userInfoMapper.selectById(Long.parseLong(claim.getUserId()));
+        final UserInfo userInfo = userInfoMapper.selectByPrimaryKey(Long.parseLong(claim.getUserId()));
         return UserConvert.INSTANCE.convert(userInfo);
     }
 }

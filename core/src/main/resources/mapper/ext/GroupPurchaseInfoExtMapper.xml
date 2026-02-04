@@ -74,4 +74,21 @@
                            on master.id = good.group_purchase_id
         where master.id = #{groupId}
     </select>
+
+    <select id="selectByQuery" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List" />
+        from group_purchase_info
+        <where>
+            <if test="query.groupMasterUid != null">
+                and group_master_uid = #{query.groupMasterUid}
+            </if>
+            <if test="query.status != null">
+                and status = #{query.status.value}
+            </if>
+            <if test="query.groupName != null and query.groupName != ''">
+                and name like concat(#{query.groupName}, '%')
+            </if>
+        </where>
+        order by ctime desc
+    </select>
 </mapper>

@@ -47,6 +47,6 @@ public class UserClient {
      * @return
      */
     public UserInfo currentUserInfo() {
-        return userInfoMapper.selectById(UserContextUtil.getLongUserId());
+        return userInfoMapper.selectByPrimaryKey(UserContextUtil.getLongUserId());
     }
 }

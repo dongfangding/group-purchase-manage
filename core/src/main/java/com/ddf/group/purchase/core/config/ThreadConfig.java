@@ -24,7 +24,7 @@ public class ThreadConfig {
      */
     @Bean
     public ThreadPoolTaskExecutor mailThreadPool() {
-        return ThreadBuilderHelper.buildThreadExecutor("mail-thread-pool-", 3600, 1000, 4, 4);
+        return ThreadBuilderHelper.buildThreadExecutor("mail-thread-pool-", 5, 10, 600, 100);
     }
 
     /**
@@ -35,11 +35,7 @@ public class ThreadConfig {
     @Bean
     public ThreadPoolTaskExecutor groupEventThreadPool() {
         return ThreadBuilderHelper.buildThreadExecutor(
-                "group-event-thread-pool-", 3600, 1000, Runtime
-                        .getRuntime()
-                        .availableProcessors(), Runtime
-                        .getRuntime()
-                        .availableProcessors() * 2, new ThreadPoolExecutor.CallerRunsPolicy(), true, true
+                "group-event-thread-pool-", 10, 20, 3600, 1000, new ThreadPoolExecutor.CallerRunsPolicy(), true, true
         );
     }
 }

@@ -239,11 +239,11 @@ public class GroupPurchaseApplicationServiceImpl implements GroupPurchaseApplica
             }
         }
         // 修改团购基本信息
-        final int i = groupPurchaseInfoMapper.updateById(groupPurchaseInfo);
+        final int i = groupPurchaseInfoMapper.updateByPrimaryKeySelective(groupPurchaseInfo);
         final GroupPurchaseGood purchaseGood = groupPurchaseGoodRepository.getByGroupId(groupPurchaseInfo.getId());
         if (Objects.nonNull(purchaseGood)) {
             BeanCopierUtils.copy(request, purchaseGood);
-            groupPurchaseGoodMapper.updateById(purchaseGood);
+            groupPurchaseGoodMapper.updateByPrimaryKeySelective(purchaseGood);
         }
     }
 
@@ -385,7 +385,7 @@ public class GroupPurchaseApplicationServiceImpl implements GroupPurchaseApplica
         final Long currentUserId = UserContextUtil.getLongUserId();
         // 团购校验
         checkGroupUserCanOperate(groupId);
-        final GroupPurchaseGood good = groupPurchaseGoodMapper.selectById(goodId);
+        final GroupPurchaseGood good = groupPurchaseGoodMapper.selectByPrimaryKey(goodId);
         PreconditionUtil.checkArgument(Objects.nonNull(good), ExceptionCode.GROUP_GOOD_NOT_EXIST);
 
         // 剩余支付之间
@@ -450,7 +450,7 @@ public class GroupPurchaseApplicationServiceImpl implements GroupPurchaseApplica
         final Long joinItemId = request.getJoinItemId();
         final Long goodId = request.getGoodId();
         final Integer goodNum = request.getGoodNum();
-        final GroupPurchaseItem item = groupPurchaseItemMapper.selectById(joinItemId);
+        final GroupPurchaseItem item = groupPurchaseItemMapper.selectByPrimaryKey(joinItemId);
         PreconditionUtil.checkArgument(Objects.equals(userId, item.getJoinUid()), ExceptionCode.DATA_NOT_MATCH_USER);
         if (!Objects.equals(GroupPurchaseItemJoinStatusEnum.WAIT_PAY.getValue(), item.getJoinStatus())) {
             throw new BusinessException(ExceptionCode.GROUP_ITEM_NOT_ALLOW_PAY);
@@ -468,7 +468,7 @@ public class GroupPurchaseApplicationServiceImpl implements GroupPurchaseApplica
         if (!Objects.equals(itemGood.getGoodNum(), goodNum)) {
             itemGood.setGoodNum(goodNum);
             itemGood.setTotalPrice(itemGood.getPrice().multiply(BigDecimal.valueOf(goodNum)));
-            groupPurchaseItemGoodMapper.updateById(itemGood);
+            groupPurchaseItemGoodMapper.updateByPrimaryKeySelective(itemGood);
         }
         // 发布参团事件
         applicationEventPublisher.publishEvent(new GroupPayEvent(
@@ -481,7 +481,7 @@ public class GroupPurchaseApplicationServiceImpl implements GroupPurchaseApplica
 
     @Override
     public boolean closeOrder(Long groupItemId) {
-        final GroupPurchaseItem item = groupPurchaseItemMapper.selectById(groupItemId);
+        final GroupPurchaseItem item = groupPurchaseItemMapper.selectByPrimaryKey(groupItemId);
         if (Objects.isNull(item) || !Objects.equals(GroupPurchaseItemJoinStatusEnum.WAIT_PAY.getValue(), item.getJoinStatus())) {
             return false;
         }

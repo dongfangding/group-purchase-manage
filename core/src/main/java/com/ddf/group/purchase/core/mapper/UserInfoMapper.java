@@ -11,7 +11,7 @@ import org.apache.ibatis.annotations.Param;
  *
  * @author Snowball
  * @version 1.0
- * @date 2026/02/03 23:45
+ * @date 2026/02/04 19:16
  */
 public interface UserInfoMapper {
     int deleteByPrimaryKey(Long id);
@@ -25,14 +25,6 @@ public interface UserInfoMapper {
     int updateByPrimaryKeySelective(UserInfo record);
 
     int updateByPrimaryKey(UserInfo record);
-
-    /**
-     * 根据ID查询
-     *
-     * @param id
-     * @return
-     */
-    UserInfo selectById(Long id);
 
     /**
      * 根据手机号查询
@@ -49,13 +41,6 @@ public interface UserInfoMapper {
      * @return
      */
     List<UserInfo> selectByEmail(String email);
-
-    /**
-     * 查询所有
-     *
-     * @return
-     */
-    List<UserInfo> selectList();
 
     /**
      * 根据ID集合查询
@@ -97,22 +82,6 @@ public interface UserInfoMapper {
      * @return
      */
     int verifiedEmail(@Param("userId") Long userId, @Param("email") String email);
-
-    /**
-     * 根据ID更新
-     *
-     * @param userInfo
-     * @return
-     */
-    int updateById(UserInfo userInfo);
-
-    /**
-     * 根据ID删除
-     *
-     * @param id
-     * @return
-     */
-    int deleteById(Long id);
 
     /**
      * 根据已认证的邮箱查询用户

@@ -14,4 +14,62 @@
       and building_no = #{buildingNo}
       and room_no = #{roomNo}
   </select>
+
+    <select id="selectByMobile" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List" />
+        from user_info
+        where mobile = #{mobile}
+    </select>
+
+    <select id="selectByEmail" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List" />
+        from user_info
+        where email = #{email}
+    </select>
+
+    <select id="selectList" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List" />
+        from user_info
+    </select>
+
+    <select id="selectByIds" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List" />
+        from user_info
+        where id in
+        <foreach close=")" collection="ids" item="id" open="(" separator=",">
+            #{id}
+        </foreach>
+    </select>
+
+    <select id="existsByMobile" resultType="int">
+        select count(1) from user_info where mobile = #{mobile}
+    </select>
+
+    <select id="existsByEmail" resultType="int">
+        select count(1) from user_info where email = #{email}
+    </select>
+
+    <update id="completeUserInfo">
+        update user_info
+        <set>
+            <if test="command.communityId != null">community_id = #{command.communityId},</if>
+            <if test="command.buildingNo != null">building_no = #{command.buildingNo},</if>
+            <if test="command.roomNo != null">room_no = #{command.roomNo},</if>
+            <if test="command.email != null">email = '', temp_email = #{command.email},</if>
+            <if test="command.nickname != null">nickname = #{command.nickname},</if>
+            <if test="command.avatarUrl != null">avatar_url = #{command.avatarUrl},</if>
+            <if test="command.avatarThumbUrl != null">avatar_thumb_url = #{command.avatarThumbUrl},</if>
+            <if test="command.emailVerified != null">email_verified = #{command.emailVerified}</if>
+        </set>
+        where id = #{command.id}
+    </update>
+
+    <update id="verifiedEmail">
+        update user_info
+        set email = #{email},
+        email_verified = true
+        where id = #{userId}
+        and temp_email = #{email}
+        and email_verified = false
+    </update>
 </mapper>

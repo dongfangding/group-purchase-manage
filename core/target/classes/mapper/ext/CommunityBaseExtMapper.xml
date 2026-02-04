@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.ddf.group.purchase.core.mapper.CommunityBaseMapper">
-  <select id="selectByCommunityNameLike" resultMap="BaseResultMap">
-    select <include refid="Base_Column_List" />
-    from community_base
-    where community_name like concat('%', #{communityName}, '%')
-  </select>
-</mapper>

@@ -70,7 +70,7 @@ public class UserAddressRepository {
      * @return
      */
     public UserAddress getById(Long id) {
-        return userAddressMapper.selectById(id);
+        return userAddressMapper.selectByPrimaryKey(id);
     }
 
     /**
@@ -90,6 +90,6 @@ public class UserAddressRepository {
      * @return
      */
     public int update(UserAddress userAddress) {
-        return userAddressMapper.updateById(userAddress);
+        return userAddressMapper.updateByPrimaryKeySelective(userAddress);
     }
 }

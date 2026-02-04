@@ -7,7 +7,7 @@ import lombok.Data;
 *
 * @author Snowball
 * @version 1.0
-* @date 2026/02/03 23:47
+* @date 2026/02/04 19:18
 */
 
 
@@ -16,7 +16,6 @@ import lombok.Data;
  */
 @Data
 public class GroupPurchaseItem {
-    private static final long serialVersionUID = 1L;
     private Long id;
 
     /**

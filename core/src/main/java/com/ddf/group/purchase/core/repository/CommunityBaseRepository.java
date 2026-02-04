@@ -29,7 +29,7 @@ public class CommunityBaseRepository {
      * @return
      */
     public CommunityBase getById(Long id) {
-        return communityBaseMapper.selectById(id);
+        return communityBaseMapper.selectByPrimaryKey(id);
     }
 
     /**

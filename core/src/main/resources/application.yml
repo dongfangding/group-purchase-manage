@@ -11,7 +11,7 @@ server:
   shutdown: graceful
   servlet:
     context-path: /group-purchase-manage
-  port: 8080
+  port: 8083
 
 spring:
   messages:
@@ -137,8 +137,16 @@ customizer:
         - 0
       expiredMinute: 43800
       ignores:
-
     mqtt:
+      config:
+        connectionUrls:
+          - protocol: mqtt_tcp
+            url: tcp://localhost:21883
+        client:
+          clientIdPrefix: group-purchase-manage
+          username: system
+          password: Aa&123456
+        enable: true
       connectionUrls:
         - protocol: mqtt_tcp
           url: tcp://localhost:21883

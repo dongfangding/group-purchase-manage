@@ -69,7 +69,7 @@ public class GroupPurchaseItemRepository {
         item.setSubscribeProgress(subscribeFlag);
         item.setGroupPurchaseId(groupId);
         item.setJoinUid(joinUid);
-        return groupPurchaseItemMapper.updateById(item) > 0;
+        return groupPurchaseItemMapper.updateByPrimaryKeySelective(item) > 0;
     }
 
     /**
@@ -84,6 +84,6 @@ public class GroupPurchaseItemRepository {
         item.setJoinStatus(GroupPurchaseItemJoinStatusEnum.CLOSED.getValue());
         item.setPaidFlag(Boolean.FALSE);
         item.setStatusChangeTime(DateUtils.currentTimeSeconds());
-        return groupPurchaseItemMapper.updateById(item) > 0;
+        return groupPurchaseItemMapper.updateByPrimaryKeySelective(item) > 0;
     }
 }

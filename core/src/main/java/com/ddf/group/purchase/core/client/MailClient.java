@@ -23,7 +23,6 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor(onConstructor_={@Autowired})
 public class MailClient {
 
-    private final MailUtil mailUtil;
     private final ApplicationProperties applicationProperties;
     private final CommonRepository commonRepository;
     private final UserClient userClient;
@@ -44,7 +43,7 @@ public class MailClient {
         content += "<a href='" + url + "'>" + url + "</a>";
         content += "<p>如果以上链接无法打开，请复制链接到浏览器中打开，该链接五分钟内有效，请及时验证。</p>";
         content += "(该邮件由系统自动发出，请勿回复)";
-        mailUtil.sendMimeMail(new String[] {email}, subject, content);
+        MailUtil.sendMimeMail(new String[] {email}, subject, content);
     }
 
 
@@ -61,7 +60,7 @@ public class MailClient {
         String content = "<p>您在团购吧参与的团购[" + groupName + "]最新状态变更为<font color='red'>" + status.getDesc()
                 + "</fond>，您也可前往系统查询详情</p>"
                 + "(该邮件由系统自动发出，请勿回复)";
-        mailUtil.sendMimeMail(new String[] {email}, subject, content);
+        MailUtil.sendMimeMail(new String[] {email}, subject, content);
     }
 
     /**

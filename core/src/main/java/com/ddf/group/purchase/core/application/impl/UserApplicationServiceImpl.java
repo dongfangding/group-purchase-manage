@@ -137,7 +137,7 @@ public class UserApplicationServiceImpl implements UserApplicationService {
                 .build();
         commonHelper.verifySmsCode(verifyRequest);
         userInfo.setPassword(bCryptPasswordEncoder.encode(request.getNewPassword()));
-        userInfoMapper.updateById(userInfo);
+        userInfoMapper.updateByPrimaryKeySelective(userInfo);
     }
 
     @Override
@@ -151,7 +151,7 @@ public class UserApplicationServiceImpl implements UserApplicationService {
             userAddress.setUid(userId);
             userAddressMapper.insert(userAddress);
         } else {
-            userAddressMapper.updateById(userAddress);
+            userAddressMapper.updateByPrimaryKeySelective(userAddress);
         }
     }
 

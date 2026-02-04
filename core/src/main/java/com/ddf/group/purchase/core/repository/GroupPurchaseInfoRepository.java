@@ -54,7 +54,7 @@ public class GroupPurchaseInfoRepository {
      * @return
      */
     public GroupPurchaseInfo selectGroupPurchaseInfoById(Long id) {
-        return groupPurchaseInfoMapper.selectById(id);
+        return groupPurchaseInfoMapper.selectByPrimaryKey(id);
     }
 
     /**
@@ -81,7 +81,7 @@ public class GroupPurchaseInfoRepository {
         info.setName(groupName);
         info.setContent(content);
         info.setMtime(DateUtils.currentTimeSeconds());
-        return groupPurchaseInfoMapper.updateById(info) > 0;
+        return groupPurchaseInfoMapper.updateByPrimaryKeySelective(info) > 0;
     }
 
     /**
@@ -95,7 +95,7 @@ public class GroupPurchaseInfoRepository {
         info.setId(id);
         info.setStatus(GroupPurchaseStatusEnum.GROUPED.getValue());
         info.setMtime(DateUtils.currentTimeSeconds());
-        final boolean result = groupPurchaseInfoMapper.updateById(info) > 0;
+        final boolean result = groupPurchaseInfoMapper.updateByPrimaryKeySelective(info) > 0;
         if (result) {
             final GroupPurchaseTrace trace = new GroupPurchaseTrace();
             trace.setGroupPurchaseId(id);
@@ -117,7 +117,7 @@ public class GroupPurchaseInfoRepository {
         info.setId(id);
         info.setStatus(GroupPurchaseStatusEnum.ARRIVED.getValue());
         info.setMtime(DateUtils.currentTimeSeconds());
-        final boolean result = groupPurchaseInfoMapper.updateById(info) > 0;
+        final boolean result = groupPurchaseInfoMapper.updateByPrimaryKeySelective(info) > 0;
         if (result) {
             final GroupPurchaseTrace trace = new GroupPurchaseTrace();
             trace.setGroupPurchaseId(id);
@@ -139,7 +139,7 @@ public class GroupPurchaseInfoRepository {
         info.setId(id);
         info.setStatus(GroupPurchaseStatusEnum.COMPLETED.getValue());
         info.setMtime(DateUtils.currentTimeSeconds());
-        final boolean result = groupPurchaseInfoMapper.updateById(info) > 0;
+        final boolean result = groupPurchaseInfoMapper.updateByPrimaryKeySelective(info) > 0;
         if (result) {
             final GroupPurchaseTrace trace = new GroupPurchaseTrace();
             trace.setGroupPurchaseId(id);
@@ -161,7 +161,7 @@ public class GroupPurchaseInfoRepository {
         info.setId(id);
         info.setStatus(GroupPurchaseStatusEnum.CANCELED.getValue());
         info.setMtime(DateUtils.currentTimeSeconds());
-        final boolean result = groupPurchaseInfoMapper.updateById(info) > 0;
+        final boolean result = groupPurchaseInfoMapper.updateByPrimaryKeySelective(info) > 0;
         if (result) {
             final GroupPurchaseTrace trace = new GroupPurchaseTrace();
             trace.setGroupPurchaseId(id);
@@ -205,7 +205,7 @@ public class GroupPurchaseInfoRepository {
         final GroupPurchaseInfo info = new GroupPurchaseInfo();
         info.setId(id);
         info.setPublicFlag(publicFlag);
-        return groupPurchaseInfoMapper.updateById(info) > 0;
+        return groupPurchaseInfoMapper.updateByPrimaryKeySelective(info) > 0;
     }
 
 }

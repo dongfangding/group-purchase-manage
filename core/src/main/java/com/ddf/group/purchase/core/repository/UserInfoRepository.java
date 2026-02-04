@@ -34,7 +34,7 @@ public class UserInfoRepository {
      * @return
      */
     public UserInfo getById(Long userId) {
-        return userInfoMapper.selectById(userId);
+        return userInfoMapper.selectByPrimaryKey(userId);
     }
 
     /**
@@ -150,6 +150,6 @@ public class UserInfoRepository {
      * @return
      */
     public int update(UserInfo userInfo) {
-        return userInfoMapper.updateById(userInfo);
+        return userInfoMapper.updateByPrimaryKeySelective(userInfo);
     }
 }
