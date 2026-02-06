@@ -1,5 +1,6 @@
 package com.ddf.group.purchase.core.controller;
 
+import com.ddf.boot.common.api.model.common.response.ResponseData;
 import com.ddf.boot.common.authentication.util.UserContextUtil;
 import com.ddf.group.purchase.api.request.user.CompleteUserInfoRequest;
 import com.ddf.group.purchase.api.request.user.EmailVerifyRequest;
@@ -48,8 +49,8 @@ public class UserInfoController {
      * @param request
      */
     @PostMapping("completeInfo")
-    public PersonalInfoResponse completeInfo(@RequestBody @Validated CompleteUserInfoRequest request) {
-        return userApplicationService.completeInfo(request);
+    public ResponseData<PersonalInfoResponse> completeInfo(@RequestBody @Validated CompleteUserInfoRequest request) {
+        return ResponseData.success(userApplicationService.completeInfo(request));
     }
 
     /**
@@ -58,8 +59,9 @@ public class UserInfoController {
      * @param request
      */
     @PostMapping("sendEmailVerify")
-    public void sendEmailVerify(@RequestBody @Validated EmailVerifyRequest request) {
+    public ResponseData<Void> sendEmailVerify(@RequestBody @Validated EmailVerifyRequest request) {
         mailClient.sendEmailActive(UserContextUtil.getLongUserId(), request.getEmail());
+        return ResponseData.empty();
     }
 
     /**
@@ -69,8 +71,9 @@ public class UserInfoController {
      * @param token
      */
     @GetMapping("verifyEmailActiveToken")
-    public void verifyEmailActiveToken(HttpServletResponse response, @RequestParam String token) {
+    public ResponseData<Void> verifyEmailActiveToken(HttpServletResponse response, @RequestParam String token) {
         commonHelper.verifyEmailActiveToken(response, token);
+        return ResponseData.empty();
     }
 
     /**
@@ -78,13 +81,14 @@ public class UserInfoController {
      *
      */
     @GetMapping("personalInfo")
-    public PersonalInfoResponse personalInfo() {
-        return userApplicationService.personalInfo();
+    public ResponseData<PersonalInfoResponse> personalInfo() {
+        return ResponseData.success(userApplicationService.personalInfo());
     }
 
     @PostMapping("modifyPassword")
-    public void modifyPassword(@RequestBody @Validated ModifyPasswordRequest request) {
+    public ResponseData<Void> modifyPassword(@RequestBody @Validated ModifyPasswordRequest request) {
         userApplicationService.modifyPassword(request);
+        return ResponseData.empty();
     }
 
     /**
@@ -93,8 +97,9 @@ public class UserInfoController {
      * @param request
      */
     @PostMapping("address/saveOrUpdate")
-    public void modifyPassword(@RequestBody @Validated UserAddressRequest request) {
+    public ResponseData<Void> addressSaveOrUpdate(@RequestBody @Validated UserAddressRequest request) {
         userApplicationService.addressCommand(request);
+        return ResponseData.empty();
     }
 
 
@@ -104,8 +109,8 @@ public class UserInfoController {
      * @return
      */
     @GetMapping("address/all")
-    public List<UserAddressResponse> listUserAddress() {
-        return userApplicationService.listUserAddress(UserContextUtil.getLongUserId());
+    public ResponseData<List<UserAddressResponse>> listUserAddress() {
+        return ResponseData.success(userApplicationService.listUserAddress(UserContextUtil.getLongUserId()));
     }
 
     /**
@@ -114,8 +119,8 @@ public class UserInfoController {
      * @return
      */
     @GetMapping("address/default")
-    public UserAddressResponse getUserDefaultAddress() {
-        return UserAddressConvert.INSTANCE.convert(userAddressRepository.getUserDefaultAddress(UserContextUtil.getLongUserId()));
+    public ResponseData<UserAddressResponse> getUserDefaultAddress() {
+        return ResponseData.success(UserAddressConvert.INSTANCE.convert(userAddressRepository.getUserDefaultAddress(UserContextUtil.getLongUserId())));
     }
 
     /**
@@ -124,7 +129,7 @@ public class UserInfoController {
      * @param id
      */
     @PostMapping("address/delete")
-    public int deleteUserAddress(@RequestParam Long id) {
-        return userApplicationService.deleteUserAddress(id, UserContextUtil.getLongUserId());
+    public ResponseData<Integer> deleteUserAddress(@RequestParam Long id) {
+        return ResponseData.success(userApplicationService.deleteUserAddress(id, UserContextUtil.getLongUserId()));
     }
 }

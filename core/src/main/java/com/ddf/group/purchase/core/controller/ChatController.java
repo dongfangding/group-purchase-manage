@@ -1,5 +1,6 @@
 package com.ddf.group.purchase.core.controller;
 
+import com.ddf.boot.common.api.model.common.response.ResponseData;
 import com.ddf.group.purchase.api.request.chat.PrivateMessageRequest;
 import com.ddf.group.purchase.core.application.ChatMessageApplicationService;
 import lombok.RequiredArgsConstructor;
@@ -30,7 +31,8 @@ public class ChatController {
      * @param privateMessageRequest
      */
     @PostMapping("/privateMessage")
-    public void chat(@RequestBody PrivateMessageRequest privateMessageRequest) {
+    public ResponseData<Void> chat(@RequestBody PrivateMessageRequest privateMessageRequest) {
         chatMessageApplicationService.chat(privateMessageRequest);
+        return ResponseData.empty();
     }
 }

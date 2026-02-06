@@ -38,10 +38,10 @@ spring:
       username: root
       password: Aa&123456
       url: jdbc:mysql://${mysql_host}:3306/group_purchase_manage?useUnicode=true&characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Shanghai&zeroDateTimeBehavior=convertToNull
-      initial-size: 10
+      initial-size: 5
       asyncInit: false
       max-active: 200
-      min-idle: 10
+      min-idle: 5
       keep-alive: true
       max-wait: 60000
       use-unfair-lock: true
@@ -53,6 +53,10 @@ spring:
       test-on-return: false
       poolPreparedStatements: false
       max-open-prepared-statements: 20
+      # 连接失败后快速失败
+      connection-error-retry-attempts: 2
+      break-after-acquire-failure: true
+      time-between-connect-error-millis: 3000
       filter:
         stat:
           enabled: true
@@ -69,12 +73,12 @@ spring:
         login-password: Aa&123456
         allow:
   mail:
-    host: localhost
+    host: smtp.qq.com
     port: 465
-    username: snowball
-    password: snowball
+    username: 1041765757@qq.com
+    password: nwvxzrwawmwubdic
     properties:
-      from: Snowball Notice <notice@snowball.email>
+      from: Snowball Notice <1041765757@qq.com>
       mail:
         smtp:
           auth: true
@@ -137,16 +141,11 @@ customizer:
         - 0
       expiredMinute: 43800
       ignores:
+        - /common/*
+        - /auth/login
+        - /auth/sendRegisterSmsCode
+        - /auth/registry
     mqtt:
-      config:
-        connectionUrls:
-          - protocol: mqtt_tcp
-            url: tcp://localhost:21883
-        client:
-          clientIdPrefix: group-purchase-manage
-          username: system
-          password: Aa&123456
-        enable: true
       connectionUrls:
         - protocol: mqtt_tcp
           url: tcp://localhost:21883

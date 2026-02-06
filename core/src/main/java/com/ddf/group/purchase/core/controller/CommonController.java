@@ -3,6 +3,7 @@ package com.ddf.group.purchase.core.controller;
 import com.ddf.boot.common.api.model.captcha.request.CaptchaCheckRequest;
 import com.ddf.boot.common.api.model.captcha.request.CaptchaRequest;
 import com.ddf.boot.common.api.model.captcha.response.ApplicationCaptchaResult;
+import com.ddf.boot.common.api.model.common.response.ResponseData;
 import com.ddf.boot.common.mvc.resolver.MultiArgumentResolver;
 import com.ddf.boot.common.redis.helper.RedisTemplateHelper;
 import com.ddf.group.purchase.api.request.common.SendSmsCodeRequest;
@@ -45,8 +46,8 @@ public class CommonController {
 
 
     @GetMapping("listDict")
-    public List<SysDictResponse> listDict(@RequestParam String dictType) {
-        return CommonConverter.INSTANCE.convert(sysDictRepository.listDictByCodeFromCache(dictType));
+    public ResponseData<List<SysDictResponse>> listDict(@RequestParam String dictType) {
+        return ResponseData.success(CommonConverter.INSTANCE.convert(sysDictRepository.listDictByCodeFromCache(dictType)));
     }
 
     /**
@@ -56,8 +57,8 @@ public class CommonController {
      * @return
      */
     @PostMapping("generateCaptcha")
-    public ApplicationCaptchaResult generateCaptcha(@MultiArgumentResolver @Validated CaptchaRequest request) {
-        return commonHelper.generateCaptcha(request);
+    public ResponseData<ApplicationCaptchaResult> generateCaptcha(@MultiArgumentResolver @Validated CaptchaRequest request) {
+        return ResponseData.success(commonHelper.generateCaptcha(request));
     }
 
     /**
@@ -66,8 +67,9 @@ public class CommonController {
      * @param request
      */
     @PostMapping("checkCaptcha")
-    public void checkCaptcha(@RequestBody @Validated CaptchaCheckRequest request) {
+    public ResponseData<Void> checkCaptcha(@RequestBody @Validated CaptchaCheckRequest request) {
         commonHelper.verifyCaptcha(request);
+        return ResponseData.empty();
     }
 
     /**
@@ -77,8 +79,8 @@ public class CommonController {
      * @return
      */
     @PostMapping("/sendSmsCode")
-    public ApplicationSmsSendResponse sendSmsCode(@RequestBody @Validated SendSmsCodeRequest sendSmsCodeRequest) {
-        return commonHelper.sendAndLoadSmsCodeWithLimit(sendSmsCodeRequest);
+    public ResponseData<ApplicationSmsSendResponse> sendSmsCode(@RequestBody @Validated SendSmsCodeRequest sendSmsCodeRequest) {
+        return ResponseData.success(commonHelper.sendAndLoadSmsCodeWithLimit(sendSmsCodeRequest));
     }
 
     /**
@@ -90,8 +92,8 @@ public class CommonController {
      * @return
      */
     @PostMapping("uploadFile")
-    public UploadResponse uploadFile(@RequestParam("file") MultipartFile multipartFile) {
-        return vpsClient.uploadFile(multipartFile);
+    public ResponseData<UploadResponse> uploadFile(@RequestParam("file") MultipartFile multipartFile) {
+        return ResponseData.success(vpsClient.uploadFile(multipartFile));
     }
 
     /**
@@ -103,7 +105,7 @@ public class CommonController {
      * @return
      */
     @PostMapping("batchUploadFile")
-    public List<UploadResponse> uploadFile(@RequestParam("file") MultipartFile[] multipartFile) {
-        return vpsClient.batchUploadFile(multipartFile);
+    public ResponseData<List<UploadResponse>> uploadFile(@RequestParam("file") MultipartFile[] multipartFile) {
+        return ResponseData.success(vpsClient.batchUploadFile(multipartFile));
     }
 }

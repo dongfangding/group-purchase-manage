@@ -1,6 +1,7 @@
 package com.ddf.group.purchase.core.controller;
 
 import com.ddf.boot.common.api.model.authentication.UserClaim;
+import com.ddf.boot.common.api.model.common.response.ResponseData;
 import com.ddf.boot.common.authentication.util.UserContextUtil;
 import com.ddf.group.purchase.api.request.common.SendSmsCodeRequest;
 import com.ddf.group.purchase.api.request.user.LoginRequest;
@@ -43,8 +44,8 @@ public class AuthController {
      * @return
      */
     @PostMapping("sendRegisterSmsCode")
-    public ApplicationSmsSendResponse sendRegisterSmsCode(@RequestBody @Validated SendSmsCodeRequest sendSmsCodeRequest) {
-        return commonHelper.sendAndLoadRegisterSmsCodeWithLimit(sendSmsCodeRequest);
+    public ResponseData<ApplicationSmsSendResponse> sendRegisterSmsCode(@RequestBody @Validated SendSmsCodeRequest sendSmsCodeRequest) {
+        return ResponseData.success(commonHelper.sendAndLoadRegisterSmsCodeWithLimit(sendSmsCodeRequest));
     }
 
     /**
@@ -53,8 +54,9 @@ public class AuthController {
      * @param request
      */
     @PostMapping("registry")
-    public void registry(@RequestBody @Validated UserRegistryRequest request) {
+    public ResponseData<Void> registry(@RequestBody @Validated UserRegistryRequest request) {
         userApplicationService.registry(request);
+        return ResponseData.empty();
     }
 
     /**
@@ -63,8 +65,8 @@ public class AuthController {
      * @param request
      */
     @PostMapping("login")
-    public UserLoginResponse login(@RequestBody @Validated LoginRequest request) {
-        return loginStrategyContext.login(request);
+    public ResponseData<UserLoginResponse> login(@RequestBody @Validated LoginRequest request) {
+        return ResponseData.success(loginStrategyContext.login(request));
     }
 
     /**
@@ -73,8 +75,8 @@ public class AuthController {
      * @return
      */
     @GetMapping("currentUser")
-    public UserClaim currentUser() {
-        return UserContextUtil.getUserClaim();
+    public ResponseData<UserClaim> currentUser() {
+        return ResponseData.success(UserContextUtil.getUserClaim());
     }
 
 }

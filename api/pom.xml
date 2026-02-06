@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>group-purchase-manage-api</artifactId>
+    <artifactId>api</artifactId>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
