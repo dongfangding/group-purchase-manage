@@ -7,7 +7,8 @@
       "Bash(uvx mcp-feedback-enhanced@latest)",
       "Bash(npx:*)",
       "mcp__mcp-feedback-enhanced__interactive_feedback",
-      "Bash(mvn compile -DskipTests -q)"
+      "Bash(mvn compile -DskipTests -q)",
+      "Bash(mvn clean install:*)"
     ],
     "additionalDirectories": [
       "E:\\IdeaProjects\\self\\ddf-common"

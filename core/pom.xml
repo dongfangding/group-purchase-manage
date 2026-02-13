@@ -6,6 +6,7 @@
         <artifactId>group-purchase-manage</artifactId>
         <groupId>com.ddf.application</groupId>
         <version>1.0-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -15,20 +16,6 @@
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <ddf-common.version>boot3.5-2025.1-SNAPSHOT</ddf-common.version>
-        <ddf-commom-ids-service.version>boot3.5-2025.1-SNAPSHOT</ddf-commom-ids-service.version>
-        <ddf-common-core.version>boot3.5-2025.1-SNAPSHOT</ddf-common-core.version>
-        <ddf-common-mvc.version>boot3.5-2025.1-SNAPSHOT</ddf-common-mvc.version>
-        <ddf-common-ids-service.version>boot3.5-2025.1-SNAPSHOT</ddf-common-ids-service.version>
-        <ddf-common-authentication.version>boot3.5-2025.1-SNAPSHOT</ddf-common-authentication.version>
-        <ddf-common-third-party.version>boot3.5-2025.1-SNAPSHOT</ddf-common-third-party.version>
-        <ddf-common-captcha.version>boot3.5-2025.1-SNAPSHOT</ddf-common-captcha.version>
-        <ddf-common-limit.version>boot3.5-2025.1-SNAPSHOT</ddf-common-limit.version>
-        <ddf-common-redis.version>boot3.5-2025.1-SNAPSHOT</ddf-common-redis.version>
-        <ddf-common-xxl-executor.version>boot3.5-2025.1-SNAPSHOT</ddf-common-xxl-executor.version>
-        <ddf-common-nacos.version>boot3.5-2025.1-SNAPSHOT</ddf-common-nacos.version>
-        <ddf-common-vps.version>boot3.5-2025.1-SNAPSHOT</ddf-common-vps.version>
-        <ddf-common-rocketmq.version>boot3.5-2025.1-SNAPSHOT</ddf-common-rocketmq.version>
-        <ddf-common-mqtt.version>boot3.5-2025.1-SNAPSHOT</ddf-common-mqtt.version>
         <org.mapstruct.version>1.5.5.Final</org.mapstruct.version>
         <lombok.version>1.18.30</lombok.version>
     </properties>
@@ -36,13 +23,13 @@
     <dependencies>
         <dependency>
             <groupId>com.ddf.application</groupId>
-            <artifactId>group-purchase-manage-api</artifactId>
+            <artifactId>api</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
         <dependency>
             <groupId>io.github.dongfangding</groupId>
             <artifactId>ddf-common-ids-service</artifactId>
-            <version>${ddf-common-ids-service.version}</version>
+            <version>${ddf-common.version}</version>
             <exclusions>
                 <exclusion>
                     <artifactId>log4j</artifactId>
@@ -54,61 +41,61 @@
         <dependency>
             <groupId>io.github.dongfangding</groupId>
             <artifactId>ddf-common-core</artifactId>
-            <version>${ddf-common-core.version}</version>
+            <version>${ddf-common.version}</version>
         </dependency>
 
         <dependency>
             <groupId>io.github.dongfangding</groupId>
             <artifactId>ddf-common-mvc</artifactId>
-            <version>${ddf-common-core.version}</version>
+            <version>${ddf-common.version}</version>
         </dependency>
 
         <dependency>
             <groupId>io.github.dongfangding</groupId>
             <artifactId>ddf-common-authentication</artifactId>
-            <version>${ddf-common-authentication.version}</version>
+            <version>${ddf-common.version}</version>
         </dependency>
 
         <dependency>
             <groupId>io.github.dongfangding</groupId>
             <artifactId>ddf-common-third-party</artifactId>
-            <version>${ddf-common-third-party.version}</version>
+            <version>${ddf-common.version}</version>
         </dependency>
 
         <dependency>
             <groupId>io.github.dongfangding</groupId>
             <artifactId>ddf-common-captcha</artifactId>
-            <version>${ddf-common-captcha.version}</version>
+            <version>${ddf-common.version}</version>
         </dependency>
 
         <dependency>
             <groupId>io.github.dongfangding</groupId>
             <artifactId>ddf-common-limit</artifactId>
-            <version>${ddf-common-limit.version}</version>
+            <version>${ddf-common.version}</version>
         </dependency>
 
         <dependency>
             <groupId>io.github.dongfangding</groupId>
             <artifactId>ddf-common-redis</artifactId>
-            <version>${ddf-common-redis.version}</version>
+            <version>${ddf-common.version}</version>
         </dependency>
 
         <dependency>
             <groupId>io.github.dongfangding</groupId>
             <artifactId>ddf-common-vps</artifactId>
-            <version>${ddf-common-vps.version}</version>
+            <version>${ddf-common.version}</version>
         </dependency>
 
         <dependency>
             <groupId>io.github.dongfangding</groupId>
             <artifactId>ddf-common-rocketmq</artifactId>
-            <version>${ddf-common-rocketmq.version}</version>
+            <version>${ddf-common.version}</version>
         </dependency>
 
         <dependency>
             <groupId>io.github.dongfangding</groupId>
             <artifactId>ddf-common-mqtt</artifactId>
-            <version>${ddf-common-mqtt.version}</version>
+            <version>${ddf-common.version}</version>
         </dependency>
 
         <dependency>
@@ -152,6 +139,12 @@
             <scope>provided</scope>
         </dependency>
 
+        <dependency>
+            <groupId>io.github.dongfangding</groupId>
+            <artifactId>ddf-common-s3</artifactId>
+            <version>${ddf-common.version}</version>
+        </dependency>
+
     </dependencies>
 
 
@@ -162,7 +155,6 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <fork>true</fork>
                     <classifier>exec</classifier>
                 </configuration>
                 <executions>

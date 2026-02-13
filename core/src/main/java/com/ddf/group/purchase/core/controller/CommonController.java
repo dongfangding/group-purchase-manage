@@ -4,8 +4,11 @@ import com.ddf.boot.common.api.model.captcha.request.CaptchaCheckRequest;
 import com.ddf.boot.common.api.model.captcha.request.CaptchaRequest;
 import com.ddf.boot.common.api.model.captcha.response.ApplicationCaptchaResult;
 import com.ddf.boot.common.api.model.common.response.ResponseData;
+import com.ddf.boot.common.authentication.util.UserContextUtil;
 import com.ddf.boot.common.mvc.resolver.MultiArgumentResolver;
 import com.ddf.boot.common.redis.helper.RedisTemplateHelper;
+import com.ddf.boot.common.s3.helper.FileUploadHelper;
+import com.ddf.boot.common.s3.model.UploadResult;
 import com.ddf.group.purchase.api.request.common.SendSmsCodeRequest;
 import com.ddf.group.purchase.api.response.common.ApplicationSmsSendResponse;
 import com.ddf.group.purchase.api.response.common.SysDictResponse;
@@ -43,6 +46,7 @@ public class CommonController {
     private final VpsClient vpsClient;
     private final SysDictRepository sysDictRepository;
     private final RedisTemplateHelper redisTemplateHelper;
+    private final FileUploadHelper fileUploadHelper;
 
 
     @GetMapping("listDict")
@@ -84,7 +88,7 @@ public class CommonController {
     }
 
     /**
-     * 上传文件并生成缩略图
+     * 上传文件
      * 可以使用postman测试，方法选择post, body参数选择form-data, 新增一个key, 属性名为file, 在这个属性名
      * 后面有一个类型， 默认是text, 选择为file, 这个时候value就变成了选择文件了，选择好文件之后就可以上传了
      *
@@ -92,8 +96,8 @@ public class CommonController {
      * @return
      */
     @PostMapping("uploadFile")
-    public ResponseData<UploadResponse> uploadFile(@RequestParam("file") MultipartFile multipartFile) {
-        return ResponseData.success(vpsClient.uploadFile(multipartFile));
+    public ResponseData<UploadResult> uploadFile(@RequestParam("file") MultipartFile multipartFile) {
+        return ResponseData.success(fileUploadHelper.upload("common++++", UserContextUtil.getLongUserId().toString(), multipartFile, true));
     }
 
     /**

@@ -38,7 +38,7 @@ spring:
       username: root
       password: Aa&123456
       url: jdbc:mysql://${mysql_host}:3306/group_purchase_manage?useUnicode=true&characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Shanghai&zeroDateTimeBehavior=convertToNull
-      initial-size: 5
+      initial-size: 1
       asyncInit: false
       max-active: 200
       min-idle: 5

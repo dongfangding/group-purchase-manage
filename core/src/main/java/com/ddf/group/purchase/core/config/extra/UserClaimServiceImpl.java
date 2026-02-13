@@ -23,10 +23,6 @@ public class UserClaimServiceImpl implements UserClaimService {
 
     private final UserInfoMapper userInfoMapper;
 
-    @Override
-    public void storeRequest(HttpServletRequest request, String host) {
-
-    }
 
     @Override
     public UserClaim getStoreUserInfo(HttpServletRequest request, UserClaim claim) {
