@@ -1,13 +1,13 @@
-mysql_host: 10.127.47.145
+mysql_host: 192.168.10.32
 spring:
   data:
     redis:
-      host: 10.127.47.145
+      host: 192.168.10.32
       port: 6379
       database: 1
       password: Aa&123456
 rocketmq:
-  name-server: 10.127.47.145:9876
+  name-server: 192.168.10.32:9876
   producer:
     group: boot-quick-producer-group
     access-key: xxxxxxx
@@ -25,10 +25,10 @@ customizer:
     mqtt:
       connectionUrls:
         - protocol: mqtt_tcp
-          url: tcp://10.127.47.145:21883
+          url: tcp://192.168.10.32:21883
     s3:
       enable: true
-      endpoint: http://10.127.47.145:9000
+      endpoint: http://192.168.10.32:9000
       access-key: rYxKvE6Oko9Xq95wRe0x
       secret-key: cBVpU9I2QwtnMml3r98Z2N42jFWkvUDBvQBLmdQQ
       bucket-name: group-purchase

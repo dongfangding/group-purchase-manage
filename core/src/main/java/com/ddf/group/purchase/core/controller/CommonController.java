@@ -32,14 +32,14 @@ import org.springframework.web.multipart.MultipartFile;
 /**
  * <p>通用工具类</p >
  *
- * @menu 通用工具类
  * @author Snowball
  * @version 1.0
+ * @menu 通用工具类
  * @date 2022/05/15 23:02
  */
 @RestController
 @RequestMapping("/common")
-@RequiredArgsConstructor(onConstructor_={@Autowired})
+@RequiredArgsConstructor(onConstructor_ = {@Autowired})
 public class CommonController {
 
     private final CommonHelper commonHelper;
@@ -51,7 +51,8 @@ public class CommonController {
 
     @GetMapping("listDict")
     public ResponseData<List<SysDictResponse>> listDict(@RequestParam String dictType) {
-        return ResponseData.success(CommonConverter.INSTANCE.convert(sysDictRepository.listDictByCodeFromCache(dictType)));
+        return ResponseData.success(
+                CommonConverter.INSTANCE.convert(sysDictRepository.listDictByCodeFromCache(dictType)));
     }
 
     /**
@@ -61,7 +62,8 @@ public class CommonController {
      * @return
      */
     @PostMapping("generateCaptcha")
-    public ResponseData<ApplicationCaptchaResult> generateCaptcha(@MultiArgumentResolver @Validated CaptchaRequest request) {
+    public ResponseData<ApplicationCaptchaResult> generateCaptcha(
+            @MultiArgumentResolver @Validated CaptchaRequest request) {
         return ResponseData.success(commonHelper.generateCaptcha(request));
     }
 
@@ -83,7 +85,8 @@ public class CommonController {
      * @return
      */
     @PostMapping("/sendSmsCode")
-    public ResponseData<ApplicationSmsSendResponse> sendSmsCode(@RequestBody @Validated SendSmsCodeRequest sendSmsCodeRequest) {
+    public ResponseData<ApplicationSmsSendResponse> sendSmsCode(
+            @RequestBody @Validated SendSmsCodeRequest sendSmsCodeRequest) {
         return ResponseData.success(commonHelper.sendAndLoadSmsCodeWithLimit(sendSmsCodeRequest));
     }
 
@@ -97,7 +100,11 @@ public class CommonController {
      */
     @PostMapping("uploadFile")
     public ResponseData<UploadResult> uploadFile(@RequestParam("file") MultipartFile multipartFile) {
-        return ResponseData.success(fileUploadHelper.upload("common++++", UserContextUtil.getLongUserId().toString(), multipartFile, true));
+        return ResponseData.success(fileUploadHelper.upload(
+                "common", UserContextUtil
+                        .getLongUserId()
+                        .toString(), multipartFile, true, true
+        ));
     }
 
     /**
